@@ -2610,3 +2610,83 @@ def vendor_credits(request):
     vendors=vendor_table.objects.all()
     items=AddItem.objects.all()
     return render(request,'vendor_credits.html',{'vendors':vendors,'items':items})
+
+# def vendor_credits(request):
+
+    
+#     c=customer.objects.all()
+#     p=AddItem.objects.all()
+#     i=invoice.objects.all()
+#     pay=payment_terms.objects.all()
+#     if not payment_terms.objects.filter(Terms='net 15').exists(): 
+#        payment_terms(Terms='net 15',Days=15).save()
+#     if not payment_terms.objects.filter(Terms='due end of month').exists():
+#         payment_terms(Terms='due end of month',Days=60).save()
+#     elif not  payment_terms.objects.filter(Terms='net 30').exists():
+#         payment_terms(Terms='net 30',Days=30).save() 
+    
+    
+   
+#     if request.user.is_authenticated:
+#         if request.method=='POST':
+#             c=request.POST['cx_name']
+#             cus=customer.objects.get(customerName=c) 
+#             print(cus.id)  
+#             custo=cus.id
+#             invoice_no=request.POST['inv_no']
+#             terms=request.POST['term']
+#             term=payment_terms.objects.get(id=terms)
+#             order_no=request.POST['ord_no']
+#             inv_date=request.POST['inv_date']
+#             due_date=request.POST['due_date']
+        
+            
+#             cxnote=request.POST['customer_note']
+#             subtotal=request.POST['subtotal']
+#             igst=request.POST['igst']
+#             cgst=request.POST['cgst']
+#             sgst=request.POST['sgst']
+#             totaltax=request.POST['totaltax']
+#             t_total=request.POST['t_total']
+#             if request.FILES.get('file') is not None:
+#                 file=request.FILES['file']
+#             else:
+#                 file="/static/images/alt.jpg"
+#             tc=request.POST['ter_cond']
+
+#             status=request.POST['sd']
+#             if status=='draft':
+#                 print(status)   
+#             else:
+#                 print(status)  
+        
+#             product=request.POST.getlist('item[]')
+#             hsn=request.POST.getlist('hsn[]')
+#             quantity=request.POST.getlist('quantity[]')
+#             rate=request.POST.getlist('rate[]')
+#             desc=request.POST.getlist('desc[]')
+#             tax=request.POST.getlist('tax[]')
+#             total=request.POST.getlist('amount[]')
+#             term=payment_terms.objects.get(id=term.id)
+
+#             inv=invoice(customer_id=custo,invoice_no=invoice_no,terms=term,order_no=order_no,inv_date=inv_date,due_date=due_date,
+#                         cxnote=cxnote,subtotal=subtotal,igst=igst,cgst=cgst,sgst=sgst,t_tax=totaltax,
+#                         grandtotal=t_total,status=status,terms_condition=tc,file=file)
+#             inv.save()
+#             inv_id=invoice.objects.get(id=inv.id)
+#             if len(product)==len(hsn)==len(quantity)==len(desc)==len(tax)==len(total)==len(rate):
+
+#                 mapped = zip(product,hsn,quantity,desc,tax,total,rate)
+#                 mapped = list(mapped)
+#                 for element in mapped:
+#                     created = invoice_item.objects.get_or_create(inv=inv_id,product=element[0],hsn=element[1],
+#                                         quantity=element[2],desc=element[3],tax=element[4],total=element[5],rate=element[6])
+                    
+#                 return redirect('invoiceview')
+#     context={
+#             'c':c,
+#             'p':p,
+#             'i':i,
+#             'pay':pay,
+#     }       
+#     return render(request,'vendor_credits.html',context)

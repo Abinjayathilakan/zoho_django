@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <style>
+
     /* center the form */
     form {
       margin: auto;
@@ -30,13 +31,13 @@
       font-size: 16px;
     }
     
-    select:focus,
+    <!-- select:focus,
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="date"]:focus {
       outline: none;
       box-shadow: 0 0 5px #ccc;
-    }
+    } -->
     
     .form-check {
       margin-bottom: 10px;
@@ -74,6 +75,7 @@
       tr:hover {
         background-color: #f5f5f56e;
       }
+      
   </style>
 
 <div class="fixed-top" style="top: 8rem; margin-left: 18rem;" >
@@ -120,16 +122,14 @@
         <label for="credit_date">Vendor Credit Date</label>
         <input type="date" id="credit_date" name="credit_date">
       </div>
+      </form>
 
       <br><br><br><br>
 
 
 
 
-
-
-
-      <table>
+      <table id="items-table">
         <h1>Items Details</h1>
         <tr>
           <th>#</th>
@@ -141,19 +141,198 @@
           <th>Tax</th>
           <th>Total Amount</th>
         </tr>
-        {% for t in items %}
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          
+        <tr id="row-1">
+          <td>1</td>
+  <td>
+    <select class="vendor-select" name="sel" onchange="updateRateAndTax(this)">
+      <option value="">Select a Vendor</option>
+      {% for item in items %}
+      <option value="{{ item.id }}" data-rate="{{ item.s_price }}" data-tax="{{ item.interstate }}">{{ item.Name }}</option>
+      {% endfor %}
+    </select>
+  </td>
+  <td><input type="text" class="hsn input-color" maxlength="6"></td>
+  <td><input type="text" class="quantity input-color" oninput="calculateTotalAmount(this)"></td>
+  <td class="rate" style="background-color: #ffffff;height:5px; color:black" ></td>
+  <td><input type="text" class="discount input-color" oninput="calculateTotalAmount(this)"></td>
+  <td class="tax"></td>
+  <td class="total-amount" style="background-color: #ffffff;  color:black"></td>
+
+          <!-- <td class='text-center'><button type='button' id='del_btn{{forloop.counter}}'
+            class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
+            style='width:30px'><i class='fa fa-times'></i></button></td> -->
         </tr>
-        {% endfor %} 
       </table>
+      <button class="add-row-btn" onclick="addRow()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Add Row
+      </button>
+          <div class="row border-bottom pb-5">
+        <div class="col-sm-6 d-flex flex-column my-auto">
+  
+            <label for="">Notes</label>
+            <textarea name="customer_note" id="" value="" cols="8" rows="8"
+                placeholder=" Notes">{{i.cxnote}}</textarea>
+        </div>
+        <div class="col-sm-6">
+            <table class="rounded table  text-white" style="background-color: rgba(51, 50, 48, 0.8);">
+                <tr>
+                    <td>Sub Total</td>
+                    <td></td>
+                    <td><input type="number" id="subtotal" name="subtotal" value="{{i.subtotal}}"
+                            class="form-control border-0 text-right" readonly></td>
+                </tr>
+                <tr id="tr_igst" >
+                    <td>IGST</td>
+                    <td></td>
+                    <td><input type="number" id='igst' name="igst" value="{{i.igst}}"
+                            class="form-control border-0 text-right" readonly></td>
+                </tr>
+                <tr   id="tr_cgst">
+                    <td>CGST</td>
+                    <td></td>
+                    <td><input type="number" id='cgst' name="cgst" value="{{i.cgst}}"
+                            class="form-control border-0 text-right cgst" readonly></td>
+                </tr>
+                <tr  id="tr_sgst">
+                    <td>SGST</td>
+                    <td></td>
+                    <td><input type="number" id='sgst' name="sgst" value="{{i.sgst}}"
+                            class="form-control border-0 text-right" readonly></td>
+                </tr>
+                <tr>
+                    <td>Tax Amount</td>
+                    <td></td>
+                    <td><input type="number" id="total_taxamount" name="totaltax" value="{{i.t_tax}}"
+                            class="form-control border-0 text-right"readonly></td>
+                </tr>
+               
+               
+                <tr>
+                    <th>Total (&#x20B9;)</th>
+                    <th></th>
+                    <th><input type="number" id="total_with_tax" name="t_total" value="{{i.grandtotal}}"
+                            class=" form-control border-0 text-right"readonly></b></th>
+                </tr>
+            </table>
+        </div>
+    </div>
       <br><br><br>
+      
+      <script>
+        let rowNumber = 1;
+      
+        function updateRateAndTax(selectElement) {
+          const selectedOption = selectElement.options[selectElement.selectedIndex];
+          const row = selectElement.parentNode.parentNode;
+      
+          const rateElement = row.querySelector(".rate");
+          const taxElement = row.querySelector(".tax");
+      
+          if (selectedOption.value) {
+            rateElement.innerText = selectedOption.dataset.rate;
+            taxElement.innerText = selectedOption.dataset.tax;
+          } else {
+            rateElement.innerText = "";
+            taxElement.innerText = "";
+          }
+      
+          calculateTotalAmount(row);
+        }
+      
+        function calculateTotalAmount(row) {
+          const quantity = parseFloat(row.querySelector(".quantity").value) || 0;
+          const rate = parseFloat(row.querySelector(".rate").innerText) || 0;
+          const discount = parseFloat(row.querySelector(".discount").value) || 0;
+          const totalAmountElement = row.querySelector(".total-amount");
+      
+          const totalAmount = quantity * rate - discount;
+          totalAmountElement.innerText = totalAmount.toFixed(2);
+        }
+      
+        function addRow() {
+          const table = document.getElementById("items-table");
+          const newRow = table.insertRow(-1);
+          rowNumber++;
+      
+          newRow.id = "row-" + rowNumber;
+          newRow.innerHTML = table.rows[1].innerHTML;
+      
+          const cells = newRow.cells;
+          cells[0].innerText = rowNumber;
+      
+          const select = newRow.querySelector(".vendor-select");
+          select.id = "vendor-select-" + rowNumber;
+          select.onchange = function () {
+            updateRateAndTax(this);
+          };
+      
+          const hsnInput = newRow.querySelector(".hsn");
+          hsnInput.id = "hsn-" + rowNumber;
+          hsnInput.value = "";
+      
+          const quantityInput = newRow.querySelector(".quantity");
+          quantityInput.id = "quantity-" + rowNumber;
+          quantityInput.oninput = function () {
+            calculateTotalAmount(this.parentNode.parentNode);
+          };
+          quantityInput.value = "";
+      
+          const discountInput = newRow.querySelector(".discount");
+          discountInput.id = "discount-" + rowNumber;
+          discountInput.oninput = function () {
+            calculateTotalAmount(this.parentNode.parentNode);
+          };
+          discountInput.value = "";
+      
+          const rateElement = newRow.querySelector(".rate");
+          rateElement.id = "rate-" + rowNumber;
+          rateElement.innerText = "";
+      
+          const taxElement = newRow.querySelector(".tax");
+          taxElement.id = "tax-" + rowNumber;
+          taxElement.innerText = "";
+      
+          const totalAmountElement = newRow.querySelector(".total-amount");
+          totalAmountElement.id = "total-amount-" + rowNumber;
+          totalAmountElement.innerText = "";
+      
+          newRow.appendChild(cells[cells.length - 1]);
+      
+          // Reset the event listeners for all rows
+          for (let i = 1; i <= rowNumber; i++) {
+            const row = document.getElementById("row-" + i);
+            const select = row.querySelector(".vendor-select");
+            select.onchange = function () {
+              updateRateAndTax(this);
+            };
+      
+            const quantityInput = row.querySelector(".quantity");
+            quantityInput.oninput = function () {
+              calculateTotalAmount(this.parentNode.parentNode);
+            };
+      
+            const discountInput = row.querySelector(".discount");
+            discountInput.oninput = function () {
+              calculateTotalAmount(this.parentNode.parentNode);
+            };
+      
+            calculateTotalAmount(row); // Update total amount for all rows
+          }
+        }
+      </script>
+
+      
+      
+      
+      
+      
+      
+      
+      
+
 
       
 
