@@ -134,6 +134,7 @@ urlpatterns = [
     
     path('vendor_credits_home',views.vendor_credits_home,name='vendor_credits_home'),
     path('vendor_credits',views.vendor_credits,name='vendor_credits'),
+    
 
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
