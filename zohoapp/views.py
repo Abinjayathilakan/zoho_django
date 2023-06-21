@@ -2700,6 +2700,7 @@ def vendor_credits_home(request):
 #     return render(request, 'vendor_credits.html', context)
 
 def vendor_credits(request):
+    vendors = vendor_table.objects.all()
     c = customer.objects.all()
     p = AddItem.objects.all()
     i = invoice.objects.all()
@@ -2748,7 +2749,7 @@ def vendor_credits(request):
             hsn = request.POST.getlist('hsn[]')
             quantity = request.POST.getlist('quantity[]')
             rate = request.POST.getlist('rate[]')
-            discount = request.POST.getlist('discount[]')
+            desc = request.POST.getlist('desc[]')
             tax = request.POST.getlist('tax[]')
             total = request.POST.getlist('amount[]')
             term = payment_terms.objects.get(id=term.id)
@@ -2774,26 +2775,34 @@ def vendor_credits(request):
             inv.save()
             inv_id = invoice.objects.get(id=inv.id)
 
-            if len(product) == len(hsn) == len(quantity) == len(discount) == len(tax) == len(total) == len(rate):
-
-                mapped = zip(product, hsn, quantity, discount, tax, total, rate)
+            if len(product) == len(hsn) == len(quantity) == len(desc) == len(tax) == len(total) == len(rate):
+                mapped = zip(product, hsn, quantity, desc, tax, rate)
                 mapped = list(mapped)
                 for element in mapped:
+                    quantity_value = float(element[2])
+                    rate_value = float(element[5])
+                    discount = float(element[6])
+                    tax_value = float(element[4])
+
+                    amount = quantity_value * rate_value - discount
+                    tax_amount = amount * (tax_value / 100)
+
+                    total_amount = amount + tax_amount
+
                     created = invoice_item.objects.get_or_create(
                         inv=inv_id,
                         product=element[0],
                         hsn=element[1],
-                        quantity=element[2],
+                        quantity=quantity_value,
                         desc=element[3],
                         tax=element[4],
-                        total=element[5],
-                        rate=element[6],
-                        discount=element[7]  # Add discount to the arguments
+                        total=total_amount,
+                        rate=rate_value,
                     )
-
                 return redirect('invoiceview')
 
     context = {
+        'vendors': vendors,
         'c': c,
         'p': p,
         'i': i,
@@ -2801,5 +2810,3 @@ def vendor_credits(request):
     }
 
     return render(request, 'vendor_credits.html', context)
-
-
