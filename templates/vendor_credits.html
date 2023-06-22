@@ -144,16 +144,18 @@
         <tbody style="width: 50%;">
             {% for k in inv %}
             <tr id='row{{forloop.counter}}'>
-            <input type="hidden" name="id[]" value="{{k.id}}">
+                <input type="hidden" name="id[]" value="{{k.id}}">
                 <td>
-                    <div class='form-group'><select
-                            class='form-control  text-black border-0 item_select itm'
-                            name='item[]' id='item{{forloop.counter}}'style="">
+                    <div class='form-group'>
+                        
+                        <select class="form-control text-black border-0 item_select itm" name="item[]" id="item{{forloop.counter}}" style="">
+
                             <option class="text-dark" selected value="{{k.product}}">{{k.product}}</option>
                             {% for i in p %}
                             <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                             {% endfor %}
-                        </select></div>
+                        </select>
+                    </div>
                 </td>
                
                 <td class='text-right'><input type='text' id="hsn{{forloop.counter}}"
@@ -178,10 +180,45 @@
                   value="{{k.quantity}}" onchange="calc()"  >
                 </td>
 
-                <td class='text-right'><input type='number' id='rate{{forloop.counter}}'
-                        class='form-control border-0 text-black text-right rate' name='rate[]'
-                        value="{{k.rate}}" >
+                <td class='text-right'>
+                    <input type="text" id="rate{{forloop.counter}}" class="form-control border-0 text-black text-right rate" name="rate[]" value="{{k.rate}}">
+
                 </td>
+                
+              
+
+                <script>
+                    // Add event listeners to each item select element
+                    var itemSelects = document.querySelectorAll('.item_select');
+                    itemSelects.forEach(function (select, index) {
+                        select.addEventListener('change', function () {
+                            // Get the selected option value
+                            var selectedOption = this.options[this.selectedIndex].value;
+                
+                            // Find the corresponding rate input field by ID
+                            var rateInput = document.getElementById('rate' + (index + 1));
+                
+                            // Fetch the rate value from your data source based on the selected option
+                            var rateValue = fetchRateValue(selectedOption); // Replace with your own method to fetch the rate value
+                
+                            // Set the value of the rate input field
+                            rateInput.value = rateValue;
+                        });
+                    });
+                
+                    // Example method to fetch the rate value based on the selected name
+                    function fetchRateValue(selectedOption) {
+                        // Replace this with your own logic to fetch the rate value based on the selected name
+                        // For example, if `p` is an array of objects with `Name` and `Rate` properties:
+                        var rate = p.find(function (item) {
+                            return item.Name === selectedOption;
+                        });
+                
+                        // Return the rate value or an empty string if not found
+                        return rate ? rate.Rate : '';
+                    }
+                </script>
+
                 <td class='text-right'><input type='text' id='desc{{forloop.counter}}'
                         class='form-control border-0 text-black text-right desc' value="{{k.desc}}" name='desc[]'
                         >
@@ -287,7 +324,7 @@
         </div>
     </div>
   
-  
+  <br><br><br>
   
     <div class="" style="margin-bottom: 20rem;">
         <button type="submit" name="sd" class="btn btn-success text-white " 
@@ -382,6 +419,7 @@
     // add event listener to trigger calc() function whenever a change is made to input fields
     $('#item_table').on('input', 'input', calc);
 });
+
 
 function calc() {
     // loop through each row in the table

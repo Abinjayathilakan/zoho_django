@@ -404,3 +404,37 @@ class sales_item(models.Model):
     desc=models.TextField(max_length=255,null=True,blank=True)
     rate=models.TextField(max_length=255,null=True,blank=True)
     sale=models.ForeignKey(SalesOrder,on_delete=models.CASCADE,null=True,blank=True)
+    
+    
+    
+class invoice(models.Model):
+    customer=models.ForeignKey(customer,on_delete=models.CASCADE)
+    invoice_no=models.TextField(max_length=255)
+    terms=models.ForeignKey(payment_terms,on_delete=models.CASCADE)
+    order_no=models.IntegerField()
+    inv_date=models.DateField()
+    due_date=models.DateField()
+    
+    igst=models.TextField(max_length=255)
+    cgst=models.TextField(max_length=255)
+    sgst=models.TextField(max_length=255)
+    t_tax=models.FloatField()
+    subtotal=models.FloatField()
+    grandtotal=models.FloatField()
+    cxnote=models.TextField(max_length=255)
+    file=models.ImageField(upload_to='documents')
+    terms_condition=models.TextField(max_length=255)
+    status=models.TextField(max_length=255)
+    
+    def __str__(self) :
+        return self.invoice_no
+    
+class invoice_item(models.Model):
+    product=models.TextField(max_length=255)
+    quantity=models.IntegerField()
+    hsn=models.TextField(max_length=255)
+    tax=models.IntegerField()
+    total=models.FloatField()
+    discount=models.TextField(max_length=255)
+    rate=models.TextField(max_length=255)
+    inv=models.ForeignKey(invoice,on_delete=models.CASCADE)
