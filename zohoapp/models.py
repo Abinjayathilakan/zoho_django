@@ -405,15 +405,18 @@ class sales_item(models.Model):
     rate=models.TextField(max_length=255,null=True,blank=True)
     sale=models.ForeignKey(SalesOrder,on_delete=models.CASCADE,null=True,blank=True)
     
+#   abin  
     
+class vendor_credit(models.Model):
+    vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    company_name = models.CharField(max_length=100,null=True,blank=True)
+    address = models.CharField(max_length=100,null=True,blank=True) 
+    email=models.CharField(max_length=200)
+    GSTTreatment=models.CharField(max_length=100,null=True,blank=True)
+    credit_note=models.CharField(max_length=100,null=True,blank=True)
+    order_no=models.CharField(max_length=100,null=True,blank=True)
+    vendor_date=models.DateField()
     
-class invoice(models.Model):
-    customer=models.ForeignKey(customer,on_delete=models.CASCADE)
-    invoice_no=models.TextField(max_length=255)
-    terms=models.ForeignKey(payment_terms,on_delete=models.CASCADE)
-    order_no=models.IntegerField()
-    inv_date=models.DateField()
-    due_date=models.DateField()
     
     igst=models.TextField(max_length=255)
     cgst=models.TextField(max_length=255)
@@ -429,7 +432,7 @@ class invoice(models.Model):
     def __str__(self) :
         return self.invoice_no
     
-class invoice_item(models.Model):
+class vendor_credit_invoice(models.Model):
     product=models.TextField(max_length=255)
     quantity=models.IntegerField()
     hsn=models.TextField(max_length=255)
