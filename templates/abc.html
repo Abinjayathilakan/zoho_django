@@ -40,46 +40,84 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 <div class="row mx-3">
-    <div class="col-md-6 " style="position: fixed;"><a class="text-white" style="font-size: 1.5rem;"><i class="fa-solid fa-plus"></i> New
-            Invoice</a></div>
+    <div class="col-md-6 " style="position: fixed;"><a class="text-white" style="font-size: 1.5rem;"><i class="fa-solid fa-plus"></i> Vendor
+            Credits</a></div>
             <input type="hidden" id="state" value="{{ company.state }}">
 </div>
 
 <div style="overflow-y: scroll;height: 600px;">
 
-    <form method="post" action="{% url 'add_prod' %}" class="">
+    <form method="post" action="{% url 'vendor_credits' %}" class="">
         {% csrf_token %}
         <div class="row mb-4 border-top pt-5">
             <div class="col-sm-2"><label for="customer_name">Customer Name*</label></div>
             <div class="col-sm-10">
-                <select   class="registration-type" id="customer_sel" name="cx_name" style="width: 50%;height: 35px;">
+                <select   class="registration-type" id="vendor-select" name="sel" style="width: 50%;height: 35px;" onchange="redirectToVendorPage(this)">
                     <option type="hidden" value="vendor">select one</option>
     
-                    {% for cust in c %}
-                    <option value="{{cust.customerName}}" data-pos="{{cust.placeofsupply}}">{{cust.customerName}}</option>
+                    {% for v in vendors %}
+                    <option value="{{v.id}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
                     {% endfor %}
-                    <option value="customer">Register as a customer</option>
+                    <option value="">Register a Vendor</option>
     
                 </select>
+
+
+                <!-- <select id="vendor-select" name="sel" style="background-color: #ffffff; color: #000000; border: 1px solid #000000; padding: 5px; font-size: 14px; width: 100%; height: 50px" onchange="redirectToVendorPage(this)">
+                  <option value="">Select a Vendor</option>
+                  {% for v in vendors %}
+                      <option value="{{v.id}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
+                  {% endfor %}
+                  <option value="">Register a Vendor</option> -->
             
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-sm-2"><label for="estimate_number">Invoice#*</label></div>
-            <div class="col-sm-10"><input type="text" id="estimate_number" name="inv_no"value="INV-000"
+            <div class="col-sm-2"><label for="email">Email</label></div>
+            <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{user.vendor_email}}"
                     style="width: 38%;height: 35px;">
                
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-sm-2"><label for="reference">Order Number</label></div>
-            <div class="col-sm-10"> <input type="text" id="ord_no" name="ord_no" class=""
+            <div class="col-sm-2"><label for="address">Billing Address</label></div>
+            <div class="col-sm-10"> <input type="text" id="address" name="address" value="{{user.baddress}}"
                     style="width: 38%;height: 35px;"></div>
         </div>
+
+        <div class="row mb-4">
+          <div class="col-sm-2"><label for="gst">GST Treatment</label></div>
+          <div class="col-sm-10"> <input type="text" id="gst" name="gst" value="{{user.gst_treatment}}"
+                  style="width: 38%;height: 35px;"></div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-sm-2"><label for="placeofsupply">Source of Supply</label></div>
+        <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{user.source_supply}}"
+                style="width: 38%;height: 35px;"></div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-sm-2"><label for="credit_note">Credit Note</label></div>
+      <div class="col-sm-10"> <input type="text" id="credit_note" name="credit_note" maxlength="6" placeholder="Enter Credit Note"
+              style="width: 38%;height: 35px;"></div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-2"><label for="credit_note">Order Number</label></div>
+    <div class="col-sm-10"> <input type="text" id="order_number" name="order_number" maxlength="10" placeholder="Enter Order Number"
+            style="width: 38%;height: 35px;"></div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-sm-2"><label for="credit_date">Vendor Credit Date</label></div>
+  <div class="col-sm-10"> <input type="date" id="credit_date" name="credit_date"
+          style="width: 38%;height: 35px;"></div>
+</div>
     
      
       
-        <div class="input-row mb-4 form-inline">
+        <!-- <div class="input-row mb-4 form-inline">
           <label class="mr-3 " for="input-1">invoice Date</label>
               <input class=""  style="width: 18%;height: 35px;margin-left: 6rem;"  type="date" name="inv_date" id="input-1">
               <label for="input-2"class="mr-3 "> Terms</label>
@@ -107,7 +145,7 @@
                       style="width: 38%;height: 35px;">
                  
               </div>
-          </div>
+          </div> -->
       
       
         <table class="table  text-white" style="width: 100%;" id="item_table" style="background-color: rgba(12, 12, 11, 0.8);" onchange="calc()">
@@ -117,7 +155,7 @@
                     <th class="text-right">Hsn</th>
                     <th class="text-right">Quantity</th>
                     <th class="text-right">Rate</th>
-                    <th class="text-right">Description</th>
+                    <th class="text-right">Discount</th>
                     <th class="text-right">Tax %</th>
                     <th class="text-right">Total</th>
                 </tr>
@@ -126,7 +164,8 @@
       
                 <tr id='row1'>
                     <td>
-                        <div class='form-group'><select
+                        <div class='form-group'>
+                          <select
                                 class='form-control  text-black border-0 item_select itm'
                                 name='item[]' id='item1'>
                                 {% for i in p %}
@@ -158,11 +197,11 @@
                       value='0' onchange="calc()"  >
                     </td>
     
-                    <td class='text-right'><input type='number' id='rate1'
+                    <td class='text-right'><input type='number' id='rate1' 
                             class='form-control border-0 text-black text-right rate' name='rate[]'
                             value='0.00' >
                     </td>
-                    <td class='text-right'><input type='text' id='desc1'
+                    <td class='text-right'><input type='text' id='desc1' 
                             class='form-control border-0 text-black text-right desc' name='desc[]'
                             >
                     </td>
@@ -183,7 +222,59 @@
                           <option value="28">GST 28%</option>
                       </optgroup>
                   </select>
-                  
+    <script>
+      $(document).on('click','#item1',function(){
+        select = $('#item1').val();
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+                      console.log(response)
+                      data = response.hsn
+                      data1 = response.desc
+                      data2 = response.quantity
+                      data3 = response.rate
+                      data4 = response.gst
+                      data5 = response.sgst
+                     
+                      document.getElementById('hsn11').value = data
+                      document.getElementById('desc1').value = data1
+                      document.getElementById('qty1').innerHTML = data2;
+                      <!-- document.getElementById('unit11').value = data3 -->
+                      
+  
+                   
+                      
+                      
+                      if (place == '{{ cmp1.state }}')
+                      {
+                        document.getElementById('ta11').innerHTML = data4 + ' % GST';
+                        document.getElementById('ta11').value=data4
+  
+                      } 
+                      
+                      document.getElementById('ta51').innerHTML  = data5 + ' % IGST';
+                      document.getElementById('ta51').value=data5
+                      if (data2<1)
+                      {
+                        
+                        
+                        document.getElementById('qty1').style.color="red";
+                      }
+                      else{
+                        pass
+                      } 
+                  }
+        
+        
+        });
+      });
+      
+    </script>              
+    
     <script>
       function validateHSN(hsnInput) {
         var hsn = hsnInput.value;
@@ -1256,8 +1347,8 @@ function calc() {
         var tax = $(this).find('.tax').val();
         
         // calculate the tax amount and total amount for this row
-        var taxamount = (qty * rate) * (tax / 100);
-        var amount = qty * rate;
+        var taxamount = (qty * rate - desc) * (tax / 100);
+        var amount = qty * rate - desc;
         
         // update the tax amount and total amount input fields for this row
         $(this).find('.taxamount').val(taxamount.toFixed(2));
@@ -1887,7 +1978,35 @@ function test(taxamount) {
 
      </script>
 
-     
+     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var vendorSelect = document.getElementById('vendor-select');
+          var emailInput = document.getElementById('email');
+          var gstInput = document.getElementById('gst');
+          var addressInput = document.getElementById('address');
+          var placeofsupplyInput = document.getElementById('placeofsupply');
+  
+          // Retrieve initial values from the user object
+          var initialEmail = emailInput.value;
+          var initialGST = gstInput.value;
+          var initialAddress = addressInput.value;
+          var initialPlaceofSupply = placeofsupplyInput.value;
+  
+          vendorSelect.addEventListener('change', function() {
+              var selectedOption = vendorSelect.options[vendorSelect.selectedIndex];
+              var email = selectedOption.getAttribute('data-email') || initialEmail;
+              var gstTreatment = selectedOption.getAttribute('data-gst') || initialGST;
+              var address = selectedOption.getAttribute('data-address') || initialAddress;
+              var placeofsupply = selectedOption.getAttribute('data-placeofsupply') || initialPlaceofSupply;
+  
+              emailInput.value = email;
+              gstInput.value = gstTreatment;
+              addressInput.value = address;
+              placeofsupplyInput.value = placeofsupply;
+          });
+      });
+  </script>
+  
 
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

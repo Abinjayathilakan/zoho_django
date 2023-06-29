@@ -80,21 +80,34 @@
       }
       
   </style>
+  
 <section>
 <div class="fixed-top" style="top: 8rem; margin-left: 18rem;" >
 <div style="height: 600px; overflow-y: scroll;">
 
-  <form action="" method="post">
+  <form action="{% url 'vendor_credits' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
         <label for="profile_name">Vendor Name</label>
-        <select id="vendor-select" name="sel" style="background-color: #ffffff; color: #000000; border: 1px solid #000000; padding: 5px; font-size: 14px; width: 100%; height:50px">
+        <select id="vendor-select" name="sel" style="background-color: #ffffff; color: #000000; border: 1px solid #000000; padding: 5px; font-size: 14px; width: 100%; height: 50px" onchange="redirectToVendorPage(this)">
             <option value="">Select a Vendor</option>
             {% for v in vendors %}
                 <option value="{{v.id}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
             {% endfor %}
+            <option value="">Register a Vendor</option>
         </select>
     </div>
+    
+    <script>
+        function redirectToVendorPage(selectElement) {
+            var selectedValue = selectElement.value;
+            if (selectedValue === "") {
+                window.location.href = "{% url 'vendor' %}";
+            }
+        }
+    </script>
+    
+    
       
     <div class="form-group">
         <label for="email">Email</label>
@@ -132,16 +145,10 @@
         <input type="date" id="credit_date" name="credit_date">
     </div>
 
-    <button type="submit">Submit</button>
-</form>
+    <!-- <button type="submit">Submit</button> -->
+
 
       <br><br><br><br>
-
-
-
-
-
-
 
 
 
@@ -174,6 +181,8 @@
       });
   </script>
   
+
+  
     
   
   <table class="table  text-white" id="item_table" style="background-color: rgba(12, 12, 11, 0.8);" onchange="calc()">
@@ -195,7 +204,7 @@
             <td>
                 <div class='form-group'><select
                         class='form-control  text-black border-0 item_select itm'
-                        name='item[]' id='item{{forloop.counter}}'style="">
+                        name='item[]' id='item' style="">
                         <option class="text-dark" selected value="{{k.product}}">{{k.product}}</option>
                         {% for i in p %}
                         <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
@@ -222,19 +231,71 @@
 
             <td class='text-right'><input type='number' id='qty{{forloop.counter}}'
               class='form-control border-0 text-black text-right qty'  name='quantity[]'
-              value="{{k.quantity}}" onchange="calc()"  >
+              value="{{k.quantity}}" onchange="calc()" style="color: white;" >
             </td>
 
             <td class='text-right'><input type='number' id='rate{{forloop.counter}}'
                     class='form-control border-0 text-black text-right rate' name='rate[]'
-                    value="{{k.rate}}" >
+                    value="{{k.rate}}" style="color: white;" >
             </td>
+            <script>
+                $(document).on('click','#item',function(){
+                    select = $('#item').val();
+                    $.ajax({
+                      type: "GET",
+                      url: "{% url 'getitems2' %}",
+                      data: {
+                        id: select
+                      },
+                      success:function(response){
+                                  console.log(response)
+                                  data = response.hsn
+                                  data1 = response.desp
+                                  data2 = response.qty
+                                  data3 = response.rate
+                                  data4 = response.gst
+                                  data5 = response.sgst
+                                 
+                                  document.getElementById('hsn11').value = data
+                                  document.getElementById('description1').value = data1
+                                  document.getElementById('qtyspan1').innerHTML = data2;
+                                  document.getElementById('unit11').value = data3
+                                  
+              
+                               
+                                  
+                                  
+                                  if (place == '{{ cmp1.state }}')
+                                  {
+                                    document.getElementById('ta11').innerHTML = data4 + ' % GST';
+                                    document.getElementById('ta11').value=data4
+              
+                                  } 
+                                  
+                                  document.getElementById('ta51').innerHTML  = data5 + ' % IGST';
+                                  document.getElementById('ta51').value=data5
+                                  if (data2<1)
+                                  {
+                                    
+                                    
+                                    document.getElementById('qtyspan1').style.color="red";
+                                  }
+                                  else{
+                                    pass
+                                  } 
+                              }
+                    
+                    
+                    });
+                  });
+            </script>
+
             <td class='text-right'><input type='text' id='desc{{forloop.counter}}'
                     class='form-control border-0 text-black text-right desc' value="{{k.desc}}" name='desc[]'
-                    >
+                    style="color: white;"  >
             </td>
             <td class='text-right'> <select name='tax[]'  id='tax{{forloop.counter}}'  
-                    class='form-control  text-black text-right border-0 tax'>
+                    class='form-control  text-black text-right border-0 tax' style="color: white;">
                     <option selected >{{k.tax}}</option>
                     <option>Select Tax</option>
               <optgroup label="GST">
@@ -254,10 +315,10 @@
                  
                 </select></td>
             <td style="display: none;">
-                <input type="text" name='taxamount1' value="{{k.tax}}" id="taxamount{{forloop.counter}}" class="form-control taxamount" />
+                <input type="text" name='taxamount1' value="{{k.tax}}" id="taxamount{{forloop.counter}}" style="color: white;" class="form-control taxamount" />
             </td>
             <td class='text-right'><input type='number' id='amount{{forloop.counter}}'
-                    class='form-control border-0 text-black text-right amount' name='amount[]'
+                    class='form-control border-0 text-black text-right amount' style="color: white;" name='amount[]'
                     value="{{k.total}}" readonly></td>
             <td class='text-center'><button type='button' id='del_btn{{forloop.counter}}'
                     class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
@@ -322,11 +383,11 @@
 </div>
 
 <div class="row ">
-    <div class="col-md-8 d-flex flex-column w-60 m text-black">
+    <!-- <div class="col-md-8 d-flex flex-column w-60 m text-black">
         <label for="">Terms & Conditions</label>
         <textarea name="ter_cond" id="" cols="20" rows="5" 
             placeholder=" Enter the terms & conditions .">{{i.terms_condition}}</textarea>
-    </div>
+    </div> -->
     <div class="col-md-4 py-5 text-center rounded" style="background-color: rgba(31, 30, 29, 0.8);">
         <label class="text-white" for="">Attach File(s) to Estimate</label><br>
         
@@ -338,7 +399,7 @@
     </div>
 </div>
 
-
+<br><br><br>
 
 <div class="" style="margin-bottom: 20rem;">
     <button type="submit" name="sd" class="btn btn-success text-white " 
@@ -347,7 +408,7 @@
         value="Save and Send">Save and Send</button>
         <input class="btn btn-danger text-white" type="reset"
         value="Cancel" >
-</div>
+</div> 
 </form>
 </div>
 
