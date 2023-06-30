@@ -137,6 +137,10 @@ urlpatterns = [
     
     
     path('getitems2',views.getitems2,name='getitems2'),
+    
+    # path('show_credits',views.show_credits,name='show_credits'),
+    
+    path('show_credits/<int:credit_id>/', views.show_credits, name='show_credits'),
 
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

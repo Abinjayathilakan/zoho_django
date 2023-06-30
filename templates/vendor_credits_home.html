@@ -38,19 +38,25 @@
             <tr style="color:white;">
                 <th>Date</th>
                 <th>Name</th>
+                <th>Address</th>
                 <th>Email</th>
+                <th>Source of Supply</th>
                 <th>Tax Amount</th>
+                
                 <th>Total Amount</th>
                 
             </tr>
         </thead>
         <tbody>
-            {% for e in expenses %}
+            {% for e in v_credits %}
             <tr style="color:white;">
-                <td><a href="{% url 'show_recurring' e.id %}">{{ e.profile_name }}</a></td>
-                <td>{{ e.amount }}</td>
-                <td>{{ e.vendor.vendor_display_name }}</td>
-                <td>{{ e.expense_type }}</td>
+                <td><a href="{% url 'show_credits' e.id %}">{{ e.vendor_date }}</a></td>
+                <td>{{ e.company_name }}</td>
+                <td>{{ e.baddress }}</td>
+                <td>{{ e.vendor_email }}</td>
+                <td>{{ e.source_supply }}</td>
+                <td>{{ e.t_tax }}</td>
+                <td>{{ e.grandtotal }}</td>
             </tr>
             {% endfor %}
         </tbody>
