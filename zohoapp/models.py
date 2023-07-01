@@ -412,75 +412,6 @@ class sales_item(models.Model):
 
 
 
-class VendorCredit(models.Model):
-    customer=models.ForeignKey(customer,on_delete=models.CASCADE)
-    # vendor_id=models.TextField(max_length=255)
-    company_name=models.CharField(max_length=150)
-    vendor_email=models.CharField(max_length=250)
-    gst_treatment=models.CharField(max_length=100)
-    source_supply=models.CharField(max_length=100)
-    baddress=models.CharField(max_length=300,default='')
-    credit_note = models.CharField(max_length=100, null=True, blank=True)
-    order_no = models.CharField(max_length=100, null=True, blank=True)
-    vendor_date = models.DateField()
-    
-    igst=models.TextField(max_length=255)
-    cgst=models.TextField(max_length=255)
-    sgst=models.TextField(max_length=255)
-    t_tax=models.FloatField()
-    subtotal=models.FloatField()
-    grandtotal=models.FloatField()
-    cxnote=models.TextField(max_length=255)
-    file=models.ImageField(upload_to='documents')
-    # terms_condition=models.TextField(max_length=255)
-    status=models.TextField(max_length=255)
-    
-   
-    
-class Vendor_invoice_item(models.Model):
-    product=models.TextField(max_length=255)
-    quantity=models.IntegerField()
-    hsn=models.TextField(max_length=255)
-    tax=models.IntegerField()
-    total=models.FloatField()
-    discount=models.TextField(max_length=255)
-    rate=models.TextField(max_length=255)
-    inv=models.ForeignKey(invoice,on_delete=models.CASCADE)
-
-    
-# class VendorCredit(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-#     company_name = models.CharField(max_length=100, null=True, blank=True)
-#     address = models.CharField(max_length=100, null=True, blank=True) 
-#     email = models.CharField(max_length=200)
-#     GSTTreatment = models.CharField(max_length=100, null=True, blank=True)
-#     placeofsupply = models.CharField(max_length=100, null=True, blank=True)
-#     credit_note = models.CharField(max_length=100, null=True, blank=True)
-#     order_no = models.CharField(max_length=100, null=True, blank=True)
-#     vendor_date = models.DateField()
-#     igst = models.TextField(max_length=255)
-#     cgst = models.TextField(max_length=255)
-#     sgst = models.TextField(max_length=255)
-#     t_tax = models.FloatField()
-#     subtotal = models.FloatField()
-#     grandtotal = models.FloatField()
-#     cxnote = models.TextField(max_length=255)
-#     file = models.ImageField(upload_to='documents')
-#     terms_condition = models.TextField(max_length=255)
-#     status = models.TextField(max_length=255)
-    
-#     def __str__(self):
-#         return self.invoice_no
-    
-# class VendorCreditInvoice(models.Model):
-#     product = models.TextField(max_length=255)
-#     quantity = models.IntegerField()
-#     hsn = models.TextField(max_length=255)
-#     tax = models.IntegerField()
-#     total = models.FloatField()
-#     discount = models.TextField(max_length=255)
-#     rate = models.TextField(max_length=255)
-#     inv = models.ForeignKey(VendorCredit, on_delete=models.CASCADE)
 
 
 
@@ -509,9 +440,7 @@ class Vendor_Credits(models.Model):
     # terms_condition=models.TextField(max_length=255)
     status=models.TextField(max_length=255)
     
-   
-    
-class Vendor_invoice_items(models.Model):
+class Vendor_invoice_item(models.Model):
     product=models.TextField(max_length=255)
     quantity=models.IntegerField()
     hsn=models.TextField(max_length=255)
@@ -519,6 +448,11 @@ class Vendor_invoice_items(models.Model):
     total=models.FloatField()
     discount=models.TextField(max_length=255)
     rate=models.TextField(max_length=255)
-    user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
+    inv = models.ForeignKey(Vendor_Credits, on_delete=models.CASCADE)
+
+    
+   
+    
+
 
 

@@ -2922,7 +2922,8 @@ def getitems2(request):
     data = AddItem.objects.get(Name=id, user_id=cmp1)
     print(data)
     price = data.s_price
-    tax = data.interstate
+    tax = data.interstate  # Assuming the tax field name is 'tax'
+    print(price, tax)
     return JsonResponse({"price": price, "tax": tax})
 
      
@@ -2956,7 +2957,7 @@ def vendor_credits(request):
             t_total = request.POST['t_total']
 
             file = request.FILES['file'] if 'file' in request.FILES else "/static/images/alt.jpg"
-            tc = request.POST['ter_cond']
+            # tc = request.POST['ter_cond']
             status = request.POST['sd']
             if status == 'draft':
                 print(status)
@@ -2967,7 +2968,7 @@ def vendor_credits(request):
             hsn = request.POST.getlist('hsn[]')           
             quantity = request.POST.getlist('quantity[]')          
             rate = request.POST.getlist('rate[]')           
-            desc = request.POST.getlist('desc[]')           
+            discount = request.POST.getlist('desc[]')           
             tax = request.POST.getlist('tax[]')     
                  
             total = request.POST.getlist('amount[]')
@@ -2993,29 +2994,27 @@ def vendor_credits(request):
                 status=status,
                 file=file
             )
-            # inv.save()
-            inv_id=Vendor_Credits.object.get(id=inv.id)
+            inv.save()
+            inv_id=Vendor_Credits.objects.get(id=inv.id)
 
-            if len(product) == len(hsn) == len(quantity) == len(desc) == len(tax) == len(total) == len(rate):
-                mapped = zip(product, hsn, quantity, desc, tax, total, rate)
+            if len(product) == len(hsn) == len(quantity) == len(discount) == len(tax) == len(total) == len(rate):
+                
+                mapped = zip(product, hsn, quantity, discount, tax, total, rate)
                 mapped = list(mapped)
+            
                 for element in mapped:
-                    
-                    created = Vendor_invoice_items.objects.create(
-                        inv_id=inv_id, 
+                    created = Vendor_invoice_item.objects.create(
+                        inv=inv_id,
                         product=element[0],
-                       
                         hsn=element[1],
                         quantity=element[2],
-                        desc=element[3], 
+                        discount=element[3],
                         tax=element[4],
                         total=element[5],
                         rate=element[6]
                     )
-                    # created.save()
-
-
-            return redirect('vendor_credits')
+                    created.save()
+            return redirect('vendor_credits_home')
 
     context = {
         'c': c,
@@ -3034,6 +3033,7 @@ def show_credits(request,credit_id):
     credit = get_object_or_404(Vendor_Credits,id=credit_id)
     credits = Vendor_Credits.objects.all()
     return render(request,'show_credit.html',{'credit': credit,'credits': credits})
+
 
 
 

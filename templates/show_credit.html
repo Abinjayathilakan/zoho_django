@@ -68,77 +68,50 @@
     
     
          
-    
-        <div style="height: 600px; overflow-y: scroll;">
-        <div class="tabs"><br><br>
-        <div class="tab-header"><br><br>
-    
-         <div class="active">
-           <i class="fa fa code"></i>OverView
-         </div><br><br>
-    
-        </div>
-    
-        <div class="tab-indicator"></div>
-    
-    
-        <div class="tab-body">
-         <div class="activ ">
-          <h6 class="mr-5">Repeat Every:</h6>
-          <h6 style="margin-top: -1.7rem; margin-left: 10rem;" id="repeat-every">{{ Vendor_Credits.repeat_every }}</h6>
-    
-           <h6 class="mr-5">Start Date:</h6>
-           <h6 style="margin-top: -1.7rem; margin-left: 10rem;" id="start-date" >{{expense.start_date}}</h6> 
-    
-           <h6 class="mr-4 ">Ends On:</h6>
-           <h6 style="margin-top: -1.9rem; margin-left: 10rem; margin-bottom: 2rem;" id="ends-on">{{expense.ends_on}}</h6> 
-          <h6 class="mr-5">Expense Account:</h6> <br>
-          <h6 style="margin-top: -3rem; margin-left: 10rem;" id="expense-account">{{expense.expense_account}}</h6> <br>
-          <h6 class="mr-5">Expense Type:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="expense-type">{{ expense.expense_type }} {{expense.goods_label}}</h6> <br>
-          <h6 class="mr-5">Amount:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="amount">{{Vendor_Credits.source_supply}}</h6> <br>
-          <h6 class="mr-5">Paid Through:</h6> <br>
-          <h6 style="margin-top: -3rem; margin-left: 10rem;" id="paidthrough">{{expense.paidthrough}}</h6> <br>
-          <h6 class="mr-5">Vendor:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="vendor">{{expense.vendor.vendor_display_name}}</h6> <br>
-          <h6 class="mr-5">GST Treatment:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="gst">{{expense.gst}}</h6><br>
-          <h6 class="mr-5">Destination Of Supply:</h6>
-          <h6 style="margin-top: -1.7rem; margin-left: 12rem;" id="destination">{{expense.destination}}</h6> <br>
-          <h6 class="mr-5">Tax:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="tax">{{expense.tax}}</h6> <br>
-          <h6 class="mr-5">Notes:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="notes">{{expense.notes}}</h6> <br>
-          <h6 class="mr-5">Customer Name:</h6>
-          <h6 style="margin-top: -2rem; margin-left: 10rem;" id="customername">{{expense.customername}}</h6> <br>
-           
-         </div>
-    
-         <div >
-           <h2>There is no transaction yet</h2>
-           <p>do something</p>
-         </div>
-    
-       
-        <table class="table text-white">
-          <thead>
-            {% for i in history %}
-            <tr>
-              <th>{{i.date}}</th>
-              <th>{{i.message}}</th>
-    
-            </tr>
-            {% endfor %}
-          </thead>
-        </table>
-          
+         <div style="height: 600px; overflow-y: scroll;">
+          <div class="tabs"><br><br>
+            <div class="tab-header"><br><br>
+              <div class="active">
+                <i class="fa fa code"></i>OverView
+              </div><br><br>
+            </div>
         
-          
-          
-         </div>
-    
-    
+            <div class="tab-indicator"></div>
+        
+            <div class="tab-body">
+              <div class="activ">
+                <h6 class="mr-5">order_number:</h6>
+                <h6 style="margin-top: -1.7rem; margin-left: 10rem;" id="order_number">{{ Vendor_Credits.order_number }}</h6>
+        
+                <h6 class="mr-5">Start Date:</h6>
+                <h6 style="margin-top: -1.7rem; margin-left: 10rem;" id="credit_note">{{ Vendor_Credits.credit_note }}</h6>
+        
+                <h6 class="mr-4">Ends On:</h6>
+                <h6 style="margin-top: -1.9rem; margin-left: 10rem; margin-bottom: 2rem;" id="placeofsupply">{{ Vendor_Credits.placeofsupply }}</h6>
+        
+                <h6 class="mr-5">Expense Account:</h6>
+                <br>
+                <h6 style="margin-top: -3rem; margin-left: 10rem;" id="address">{{ Vendor_Credits.address }}</h6>
+                <br>
+              </div>
+        
+              <div>
+                <h2>There is no transaction yet</h2>
+                <p>do something</p>
+              </div>
+        
+              <table class="table text-white">
+                <thead>
+                  {% for i in history %}
+                  <tr>
+                    <th>{{ i.date }}</th>
+                    <th>{{ i.message }}</th>
+                  </tr>
+                  {% endfor %}
+                </thead>
+              </table>
+            </div>
+          </div>
         </div>
     
     <script>
@@ -193,59 +166,27 @@
   });
 
   // Function to update the details section with the profile details
-function updateDetails(data) {
-  const profileNameElement = document.getElementById('profile-name');
-  profileNameElement.textContent = data.profile_name;
+  function updateDetails(data) {
+    const order_numberElement = document.getElementById('order_number');
+    order_numberElement.textContent = data.order_number;
 
-  // Update other detail elements here
-  const repeatEveryElement = document.getElementById('repeat-every');
-  repeatEveryElement.textContent = data.repeat_every;
+    // Update other detail elements here
+    const credit_noteElement = document.getElementById('credit_note');
+    credit_noteElement.textContent = data.credit_note;
 
-  const startDateElement = document.getElementById('start-date');
-  startDateElement.textContent = data.start_date;
+    const placeofsupplyElement = document.getElementById('placeofsupply');
+    placeofsupplyElement.textContent = data.placeofsupply;
 
-  const endDateElement = document.getElementById('ends-on');
-  endDateElement.textContent = data.ends_on;
+    const addressElement = document.getElementById('address');
+    addressElement.textContent = data.address;
 
-  const expenseAccountElement = document.getElementById('expense-account');
-  expenseAccountElement.textContent = data.expense_account;
+    // Update the URL for the Edit and Delete buttons
+    const editButton = document.querySelector('.btn.btn-light.text-dark');
+    const deleteButton = document.querySelector('.btn.btn-danger.text-white');
 
-  const expenseTypeElement = document.getElementById('expense-type');
-  expenseTypeElement.textContent = data.expense_type;
-
-  const amountElement = document.getElementById('amount');
-  amountElement.textContent = data.amount;
-
-  const paidthroughElement = document.getElementById('paidthrough');
-  paidthroughElement.textContent = data.paidthrough;
-
-  const vendorElement = document.getElementById('vendor');
-  vendorElement.textContent = data.vendor;
-
-  const gstElement = document.getElementById('gst');
-  gstElement.textContent = data.gst;
-
-  const destinationElement = document.getElementById('destination');
-  destinationElement.textContent = data.destination;
-
-  const taxElement = document.getElementById('tax');
-  taxElement.textContent = data.tax;
-
-  const notesElement = document.getElementById('notes');
-  notesElement.textContent = data.notes;
-
-  const customernameElement = document.getElementById('customername');
-  customernameElement.textContent = data.customername;
-
-  // Update the URL for the Edit and Delete buttons
-  const editButton = document.querySelector('.btn.btn-light.text-dark');
-  const deleteButton = document.querySelector('.btn.btn-danger.text-white');
-
-  editButton.href = `/edit_expense/${data.id}/`;
-  // deleteButton.href = `/delete_expense/${data.id}/`;
-}
-
-
+    editButton.href = `/edit_expense/${data.id}/`;
+    // deleteButton.href = `/delete_expense/${data.id}/`;
+  }
 </script>
 
 
