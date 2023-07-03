@@ -259,24 +259,23 @@
                   
                   <script>
                     $(document).on('click','#item1',function(){
-                        select = $('#item1').val();
-                        console.log(select)
-                        $.ajax({
-                          type: "GET",
-                          url: "{% url 'getitems2' %}",
-                          data: {
-                            id: select
-                          },
-                          success:function(response){
-                
-                            rate=response.price
-                            console.log(rate)
-                            document.getElementById('rate1').value=rate
-                          }
-                          
-                        });
+                      select = $('#item1').val();
+                      console.log(select)
+                      $.ajax({
+                        type: "GET",
+                        url: "{% url 'getitems2' %}",
+                        data: {
+                          id: select
+                        },
+                        success:function(response){
+              
+                          rate=response.price
+                          console.log(rate)
+                          document.getElementById('rate1').value=rate
+                        }
+                        
                       });
-
+                    });
 
                       $(document).on('click','#item2',function(){
                         select = $('#item2').val();
