@@ -1,96 +1,62 @@
 {% extends 'base.html' %}
-  {% load static %}
-  {% block content %}
-  <style>
-    .dataTables_wrapper .dataTables_filter input {
-      border: 1px solid #aaa;
-      border-radius: 3px;
-      padding: 5px;
-      background-color: transparent; 
-      color:white;
-      margin-left: 3px;
-  }
-  </style>
-      
-  <section >
-    <div class="row" style="top: 7rem; margin-left:1rem;" >
-    
-      <div class="col-md-10 ">
-          <div class="row">
-              <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">All Items</a></div>
-              <div class="col-md-6 form-inline" style="margin-left: 40rem;margin-top: -3rem;"><a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'additem' %}"><i class="fa-solid fa-plus "></i>New Item</a>
-                <a style="color: #ccc;"href="#3"> </a>     
-                  {% comment %} <form action="  " method="post">
-                    {% csrf_token %} {% endcomment %}
-                    {% comment %} <div class="input-group">
-                      <div class="form-outline">
-                        <input type="text" id="searchInput" name='search_query' placeholder="Search..." >
-                        <label class="form-label"  placeholder="Search"></label>
-                      </div> {% endcomment %}
-                      {% comment %} <button id="dataTable" type="button" class="btn btn-primary">
-                        <i class=" fas fa-search"></i>Search
-                      </button> {% endcomment %}
-                    {% comment %} </div> {% endcomment %}
-                  {% comment %} </form> </a> {% endcomment %}
-          
-              </div>
-            </div>   
-      
-        
+{% block content %}
+{% load static %}
 
-            
+<style>
+  #over:hover{
+        background-color: rgba(110, 110, 110, 0.616);
+        
+    }
+</style>
+
+<div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
+    <div style="height: 600px;overflow-y: scroll;">
+        <div class="row">
+            <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">All Vendors</a></div>
+            <div class="col-md-6 form-inline" style="margin-left: 55rem;margin-top: -2rem;"><a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor' %}"><i class="fa-solid fa-plus "></i>New</a>
+
             </div>
+        </div>   
+    
+        <div class="row">
+            <div class="col-sm-12 col-md-11 col-lg-11">
+                <table class="table  text-white" id="myTable">
+                    <thead>
+                      <tr>
+                        <th>NAME</th>
+                        <th>COMPANY NAME</th>
+                        <th>EMAIL</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for v in data %}
+             
+                      <tr id="over">
+             
+                       <!-- <td onclick="location.href ='{% url 'detail' v.id %}' " > {{v.Name}}</td> -->
+                        <td><a href="{% url 'view_vendor_details' v.id %}" style="color: rgb(230, 171, 45);">{{v.company_name}}</a></td>
+                        <td>{{v.vendor_email}}</td>
+                        <td>{{v.vendor_email}}</td>
+                        
+        
+                       
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-1 col-lg-1"></div>
 
-      </div>
+        </div>
     </div>
-    <table id="example"  class="table  text-white" style="overflow-y: scroll ;margin-bottom:20rem;">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Sales Rate</th>
-          <th>Purchase Rate</th>
-          <th>HSN/SAC</th> 
-          <th>Stock on Inventory</th>
-          <th>Usage Unit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for v in view %}
 
-        <tr>
-        
-
-          <td onclick="location.href ='{% url 'detail' v.id %}' " > {{v.company_name}}</td>
-          <td>{{v.vendor_email}}</td>
-          <td>{{v.gst_treatment}}</td>
-          <td>{{v.source_supply}}
-          <td>{{v.baddress}}</td> 
-      
-           <td>{{v.credit_note}}</td> 
-        
-          <td>{{v.vendor_date}}</td>
-
-        
-        </tr>
-        {% endfor %}
-   
-      </tbody>
-    </table>
-   
-  
-  <script>
-    $('#example').DataTable({
-      pagingType: 'full_numbers',
-  });
-
-  </script>
-</section>
+</div>
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  
-  {% endblock %}
+
+
+
+
+{% endblock %}

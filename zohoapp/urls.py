@@ -138,7 +138,7 @@ urlpatterns = [
     
     path('getitems2',views.getitems2,name='getitems2'),
     path('itemview',views.itemview,name='itemview'),
-    path('show_credits/<int:credit_id>/', views.show_credits, name='show_credits'),
+    path('show_credits/<int:pk>', views.show_credits, name='show_credits'),
 
 
     

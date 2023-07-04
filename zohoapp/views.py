@@ -2737,14 +2737,50 @@ def vendor_credits(request):
     return render(request, 'abc.html', context)
 
 
-def itemview(request):
-    viewitem=Vendor_Credits.objects.all()
-    return render(request,'view_vendor_credits.html',{'view':viewitem})
+# def itemview(request):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     viewitem=Vendor_Credits.objects.all(user=udata)
+#     return render(request,'view_vendor_credits.html',{'view':viewitem})
 
-def show_credits(request,credit_id):
-    products = Vendor_Credits(id=credit_id)
-    product = Vendor_Credits.objects.all()
-    return render(request,'show_credit.html',{'products': products,'product': product})
+# def itemview(request):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     data=Vendor_Credits.objects.filter(user=udata)
+#     return render(request,'view_vendor_credits.html',{'data':data})
+
+# from django.shortcuts import get_object_or_404, render
+# from .models import Vendor_Credits
+
+# def show_credits(request, credit_id):
+#     product = get_object_or_404(Vendor_Credits, id=credit_id)
+#     products = Vendor_Credits.objects.all()
+#     return render(request, 'show_credit.html', {'product': product, 'products': products})
+# def show_credits(request,id):
+#     # user_id=request.user
+#     items=Vendor_Credits.objects.all()
+#     product=Vendor_Credits.objects.get(id=id)
+#     print(product.id)
+    
+    
+#     context={
+#        "allproduct":items,
+#        "product":product,
+      
+#     }
+    
+#     return render(request,'show_credit.html',context)
+
+
+def show_credits(request,pk):
+    user_id=request.user.id
+    udata=User.objects.get(id=user_id)
+    vdata1=Vendor_Credits.objects.filter(user=udata)
+    vcredit=Vendor_Credits.objects.get(id=pk)
+    # mdata=mail_table.objects.filter(vendor=vcredit)
+    # ddata=doc_upload_table.objects.filter(user=udata,vendor=vcredit)
+
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit})
 
 
 
@@ -2752,3 +2788,19 @@ def show_credits(request,credit_id):
 # expense = get_object_or_404(Expense, id=expense_id)
 #     expenses = Expense.objects.all()
 #     return render(request, 'show_recurring.html', {'expense': expense,'expenses': expenses})
+
+# def view_vendor_list(request):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     data=vendor_table.objects.filter(user=udata)
+#     return render(request,'vendor_list.html',{'data':data})
+
+# def view_vendor_details(request,pk):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     vdata1=vendor_table.objects.filter(user=udata)
+#     vdata2=vendor_table.objects.get(id=pk)
+#     mdata=mail_table.objects.filter(vendor=vdata2)
+#     ddata=doc_upload_table.objects.filter(user=udata,vendor=vdata2)
+
+#     return render(request,'vendor_details.html',{'vdata':vdata1,'vdata2':vdata2,'mdata':mdata,'ddata':ddata})
