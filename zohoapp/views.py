@@ -2743,33 +2743,11 @@ def vendor_credits(request):
 #     viewitem=Vendor_Credits.objects.all(user=udata)
 #     return render(request,'view_vendor_credits.html',{'view':viewitem})
 
-# def itemview(request):
-#     user_id=request.user.id
-#     udata=User.objects.get(id=user_id)
-#     data=Vendor_Credits.objects.filter(user=udata)
-#     return render(request,'view_vendor_credits.html',{'data':data})
-
-# from django.shortcuts import get_object_or_404, render
-# from .models import Vendor_Credits
-
-# def show_credits(request, credit_id):
-#     product = get_object_or_404(Vendor_Credits, id=credit_id)
-#     products = Vendor_Credits.objects.all()
-#     return render(request, 'show_credit.html', {'product': product, 'products': products})
-# def show_credits(request,id):
-#     # user_id=request.user
-#     items=Vendor_Credits.objects.all()
-#     product=Vendor_Credits.objects.get(id=id)
-#     print(product.id)
-    
-    
-#     context={
-#        "allproduct":items,
-#        "product":product,
-      
-#     }
-    
-#     return render(request,'show_credit.html',context)
+def itemview(request):
+    user_id=request.user.id
+    udata=User.objects.get(id=user_id)
+    data=Vendor_Credits.objects.filter(user=udata)
+    return render(request,'view_vendor_credits.html',{'data':data})
 
 
 def show_credits(request,pk):
@@ -2781,6 +2759,188 @@ def show_credits(request,pk):
     # ddata=doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
     return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit})
+
+def Credits_add_comment(request,pk):
+    if request.method=='POST':
+        c_comment=request.POST['comment']
+        c_user_id=request.user.id
+        c_data=User.objects.get(id=c_user_id)
+        c_data2=Vendor_Credits.objects.get(id=pk)
+        comments= Credits_comments_table(user=c_data,vendor=c_data2,comment=c_comment)
+        comments.save()
+        return redirect("vendor_credits_home")
+
+def credit_sendmail(request,pk):
+    if request.method=='POST':
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vdata2=Vendor_Credits.objects.get(id=pk)
+        mail_from=settings.EMAIL_HOST_USER
+        mail_to=request.POST['email']
+        subject=request.POST['subject']
+        content=request.POST['content']
+        mail_data=Credits_mail_table(user=udata,vendor=vdata2,mail_from=mail_from,mail_to=mail_to,subject=subject,content=content)
+        mail_data.save()
+
+        subject = request.POST['subject']
+        message = request.POST['content']
+        recipient = request.POST['email']     #  recipient =request.POST["inputTagName"]
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
+
+        return redirect("vendor_credits_home")
+    
+def credit_upload_document(request,pk):
+    if request.method=='POST':
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vdata=Vendor_Credits.objects.get(id=pk)
+        title=request.POST['title']
+        document=request.FILES.get('file')
+        doc_data=Credits_doc_upload_table(user=udata,vendor=vdata,title=title,document=document)
+        doc_data.save()
+        return redirect("vendor_credits_home")
+
+def credit_download_doc(request,pk):
+    document=get_object_or_404(Credits_doc_upload_table,id=pk)
+    response=HttpResponse(document.document,content_type='application/pdf')
+    response['Content-Disposition']=f'attachment; filename="{document.document.name}"'
+    return response
+
+def credit_delete_vendor(request,pk):
+    if Credits_comments_table.objects.filter(vendor=pk).exists():
+        user2=Credits_comments_table.objects.filter(vendor=pk)
+        user2.delete()
+    if Credits_mail_table.objects.filter(vendor=pk).exists():
+        user3=Credits_mail_table.objects.filter(vendor=pk)
+        user3.delete()
+    if Credits_doc_upload_table.objects.filter(vendor=pk).exists():
+        user4=Credits_doc_upload_table.objects.filter(vendor=pk)
+        user4.delete()
+    # if contact_person_table.objects.filter(vendor=pk).exists():
+    #     user5=contact_person_table.objects.filter(vendor=pk)
+    #     user5.delete()
+    # if remarks_table.objects.filter(vendor=pk).exists():
+    #     user6=remarks_table.objects.filter(vendor=pk)
+    #     user6.delete()
+    
+    user1=Vendor_Credits.objects.get(id=pk)
+    user1.delete()
+    return redirect("vendor_credits_home")
+
+
+def edit_credit(request,id):
+    c=customer.objects.all()
+    p=AddItem.objects.all()
+    invoiceitem=Vendor_invoice_item.objects.filter(inv_id=id)
+    inv=Vendor_Credits.objects.get(id=id)
+    context={
+        'c':c,
+        'p':p,
+        'inv':invoiceitem,
+        'inv':inv,
+        
+    }
+    
+    return render(request,'edit_vendor_credits.html',context)
+
+
+def edit_vendor_credits(request,id):
+    print(id)
+   
+    p = AddItem.objects.all()
+    invoiceitem = Vendor_invoice_item.objects.filter(inv_id=id)
+    invoic = Vendor_Credits.objects.get(id=id)
+    
+  
+    if request.method == 'POST':
+        u=request.user.id
+        # c=request.POST['cx_name']
+        
+        invoic.company_name = request.POST['sel']
+        invoic.vendor_email = request.POST['email']
+        invoic.baddress = request.POST['address']
+        invoic.gst_treatment = request.POST['gst']
+        invoic.source_supply = request.POST['placeofsupply']
+        invoic.credit_note = request.POST['credit_note']
+        invoic.order_no = request.POST['order_number']
+        invoic.vendor_date = request.POST['credit_date']
+        
+        invoic.cxnote = request.POST['customer_note']
+        invoic.subtotal = request.POST['subtotal']
+        invoic.igst = request.POST['igst']
+        invoic.cgst = request.POST['cgst']
+        invoic.sgst = request.POST['sgst']
+        invoic.t_tax = request.POST['totaltax']
+        invoic.grandtotal = request.POST['t_total']
+
+        if request.FILES.get('file') is not None:
+            invoic.file = request.FILES['file']
+        else:
+            invoic.file = "/static/images/alt.jpg"
+
+            
+        
+        status=request.POST['sd']
+        if status=='draft':
+            invoic.status=status      
+        else:
+            invoic.status=status   
+         
+        invoic.save()
+        
+        print("/////////////////////////////////////////////////////////")
+        product=request.POST.getlist('item[]')
+        hsn=request.POST.getlist('hsn[]')
+        quantity=request.POST.getlist('quantity[]')
+        rate=request.POST.getlist('rate[]')
+        desc=request.POST.getlist('desc[]')
+        tax=request.POST.getlist('tax[]')
+        total=request.POST.getlist('amount[]')
+        obj_dele=Vendor_invoice_item.objects.filter(inv_id=invoic.id)
+        obj_dele.delete()
+       
+        if len(product)==len(hsn)==len(quantity)==len(desc)==len(tax)==len(total)==len(rate):
+
+            mapped = zip(product,hsn,quantity,desc,tax,total,rate)
+            mapped = list(mapped)
+            for element in mapped:
+                created = Vendor_invoice_item.objects.get_or_create(inv=invoic,product=element[0],hsn=element[1],
+                                    quantity=element[2],desc=element[3],tax=element[4],total=element[5],rate=element[6])
+                
+            return redirect('detailedview',id)
+                    
+    context = {
+           
+            'p': p,
+            'inv': invoiceitem,
+            'i': invoic,
+            
+        }             
+        
+    return render(request, 'edit_vendor_credits.html', context)
+
+
+
+def credits_statement(request,id):
+    sales=Vendor_Credits.objects.get(id=id)
+    saleitem=Vendor_invoice_item.objects.filter(inv_id=id)
+    sale_order=Vendor_Credits.objects.all()
+    company=company_details.objects.get(user_id=request.user.id)
+    
+    
+    context={
+        'sale':sales,
+        'saleitem':saleitem,
+        'sale_order':sale_order,
+        'comp':company,
+        
+        
+                    }
+    return render(request,'vender_credit_state.html',context)
+
+
+
+
 
 
 
@@ -2804,3 +2964,189 @@ def show_credits(request,pk):
 #     ddata=doc_upload_table.objects.filter(user=udata,vendor=vdata2)
 
 #     return render(request,'vendor_details.html',{'vdata':vdata1,'vdata2':vdata2,'mdata':mdata,'ddata':ddata})
+
+# def add_comment(request,pk):
+#     if request.method=='POST':
+#         comment=request.POST['comment']
+#         user_id=request.user.id
+#         udata=User.objects.get(id=user_id)
+#         vdata2=vendor_table.objects.get(id=pk)
+#         comments=comments_table(user=udata,vendor=vdata2,comment=comment)
+#         comments.save()
+#         return redirect("view_vendor_list")
+
+# def sendmail(request,pk):
+#     if request.method=='POST':
+#         user_id=request.user.id
+#         udata=User.objects.get(id=user_id)
+#         vdata2=vendor_table.objects.get(id=pk)
+#         mail_from=settings.EMAIL_HOST_USER
+#         mail_to=request.POST['email']
+#         subject=request.POST['subject']
+#         content=request.POST['content']
+#         mail_data=mail_table(user=udata,vendor=vdata2,mail_from=mail_from,mail_to=mail_to,subject=subject,content=content)
+#         mail_data.save()
+
+#         subject = request.POST['subject']
+#         message = request.POST['content']
+#         recipient = request.POST['email']     #  recipient =request.POST["inputTagName"]
+#         send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
+
+#         return redirect("view_vendor_list")
+
+
+
+# def edit_vendor(request,pk):
+#     vdata=vendor_table.objects.get(id=pk)
+#     if remarks_table.objects.filter(vendor=vdata).exists() or contact_person_table.objects.filter(vendor=vdata).exists():
+#         if remarks_table.objects.filter(vendor=vdata).exists() and contact_person_table.objects.filter(vendor=vdata).exists():
+#             rdata=remarks_table.objects.get(vendor=vdata)
+#             pdata=contact_person_table.objects.filter(vendor=vdata)
+#             return render(request,'edit_vendor.html',{'vdata':vdata,'rdata':rdata,'pdata':pdata})
+#         else:
+#             if remarks_table.objects.filter(vendor=vdata).exists():
+#                 rdata=remarks_table.objects.get(vendor=vdata)
+#                 return render(request,'edit_vendor.html',{'vdata':vdata,'rdata':rdata})
+#             if contact_person_table.objects.filter(vendor=vdata).exists():
+#                 pdata=contact_person_table.objects.filter(vendor=vdata)
+#                 return render(request,'edit_vendor.html',{'vdata':vdata,'pdata':pdata})      
+        
+#     else:
+#         return render(request,'edit_vendor.html',{'vdata':vdata})
+
+
+# def edit_vendor_details(request,pk):
+#     if request.method=='POST':
+#         vdata=vendor_table.objects.get(id=pk)
+#         vdata.salutation=request.POST['salutation']
+#         vdata.first_name=request.POST['first_name']
+#         vdata.last_name=request.POST['last_name']
+#         vdata.company_name=request.POST['company_name']
+#         vdata.vendor_display_name=request.POST['v_display_name']
+#         vdata.vendor_email=request.POST['vendor_email']
+#         vdata.vendor_wphone=request.POST['w_phone']
+#         vdata.vendor_mphone=request.POST['m_phone']
+#         vdata.skype_number=request.POST['skype_number']
+#         vdata.designation=request.POST['designation']
+#         vdata.department=request.POST['department']
+#         vdata.website=request.POST['website']
+#         vdata.gst_treatment=request.POST['gst']
+#         if vdata.gst_treatment=="Unregistered Business-not Registered under GST":
+#             vdata.pan_number=request.POST['pan_number']
+#             vdata.gst_number="null"
+#         else:
+#             vdata.gst_number=request.POST['gst_number']
+#             vdata.pan_number=request.POST['pan_number']
+
+#         vdata.source_supply=request.POST['source_supply']
+#         vdata.currency=request.POST['currency']
+#         vdata.opening_bal=request.POST['opening_bal']
+#         vdata.payment_terms=request.POST['payment_terms']
+
+#         vdata.battention=request.POST['battention']
+#         vdata.bcountry=request.POST['bcountry']
+#         vdata.baddress=request.POST['baddress']
+#         vdata.bcity=request.POST['bcity']
+#         vdata.bstate=request.POST['bstate']
+#         vdata.bzip=request.POST['bzip']
+#         vdata.bphone=request.POST['bphone']
+#         vdata.bfax=request.POST['bfax']
+
+#         vdata.sattention=request.POST['sattention']
+#         vdata.scountry=request.POST['scountry']
+#         vdata.saddress=request.POST['saddress']
+#         vdata.scity=request.POST['scity']
+#         vdata.sstate=request.POST['sstate']
+#         vdata.szip=request.POST['szip']
+#         vdata.sphone=request.POST['sphone']
+#         vdata.sfax=request.POST['sfax']
+
+#         vdata.save()
+#              # .................................edit remarks_table ..........................
+#         vendor=vdata
+#         user_id=request.user.id
+#         udata=User.objects.get(id=user_id)
+#         if remarks_table.objects.filter(vendor=vdata).exists():
+#             rdata=remarks_table.objects.get(vendor=vdata)
+#             rdata.remarks=request.POST['remark']
+#             rdata.save()
+#         else:
+#             rdata=remarks_table()
+#             rdata.remarks=request.POST["remark"]
+#             rdata.vendor=vendor
+#             rdata.user=udata
+#             rdata.save()
+
+#             # .......................contact_person_table................ deleting existing entries and inserting  ...............
+
+#         pdata=contact_person_table.objects.filter(vendor=vdata)
+#         salutation =request.POST.getlist('salutation[]')
+#         first_name =request.POST.getlist('first_name[]')
+#         last_name =request.POST.getlist('last_name[]')
+#         email =request.POST.getlist('email[]')
+#         work_phone =request.POST.getlist('wphone[]')
+#         mobile =request.POST.getlist('mobile[]')
+#         skype_number =request.POST.getlist('skype[]')
+#         designation =request.POST.getlist('designation[]')
+#         department =request.POST.getlist('department[]') 
+
+#         vdata=vendor_table.objects.get(id=vdata.id)
+#         vendor=vdata
+#         user_id=request.user.id
+#         udata=User.objects.get(id=user_id)
+
+#         # .....  deleting existing rows......
+#         pdata.delete()
+#         if len(salutation)==len(first_name)==len(last_name)==len(email)==len(work_phone)==len(mobile)==len(skype_number)==len(designation)==len(department):
+#             mapped2=zip(salutation,first_name,last_name,email,work_phone,mobile,skype_number,designation,department)
+#             mapped2=list(mapped2)
+#             print(mapped2)
+#             for ele in mapped2:
+#                 created = contact_person_table.objects.get_or_create(salutation=ele[0],first_name=ele[1],last_name=ele[2],email=ele[3],
+#                          work_phone=ele[4],mobile=ele[5],skype_number=ele[6],designation=ele[7],department=ele[8],user=udata,vendor=vendor)
+        
+
+
+
+#         return redirect("view_vendor_list")
+
+# def upload_document(request,pk):
+#     if request.method=='POST':
+#         user_id=request.user.id
+#         udata=User.objects.get(id=user_id)
+#         vdata=vendor_table.objects.get(id=pk)
+#         title=request.POST['title']
+#         document=request.FILES.get('file')
+#         doc_data=doc_upload_table(user=udata,vendor=vdata,title=title,document=document)
+#         doc_data.save()
+#         return redirect("view_vendor_list")
+
+# def download_doc(request,pk):
+#     document=get_object_or_404(doc_upload_table,id=pk)
+#     response=HttpResponse(document.document,content_type='application/pdf')
+#     response['Content-Disposition']=f'attachment; filename="{document.document.name}"'
+#     return response
+
+# def cancel_vendor(request):
+#     return redirect("view_vendor_list")
+
+# def delete_vendor(request,pk):
+#     if comments_table.objects.filter(vendor=pk).exists():
+#         user2=comments_table.objects.filter(vendor=pk)
+#         user2.delete()
+#     if mail_table.objects.filter(vendor=pk).exists():
+#         user3=mail_table.objects.filter(vendor=pk)
+#         user3.delete()
+#     if doc_upload_table.objects.filter(vendor=pk).exists():
+#         user4=doc_upload_table.objects.filter(vendor=pk)
+#         user4.delete()
+#     if contact_person_table.objects.filter(vendor=pk).exists():
+#         user5=contact_person_table.objects.filter(vendor=pk)
+#         user5.delete()
+#     if remarks_table.objects.filter(vendor=pk).exists():
+#         user6=remarks_table.objects.filter(vendor=pk)
+#         user6.delete()
+    
+#     user1=vendor_table.objects.get(id=pk)
+#     user1.delete()
+#     return redirect("view_vendor_list")

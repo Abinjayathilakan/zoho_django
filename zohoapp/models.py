@@ -449,6 +449,29 @@ class Vendor_invoice_item(models.Model):
     discount=models.TextField(max_length=255)
     rate=models.TextField(max_length=255)
     inv = models.ForeignKey(Vendor_Credits, on_delete=models.CASCADE)
+    
+    
+
+class Credits_comments_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
+    comment=models.TextField(max_length=500)
+
+class Credits_mail_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
+    mail_from=models.TextField(max_length=300)
+    mail_to=models.TextField(max_length=300)
+    subject=models.TextField(max_length=250)
+    content=models.TextField(max_length=900)
+    mail_date=models.DateTimeField(auto_now_add=True)
+
+class Credits_doc_upload_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
+    title=models.TextField(max_length=200)
+    document=models.FileField(upload_to='doc/')
+    
 
     
    

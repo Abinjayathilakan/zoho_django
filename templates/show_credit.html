@@ -37,10 +37,10 @@
                     <br>
                     <div class="col-md-2 form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-10">
                                 <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor_credits' %}"><i class="fa-solid fa-plus "></i>New</a>
                             </div>
-                            <div class="col-md-12 mt-2">
+                            <div class="col-md-10 mt-1">
                                 <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
                             </div>
                         </div>
@@ -78,11 +78,17 @@
             </div>
             <div class="col-sm-12 col-md-8 col-lg-8">
                 <div class="row">
-                    <div class="col-sm-12 col-md-8 col-lg-8 mt-3">
-                        <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{vcredit.first_name}} {{vcredit.last_name}}</a>
+                    <div class="col-sm-12 col-md-8 col-lg-8 mt-2">              
+                        <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{vcredit.company_name}}</a>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-lg-4  mt-3">
-                        <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'edit_vendor' vcredit.id %}"></i>Edit</a>
+
+                    <div class="col-sm-1 col-md-1 col-lg-2 mt-3"> 
+                        <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
+                        <!-- <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="" ></i><i class="fa-solid fa-paperclip"></i></a>
+                        <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
+                    </div> 
+                    <div class="col-sm-1 col-md-1 col-lg-1 mt-3">                      
+                        <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'edit_vendor_credits' vcredit.id %}"></i>Edit</a>
                         <!-- <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="" ></i><i class="fa-solid fa-paperclip"></i></a>
                         <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
                     </div>                   
@@ -112,7 +118,7 @@
                       <!-- <button class="btn btn-warning">
 
                       Delete</button> -->
-                      <a href="{% url 'delete_vendor' vcredit.id %}" class="btn btn-warning" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                      <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-warning" onclick="return confirm('Are you sure to delete?')">Delete</a>
                     </div>
                     
                   </span> 
@@ -198,7 +204,7 @@
                   </fieldset1> 
 
                   <fieldset2 id="comments" style="display: none;">
-                    <form action="{% url 'add_comment' vcredit.id %}" method="post">
+                    <form action="{% url 'Credits_add_comment' vcredit.id %}" method="post">
                         {% csrf_token %}
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 col-md-6 col-lg-6">
@@ -229,7 +235,7 @@
                         </div>
                     </div>
                     <div style="height: 450px;overflow-y: scroll;">
-                        <form action="{% url 'sendmail' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
+                        <form action="{% url 'credit_sendmail' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
                             {% csrf_token %}
                             <div class="form-group row mt-4">
                                 <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">To</label></div>
@@ -323,12 +329,12 @@
 
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
+                        <!-- <div class="col-sm-12 col-md-4 col-lg-4">
                             <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset6_function()">View</button> 
 
-                        </div>
+                        </div> -->
                     </div>
-                    <form action="{% url 'upload_document' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
+                    <form action="{% url 'credit_upload_document' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
                         {% csrf_token %}
                         
                         <div class="form-group row mt-4">
@@ -385,7 +391,7 @@
                                          
                                                     <td>{{v.title}}</td>
                                                     <td>{{v.document.url}}</td>
-                                                    <td><a href="{% url 'download_doc' v.id %}" class="btn btn-outline-warning">download</a></td>
+                                                    <td><a href="{% url 'credit_download_doc' v.id %}" class="btn btn-outline-warning">download</a></td>
                                     
                                                    
                                                   </tr>

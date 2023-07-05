@@ -139,6 +139,19 @@ urlpatterns = [
     path('getitems2',views.getitems2,name='getitems2'),
     path('itemview',views.itemview,name='itemview'),
     path('show_credits/<int:pk>', views.show_credits, name='show_credits'),
+    
+    path(' Credits_add_comment/<int:pk>',views.Credits_add_comment,name='Credits_add_comment'),
+    path('credit_sendmail/<int:pk>',views.credit_sendmail,name='credit_sendmail'),
+    
+    path('edit_credit/<int:pk>',views.edit_credit,name='edit_credit'),
+   path('edit_vendor_credits/<int:id>',views.edit_vendor_credits,name='edit_vendor_credits'),
+    
+    path('credit_upload_document/<int:pk>',views.credit_upload_document,name='credit_upload_document'),
+    path('credit_download_doc/<int:pk>',views.credit_download_doc,name='credit_download_doc'),
+    # path('cancel_vendor/',views.cancel_vendor,name='cancel_vendor'),
+    path('credit_delete_vendor/<int:pk>',views.credit_delete_vendor,name='credit_delete_vendor'),
+    
+    path('credits_statement/<int:id>',views.credits_statement,name='credits_statement'),
 
 
     

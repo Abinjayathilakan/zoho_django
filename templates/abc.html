@@ -499,6 +499,13 @@
                         <td><input type="number" id="total_taxamount" name="totaltax" value="0.00"
                                 class="form-control border-0 text-right text-black" readonly></td>
                     </tr>
+
+                    <tr>
+                      <td>Adjustmment</td>
+                      <td><input type="number" id="adjustment"> <i class="fas fa-question"></i></td>
+                      <td><input type="text" id="adjustment_charge" name="adjustment_charge" step="any" value="0.00" 
+                          class="form-control bg-transparent border-0 text-right adjustment"> </td>
+                  </tr>
                    
                    
                     <tr>
@@ -841,19 +848,24 @@ function calc() {
     
     // calculate the total amount and total tax amount for all rows
     var total = 0;
+    var adjustment = 0;
     var taxamount = 0;
     $('.amount').each(function() {
         total += parseFloat($(this).val());
     });
+    $('.adjustment').each(function() {
+      total += parseFloat($(this).val());
+  });
     $('.taxamount').each(function() {
         taxamount += parseFloat($(this).val());
     });
     
     // update the subtotal and total tax amount input fields
     $('#subtotal').val(total.toFixed(2));
+    $('#adj_subtotal').val(total.toFixed(2));
     $('#total_taxamount').val(taxamount.toFixed(2));
 
-    var total_with_tax = total + taxamount;
+    var total_with_tax = total + taxamount + adjustment_charge;
     
     // display the total amount including tax on the page
     $('#total_with_tax').val(total_with_tax.toFixed(2));
@@ -867,16 +879,19 @@ function calc() {
         $('#item_table').on('click', '.delete-row', function () {
             var tr = $(this).closest('tr');
             var taxamount= parseFloat(tr.find('input[name^="taxamount"]').val());
+            var adjustment= parseFloat(tr.find('input[name^="adjustment"]').val());
             var amount = parseFloat(tr.find('input[name^="amount"]').val());
             var subtotal = parseFloat($('#subtotal').val());
 
             var total_taxamount = parseFloat($('#total_taxamount').val());
             $('#total_taxamount').val((total_taxamount-taxamount).toFixed(2));
 
+            $('#total_adjustment').val((total_adjustment-adjustment).toFixed(2));
+
             $('#subtotal').val((subtotal - amount).toFixed(2));
 
             var total_with_tax= parseFloat($('#total_with_tax').val());
-            $('#total_with_tax').val((total_with_tax  - amount - taxamount).toFixed(2));
+            $('#total_with_tax').val((total_with_tax  - amount - taxamount - adjustment).toFixed(2));
             
             var pos = $("#customer_sel option:selected").data("pos");
             var state = document.getElementById("state").value;
@@ -1492,6 +1507,42 @@ function test(taxamount) {
       });
   </script>
   
+  <script>
+    var bc = document.getElementById("plosu").value
+
+d=0
+if (bc == "{{ cmp1.state }}"  ) {
+    gst = taxamount/2
+    $('#cgst').val(parseFloat(gst.toFixed(2)));
+    $('#sgst').val(parseFloat(gst.toFixed(2)));
+    $('#igst').val(parseFloat(d.toFixed(2)));
+  
+    }
+    
+if (bc != "{{ cmp1.state }}"  ) {
+    $('#tax_amount').val(parseFloat(taxamount.toFixed(2)));
+    $('#cgst').val(d.toFixed(2));
+    $('#igst').val(d.toFixed(2));
+}
+
+
+  </script>
+  <script>
+    function state(element) {
+        
+        if (element.value == 'Kerala' ) {
+            document.getElementById('CGST').style.display = 'block';
+            document.getElementById('SGST').style.display = 'block';
+            document.getElementById('IGST').style.display = 'none';
+            
+            
+        } else {
+            document.getElementById('CGST').style.display = 'none';
+            document.getElementById('SGST').style.display = 'none';
+            document.getElementById('IGST').style.display = 'block';
+        }
+    }
+  </script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
