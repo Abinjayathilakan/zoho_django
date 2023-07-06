@@ -148,7 +148,7 @@ urlpatterns = [
     
     path('credit_upload_document/<int:pk>',views.credit_upload_document,name='credit_upload_document'),
     path('credit_download_doc/<int:pk>',views.credit_download_doc,name='credit_download_doc'),
-    # path('cancel_vendor/',views.cancel_vendor,name='cancel_vendor'),
+    path('removeinv/',views.removeinv,name='removeinv'),
     path('credit_delete_vendor/<int:pk>',views.credit_delete_vendor,name='credit_delete_vendor'),
     
     path('credits_statement/<int:id>',views.credits_statement,name='credits_statement'),

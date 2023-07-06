@@ -2942,12 +2942,11 @@ def credits_statement(request,id):
 
 
 
+def removeinv(request):
+
+    return render(request,'index.html')
 
 
-
-# expense = get_object_or_404(Expense, id=expense_id)
-#     expenses = Expense.objects.all()
-#     return render(request, 'show_recurring.html', {'expense': expense,'expenses': expenses})
 
 # def view_vendor_list(request):
 #     user_id=request.user.id

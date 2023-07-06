@@ -44,7 +44,7 @@
               <option type="hidden" value="vendor">select one</option>
 
               {% for v in vendors %}
-              <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{inv.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{k.company_name}}</option>
+              <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{inv.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{i.user.company_name}}</option>
               {% endfor %}
              
 
@@ -54,26 +54,26 @@
 
   <div class="row mb-4">
       <div class="col-sm-2"><label for="email">Email</label></div>
-      <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{inv.vendor_email}}"
+      <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{i.user.vendor_email}}"
               style="width: 38%;height: 45px;">
          
       </div>
   </div>
   <div class="row mb-4">
       <div class="col-sm-2"><label for="address">Billing Address</label></div>
-      <div class="col-sm-10"> <input type="text" id="address" name="address" value="{{inv.baddress}}"
+      <div class="col-sm-10"> <input type="text" id="address" name="address" value="{{i.user.baddress}}"
               style="width: 38%;height: 45px;"></div>
   </div>
 
   <div class="row mb-4">
     <div class="col-sm-2"><label for="gst">GST Treatment</label></div>
-    <div class="col-sm-10"> <input type="text" id="gst" name="gst" value="{{inv.gst_treatment}}"
+    <div class="col-sm-10"> <input type="text" id="gst" name="gst" value="{{i.user.gst_treatment}}"
             style="width: 38%;height: 45px;"></div>
 </div>
 
 <div class="row mb-4">
   <div class="col-sm-2"><label for="placeofsupply">Source of Supply</label></div>
-  <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{inv.source_supply}}"
+  <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{i.user.source_supply}}"
           style="width: 38%;height: 45px;"></div>
 </div>
 
@@ -82,7 +82,7 @@
     <label for="credit_note">Credit Note</label>
   </div>
   <div class="col-sm-10">
-    <input type="text" id="credit_note" name="credit_note" maxlength="6" placeholder="Enter Credit Note" style="width: 38%;height: 45px;" value="{{inv.credit_note}}">
+    <input type="text" id="credit_note" name="credit_note" maxlength="6" placeholder="Enter Credit Note" style="width: 38%;height: 45px;" value="{{i.user.credit_note}}">
     <div id="credit_note_error" style="color: red;"></div> <!-- Error message container -->
   </div>
 </div>
@@ -105,13 +105,13 @@
 
 <div class="row mb-4">
 <div class="col-sm-2"><label for="credit_note">Order Number</label></div>
-<div class="col-sm-10"> <input type="text" id="order_number" name="order_number" maxlength="10" placeholder="Enter Order Number" value="{{inv.order_number}}"
+<div class="col-sm-10"> <input type="text" id="order_number" name="order_number" maxlength="10" placeholder="Enter Order Number" value="{{i.user.order_number}}"
       style="width: 38%;height: 45px;"></div>
 </div>
 
 <div class="row mb-4">
 <div class="col-sm-2"><label for="credit_date">Vendor Credit Date</label></div>
-<div class="col-sm-10"> <input type="date" id="credit_date" name="credit_date" value="{{inv.credit_date}}"
+<div class="col-sm-10"> <input type="date" id="credit_date" name="credit_date" value="{{i.user.credit_date}}"
     style="width: 38%;height: 45px;"></div>
 </div>
 
@@ -136,7 +136,7 @@
             <input type="hidden" name="id[]" value="{{k.id}}">
                 <td>
                     <div class='form-group'><select
-                            class='form-control  text-black border-0 item_select itm'
+                            class='form-control  text-black border-0 item_select itm bg-white'
                             name='item[]' id='item{{forloop.counter}}'style="">
                             <option class="text-dark" selected value="{{k.product}}">{{k.product}}</option>
                             {% for i in p %}
@@ -146,7 +146,7 @@
                 </td>
                
                 <td class='text-right'><input type='text' id="hsn{{forloop.counter}}"
-                  class='form-control border-0 text-black text-right hsn' name='hsn[]'
+                  class='form-control border-0 text-black text-right hsn bg-white' name='hsn[]'
                   value="{{k.hsn}}"  >
                 </td>
 
@@ -163,20 +163,20 @@
                 
 
                 <td class='text-right'><input type='number' id='qty{{forloop.counter}}'
-                  class='form-control border-0 text-black text-right qty'  name='quantity[]'
+                  class='form-control border-0 text-black text-right qty bg-white'  name='quantity[]'
                   value="{{k.quantity}}" onchange="calc()"  >
                 </td>
 
                 <td class='text-right'><input type='number' id='rate{{forloop.counter}}'
-                        class='form-control border-0 text-black text-right rate' name='rate[]'
+                        class='form-control border-0 text-black text-right rate bg-white' name='rate[]'
                         value="{{k.rate}}" >
                 </td>
                 <td class='text-right'><input type='text' id='desc{{forloop.counter}}'
-                        class='form-control border-0 text-black text-right desc' value="{{k.desc}}" name='desc[]'
+                        class='form-control border-0 text-black text-right desc bg-white' value="{{k.desc}}" name='desc[]'
                         >
                 </td>
                 <td class='text-right'> <select name='tax[]'  id='tax{{forloop.counter}}'  
-                        class='form-control  text-black text-right border-0 tax'>
+                        class='form-control  text-black text-right border-0 tax bg-white'>
                         <option selected >{{k.tax}}</option>
                         <option>Select Tax</option>
                   <optgroup label="GST">
@@ -225,31 +225,31 @@
                     <td>Sub Total</td>
                     <td></td>
                     <td><input type="number" id="subtotal" name="subtotal" value="{{i.subtotal}}"
-                            class="form-control border-0 text-right" readonly></td>
+                            class="form-control border-0 text-right text-black" readonly></td>
                 </tr>
                 <tr id="tr_igst" >
                     <td>IGST</td>
                     <td></td>
                     <td><input type="number" id='igst' name="igst" value="{{i.igst}}"
-                            class="form-control border-0 text-right" readonly></td>
+                            class="form-control border-0 text-right text-black" readonly></td>
                 </tr>
                 <tr   id="tr_cgst">
                     <td>CGST</td>
                     <td></td>
                     <td><input type="number" id='cgst' name="cgst" value="{{i.cgst}}"
-                            class="form-control border-0 text-right cgst" readonly></td>
+                            class="form-control border-0 text-right cgst text-black" readonly></td>
                 </tr>
                 <tr  id="tr_sgst">
                     <td>SGST</td>
                     <td></td>
                     <td><input type="number" id='sgst' name="sgst" value="{{i.sgst}}"
-                            class="form-control border-0 text-right" readonly></td>
+                            class="form-control border-0 text-right text-black" readonly></td>
                 </tr>
                 <tr>
                     <td>Tax Amount</td>
                     <td></td>
                     <td><input type="number" id="total_taxamount" name="totaltax" value="{{i.t_tax}}"
-                            class="form-control border-0 text-right"readonly></td>
+                            class="form-control border-0 text-right text-black"readonly></td>
                 </tr>
                
                
@@ -257,7 +257,7 @@
                     <th>Total (&#x20B9;)</th>
                     <th></th>
                     <th><input type="number" id="total_with_tax" name="t_total" value="{{i.grandtotal}}"
-                            class=" form-control border-0 text-right"readonly></b></th>
+                            class=" form-control border-0 text-right text-black"readonly></b></th>
                 </tr>
             </table>
         </div>

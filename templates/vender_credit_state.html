@@ -11,7 +11,7 @@
         
         <div class="col-md-3" style="border-right: 1px solid white;height: 100vh;">
             
-          <table class="table  text-white">
+          <!-- <table class="table  text-white">
             
             <tbody>
               {% for i in sale_order %}
@@ -25,16 +25,16 @@
               {% endfor %}
              
             </tbody>
-          </table>
+          </table> -->
        
         </div> 
         
         <div class="col-md-8 ml-1  mb-5 " style="">
           <div class="row" >
-            <div class="col-md-12" ><a class="text-white" style="font-size: 1.5rem;"><h2>{{sale.sales_no}}</h2></a></div>
+            <!-- <div class="col-md-12" ><a class="text-white" style="font-size: 1.5rem;"><h2>{{sale.sales_no}}</h2></a></div> -->
             
             <div class="col-md-12 p-2  bg-light form-inline justify-content-start" style="width: 100%;">
-             <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark mr-3 p-1"><i class="fa fa-pencil"></i>Edit</a>
+             <!-- <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark mr-3 p-1"><i class="fa fa-pencil"></i>Edit</a>
              
              
  
@@ -58,7 +58,7 @@
                      
                    </div>
                 
-               </div>
+               </div> -->
                <div class="dropdown ml-2" >
                
                  <a class=" text-dark p-1" href="" onclick="printSelectedArea()"  >
@@ -216,7 +216,7 @@
                            </thead>
                            <tbody>
                              {% for i in saleitem %}
-                             <tr>
+                             <tr style="color: black;">
                                <td>{{i.product}}</td>
                                <td>{{i.quantity}}</td>
                                <td>{{i.rate}}</td>
