@@ -143,15 +143,17 @@ urlpatterns = [
     path(' Credits_add_comment/<int:pk>',views.Credits_add_comment,name='Credits_add_comment'),
     path('credit_sendmail/<int:pk>',views.credit_sendmail,name='credit_sendmail'),
     
-    path('edit_credit/<int:pk>',views.edit_credit,name='edit_credit'),
-   path('edit_vendor_credits/<int:id>',views.edit_vendor_credits,name='edit_vendor_credits'),
+    #path('edit_credit/<int:pk>',views.edit_credit,name='edit_credit'),
+    path('edit_vendor_credits/<int:id>',views.edit_vendor_credits,name='edit_vendor_credits'),
     
     path('credit_upload_document/<int:pk>',views.credit_upload_document,name='credit_upload_document'),
     path('credit_download_doc/<int:pk>',views.credit_download_doc,name='credit_download_doc'),
-    path('removeinv/',views.removeinv,name='removeinv'),
+    # path('cancel_vendor/',views.cancel_vendor,name='cancel_vendor'),
     path('credit_delete_vendor/<int:pk>',views.credit_delete_vendor,name='credit_delete_vendor'),
     
     path('credits_statement/<int:id>',views.credits_statement,name='credits_statement'),
+    
+    path('itemdata2',views.itemdata2,name='itemdata2'),
 
 
     

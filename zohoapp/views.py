@@ -2636,6 +2636,31 @@ def getitems2(request):
     price=data.s_price
     return JsonResponse({"price":price})
 
+def itemdata2(request):
+    cur_user = request.user.id
+    user = User.objects.get(id=cur_user)
+    company = company_details.objects.get(user = user)
+    # print(company.state)
+    id = request.GET.get('id')
+    cust = request.GET.get('cust')
+    
+        
+    item = AddItem.objects.get(Name=id)
+    cus=vendor_table.objects.get(company_name=cust)
+    rate = item.s_price
+    place=company.state
+    gst = item.intrastate
+    igst = item.interstate
+    # desc=item.s_desc
+    print(place)
+    mail=cus.vendor_email
+    
+    source_supply = vendor_table.objects.get(company_name=cust).placeofsupply
+    print(source_supply)
+    return JsonResponse({"status":" not",'mail':mail,'place':place,'rate':rate,'pos':source_supply,'gst':gst,'igst':igst})
+    return redirect('/')
+    
+
      
                 
 from django.contrib.auth.decorators import login_required
@@ -2828,20 +2853,20 @@ def credit_delete_vendor(request,pk):
     return redirect("vendor_credits_home")
 
 
-def edit_credit(request,id):
-    c=customer.objects.all()
-    p=AddItem.objects.all()
-    invoiceitem=Vendor_invoice_item.objects.filter(inv_id=id)
-    inv=Vendor_Credits.objects.get(id=id)
-    context={
-        'c':c,
-        'p':p,
-        'inv':invoiceitem,
-        'inv':inv,
+# def edit_credit(request,id):
+#     c=customer.objects.all()
+#     p=AddItem.objects.all()
+#     invoiceitem=Vendor_invoice_item.objects.filter(inv_id=id)
+#     inv=Vendor_Credits.objects.get(id=id)
+#     context={
+#         'c':c,
+#         'p':p,
+#         'inv':invoiceitem,
+#         'inv':inv,
         
-    }
+#     }
     
-    return render(request,'edit_vendor_credits.html',context)
+#     return render(request,'edit_vendor_credits.html',context)
 
 
 def edit_vendor_credits(request,id):
@@ -2869,7 +2894,7 @@ def edit_vendor_credits(request,id):
         invoic.subtotal = request.POST['subtotal']
         invoic.igst = request.POST['igst']
         invoic.cgst = request.POST['cgst']
-        invoic.sgst = request.POST['sgst']
+        # invoic.sgst = request.POST['sgst']
         invoic.t_tax = request.POST['totaltax']
         invoic.grandtotal = request.POST['t_total']
 
@@ -2893,21 +2918,21 @@ def edit_vendor_credits(request,id):
         hsn=request.POST.getlist('hsn[]')
         quantity=request.POST.getlist('quantity[]')
         rate=request.POST.getlist('rate[]')
-        desc=request.POST.getlist('desc[]')
+        discount=request.POST.getlist('desc[]')
         tax=request.POST.getlist('tax[]')
         total=request.POST.getlist('amount[]')
         obj_dele=Vendor_invoice_item.objects.filter(inv_id=invoic.id)
         obj_dele.delete()
        
-        if len(product)==len(hsn)==len(quantity)==len(desc)==len(tax)==len(total)==len(rate):
+        if len(product)==len(hsn)==len(quantity)==len(discount)==len(tax)==len(total)==len(rate):
 
-            mapped = zip(product,hsn,quantity,desc,tax,total,rate)
+            mapped = zip(product,hsn,quantity,discount,tax,total,rate)
             mapped = list(mapped)
             for element in mapped:
                 created = Vendor_invoice_item.objects.get_or_create(inv=invoic,product=element[0],hsn=element[1],
-                                    quantity=element[2],desc=element[3],tax=element[4],total=element[5],rate=element[6])
+                                    quantity=element[2],discount=element[3],tax=element[4],total=element[5],rate=element[6])
                 
-            return redirect('detailedview',id)
+            return redirect('show_credits',id)
                     
     context = {
            
@@ -2942,9 +2967,9 @@ def credits_statement(request,id):
 
 
 
-def removeinv(request):
+# def removeinv(request):
 
-    return render(request,'index.html')
+#     return render(request,'index.html')
 
 
 

@@ -26,6 +26,7 @@
     }
 </style>
 <div class="fixed-top" style="top: 8rem; margin-left: 18rem;" >
+    <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;"> -->
 <div style="height: 600px; overflow-y: scroll;">
     <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">Vender Credits</a></div>
 
@@ -70,6 +71,28 @@
 </div>
 <div class="col-sm-12 col-md-1 col-lg-1"></div>
 </div>
+<!-- <script>
+    function myFunction(){
+        var input,filter,table,tr,td,i,txtValue;
+        input=document.getElementById("myInput");
+        filter=input.value.toUpperCase();
+        table=document.getElementById("myTable");
+        tr=table.getElementsByTagName("tr");
+        for(i = 0; i < tr.length; i++)
+        {
+            td=tr[i].getElementsByTagName("td")[0];
+            if(td){
+                txtValue=td.textContent || td.innerText;
+                if(txtValue.toUpperCase().indexOf(filter) > -1){
+                    tr[i].style.display="";
+                }
+                else{
+                    tr[i].style.display="none";
+                }
+            }
+        }
+    }
+</script> -->
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

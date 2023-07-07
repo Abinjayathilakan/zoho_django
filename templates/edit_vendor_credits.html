@@ -40,40 +40,44 @@
     <div class="row mb-4 border-top pt-5">
       <div class="col-sm-2"><label for="customer_name">Customer Name*</label></div>
       <div class="col-sm-10">
-          <select   class="registration-type" id="vendor-select" name="sel" style="width: 38%;height: 55px;" onchange="redirectToVendorPage(this)">
-              <option type="hidden" value="vendor">select one</option>
 
-              {% for v in vendors %}
-              <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{inv.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{i.user.company_name}}</option>
-              {% endfor %}
-             
+        <select   class="registration-type" id="vendor-select" name="sel" style="width: 38%;height: 55px;" onchange="redirectToVendorPage(this)">
+            <option type="hidden" value="vendor">select one</option>
 
-          </select>
+            {% for v in vendors %}
+            <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
+            {% endfor %}
+            <option value="">Register a Vendor</option>
+
+        </select>
+
+      
+        
       </div>
   </div>
 
   <div class="row mb-4">
       <div class="col-sm-2"><label for="email">Email</label></div>
-      <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{i.user.vendor_email}}"
+      <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{i.vendor_email}}"
               style="width: 38%;height: 45px;">
          
       </div>
   </div>
   <div class="row mb-4">
       <div class="col-sm-2"><label for="address">Billing Address</label></div>
-      <div class="col-sm-10"> <input type="text" id="address" name="address" value="{{i.user.baddress}}"
+      <div class="col-sm-10"> <input type="text" id="address" name="address" value="{{i.baddress}}"
               style="width: 38%;height: 45px;"></div>
   </div>
 
   <div class="row mb-4">
     <div class="col-sm-2"><label for="gst">GST Treatment</label></div>
-    <div class="col-sm-10"> <input type="text" id="gst" name="gst" value="{{i.user.gst_treatment}}"
+    <div class="col-sm-10"> <input type="text" id="gst" name="gst" value="{{i.gst_treatment}}"
             style="width: 38%;height: 45px;"></div>
 </div>
 
 <div class="row mb-4">
   <div class="col-sm-2"><label for="placeofsupply">Source of Supply</label></div>
-  <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{i.user.source_supply}}"
+  <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{i.source_supply}}"
           style="width: 38%;height: 45px;"></div>
 </div>
 
@@ -82,7 +86,7 @@
     <label for="credit_note">Credit Note</label>
   </div>
   <div class="col-sm-10">
-    <input type="text" id="credit_note" name="credit_note" maxlength="6" placeholder="Enter Credit Note" style="width: 38%;height: 45px;" value="{{i.user.credit_note}}">
+    <input type="text" id="credit_note" name="credit_note" maxlength="8" placeholder="Enter Credit Note" style="width: 38%;height: 45px;" value="{{i.credit_note}}">
     <div id="credit_note_error" style="color: red;"></div> <!-- Error message container -->
   </div>
 </div>
@@ -105,13 +109,13 @@
 
 <div class="row mb-4">
 <div class="col-sm-2"><label for="credit_note">Order Number</label></div>
-<div class="col-sm-10"> <input type="text" id="order_number" name="order_number" maxlength="10" placeholder="Enter Order Number" value="{{i.user.order_number}}"
+<div class="col-sm-10"> <input type="text" id="order_number" name="order_number" maxlength="10" placeholder="Enter Order Number" value="{{i.order_no}}"
       style="width: 38%;height: 45px;"></div>
 </div>
 
 <div class="row mb-4">
 <div class="col-sm-2"><label for="credit_date">Vendor Credit Date</label></div>
-<div class="col-sm-10"> <input type="date" id="credit_date" name="credit_date" value="{{i.user.credit_date}}"
+<div class="col-sm-10"> <input type="date" id="credit_date" name="credit_date" value="{{i.vendor_date|date:'Y-m-d'}}"
     style="width: 38%;height: 45px;"></div>
 </div>
 
@@ -171,8 +175,8 @@
                         class='form-control border-0 text-black text-right rate bg-white' name='rate[]'
                         value="{{k.rate}}" >
                 </td>
-                <td class='text-right'><input type='text' id='desc{{forloop.counter}}'
-                        class='form-control border-0 text-black text-right desc bg-white' value="{{k.desc}}" name='desc[]'
+                <td class='text-right'><input type='number' id='desc{{forloop.counter}}'
+                        class='form-control border-0 text-black text-right desc bg-white' value="{{k.discount}}" name='desc[]'
                         >
                 </td>
                 <td class='text-right'> <select name='tax[]'  id='tax{{forloop.counter}}'  
@@ -239,12 +243,12 @@
                     <td><input type="number" id='cgst' name="cgst" value="{{i.cgst}}"
                             class="form-control border-0 text-right cgst text-black" readonly></td>
                 </tr>
-                <tr  id="tr_sgst">
+                <!-- <tr  id="tr_sgst">
                     <td>SGST</td>
                     <td></td>
                     <td><input type="number" id='sgst' name="sgst" value="{{i.sgst}}"
                             class="form-control border-0 text-right text-black" readonly></td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td>Tax Amount</td>
                     <td></td>
@@ -274,7 +278,7 @@
             
             <label for="">Upload File</label>
             <input class="form-control" type="file" value="" name="file">
-            <img src="{{i.file.url}}" alt="alt">
+            <!-- <img src="{{i.file.url}}" alt="alt"> -->
             
   
         </div>
@@ -304,7 +308,7 @@
                 <td>
                     <div class='form-group'>
                         <select
-                            class='form-control  text-black border-0 item_select' name='item[]'
+                            class='form-control  text-black border-0 item_select bg-white' name='item[]'
                             id='item${RowCount}'>
                             {% for i in p %}
                             <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
@@ -312,20 +316,20 @@
                         </select></div>
                 </td>
                 <td class='text-right'><input type='text' id='hsn${RowCount}'
-                  class='form-control border-0 text-black text-right hsn' name='hsn[]'
+                  class='form-control border-0 text-black bg-white text-right hsn' name='hsn[]'
                   value=''  >
                 </td>
                 <td class='text-right'><input type='number' id='qty${RowCount}'
-                        class='form-control border-0 text-black text-right qty' name='quantity[]' value='0' onchange="calc()">
+                        class='form-control border-0 text-black text-right qty bg-white' name='quantity[]' value='0' onchange="calc()">
                 </td>
                 <td class='text-right'><input type='number' id='rate${RowCount}'
-                        class='form-control border-0 text-black text-right rate' name='rate[]' value='0.00'
+                        class='form-control border-0 text-black text-right rate bg-white' name='rate[]' value='0.00'
                         ></td>
                 <td class='text-right'><input type='text' id='desc${RowCount}'
-                        class='form-control border-0 text-black text-right desc' name='desc[]' >
+                        class='form-control border-0 text-black text-right desc bg-white' name='desc[]' >
                 </td>
                 <td class='text-right'> <select name='tax[]' id='tax${RowCount}'
-                        class="form-control  text-black text-right border-0 tax">
+                        class="form-control  text-black text-right border-0 tax bg-white">
                         <option>Select Tax</option>
                   <optgroup label="GST">
                     <option value="0">GST 0%</option>
@@ -346,7 +350,7 @@
                     <input type="text" name='taxamount1' id="taxamount${RowCount}" class="form-control taxamount" />
                             </td>
                 <td class='text-right'><input type='number' id='amount${RowCount}'
-                        class='form-control border-0 text-black text-right amount'style="width: 8rem;" name='amount[]' value='0.00'></td>
+                        class='form-control border-0 text-black bg-white text-right amount'style="width: 8rem;" name='amount[]' value='0.00'></td>
                 <td class='text-center'><button type='button' id='del_btn${RowCount}'
                         class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
                         style='width:30px'><i class='fa fa-times'></i></button></td>
@@ -370,6 +374,130 @@
 
 </script>
 
+ 
+<script>
+    $(document).on('click','#item1',function(){
+      select = $('#item1').val();
+      console.log(select)
+      $.ajax({
+        type: "GET",
+        url: "{% url 'getitems2' %}",
+        data: {
+          id: select
+        },
+        success:function(response){
+
+          rate=response.price
+          console.log(rate)
+          document.getElementById('rate1').value=rate
+        }
+        
+      });
+    });
+    
+
+      $(document).on('click','#item2',function(){
+        select = $('#item2').val();
+        console.log(select)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+
+            rate=response.price
+            console.log(rate)
+            document.getElementById('rate2').value=rate
+          }
+          
+        });
+      });
+
+
+      $(document).on('click','#item3',function(){
+        select = $('#item3').val();
+        console.log(select)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+
+            rate=response.price
+            console.log(rate)
+            document.getElementById('rate3').value=rate
+          }
+          
+        });
+      });
+
+
+      $(document).on('click','#item4',function(){
+        select = $('#item4').val();
+        console.log(select)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+
+            rate=response.price
+            console.log(rate)
+            document.getElementById('rate4').value=rate
+          }
+          
+        });
+      });
+
+      $(document).on('click','#item5',function(){
+        select = $('#item5').val();
+        console.log(select)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+
+            rate=response.price
+            console.log(rate)
+            document.getElementById('rate5').value=rate
+          }
+          
+        });
+      });
+
+      $(document).on('click','#item6',function(){
+        select = $('#item6').val();
+        console.log(select)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'getitems2' %}",
+          data: {
+            id: select
+          },
+          success:function(response){
+
+            rate=response.price
+            console.log(rate)
+            document.getElementById('rate6').value=rate
+          }
+          
+        });
+      });
+
+
+  </script>
+  
+  
+
 <script>
  $(document).ready(function() {
     // add event listener to trigger calc() function whenever a change is made to input fields
@@ -386,8 +514,8 @@ function calc() {
         var tax = $(this).find('.tax').val();
         
         // calculate the tax amount and total amount for this row
-        var taxamount = (qty * rate) * (tax / 100);
-        var amount = qty * rate;
+        var taxamount = (qty * rate - desc) * (tax / 100);
+        var amount = qty * rate - desc;
         
         // update the tax amount and total amount input fields for this row
         $(this).find('.taxamount').val(taxamount.toFixed(2));
@@ -995,7 +1123,34 @@ function test(taxamount) {
 
      </script>
 
-
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var vendorSelect = document.getElementById('vendor-select');
+            var emailInput = document.getElementById('email');
+            var gstInput = document.getElementById('gst');
+            var addressInput = document.getElementById('address');
+            var placeofsupplyInput = document.getElementById('placeofsupply');
+    
+            // Retrieve initial values from the user object
+            var initialEmail = emailInput.value;
+            var initialGST = gstInput.value;
+            var initialAddress = addressInput.value;
+            var initialPlaceofSupply = placeofsupplyInput.value;
+    
+            vendorSelect.addEventListener('change', function() {
+                var selectedOption = vendorSelect.options[vendorSelect.selectedIndex];
+                var email = selectedOption.getAttribute('data-email') || initialEmail;
+                var gstTreatment = selectedOption.getAttribute('data-gst') || initialGST;
+                var address = selectedOption.getAttribute('data-address') || initialAddress;
+                var placeofsupply = selectedOption.getAttribute('data-placeofsupply') || initialPlaceofSupply;
+    
+                emailInput.value = email;
+                gstInput.value = gstTreatment;
+                addressInput.value = address;
+                placeofsupplyInput.value = placeofsupply;
+            });
+        });
+    </script>
 
 
 

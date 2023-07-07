@@ -25,8 +25,10 @@
         <div class="row">
             <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="row">
-                    <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;">All Vendors Credits</a>
-                        <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                        
+                    <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                       
+
+                    <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
+                        <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                         -->
 
                     </div>
 
@@ -34,13 +36,13 @@
 
 
 
-                    <br>
+                    <br><br>
                     <div class="col-md-2 form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
                         <div class="row">
                             <div class="col-md-10">
                                 <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor_credits' %}"><i class="fa-solid fa-plus "></i>New</a>
                             </div>
-                            <div class="col-md-10 mt-1">
+                            <div class="col-md-12 mt-2">
                                 <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
                             </div>
                         </div>
@@ -220,7 +222,12 @@
                                    <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
                             </div>
                         </div>
-                    </form>                   
+                    </form>   
+                    <br><br>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset6_function()">View</button> 
+
+                    </div>                
                   </fieldset2>
 
                   <fieldset3 id="mail" style="display: none;">
@@ -329,10 +336,10 @@
 
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                        <!-- <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
                             <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset6_function()">View</button> 
 
-                        </div> -->
+                        </div>
                     </div>
                     <form action="{% url 'credit_upload_document' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
                         {% csrf_token %}
@@ -378,9 +385,9 @@
                                             <table class="table  text-white">
                                                 <thead>
                                                   <tr>
-                                                    <th>Title</th>
-                                                    <th>Document</th>
-                                                    <th>Action</th>
+                                                    <th>Comment</th>
+                                                    <!-- <th>Document</th>
+                                                    <th>Action</th> -->
                                                     
                                                   </tr>
                                                 </thead>
@@ -389,9 +396,9 @@
                                          
                                                   <tr>
                                          
-                                                    <td>{{v.title}}</td>
-                                                    <td>{{v.document.url}}</td>
-                                                    <td><a href="{% url 'credit_download_doc' v.id %}" class="btn btn-outline-warning">download</a></td>
+                                                    <td>{{v.c_comment}}</td>
+                                                    <!-- <td>{{v.document.url}}</td>
+                                                    <td><a href="{% url 'credit_download_doc' v.id %}" class="btn btn-outline-warning">download</a></td> -->
                                     
                                                    
                                                   </tr>
@@ -541,6 +548,7 @@
         }
     }
       
+    
       
 </script>
 
