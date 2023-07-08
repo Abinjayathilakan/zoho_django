@@ -156,6 +156,7 @@ urlpatterns = [
     path('itemdata2',views.itemdata2,name='itemdata2'),
 
 
+
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

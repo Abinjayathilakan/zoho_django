@@ -27,6 +27,8 @@
 </style>
 <div class="fixed-top" style="top: 8rem; margin-left: 18rem;" >
     <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;"> -->
+    <input type="text" id="vendorSearchInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style=" width: 30%;"><br>
+
 <div style="height: 600px; overflow-y: scroll;">
     <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">Vender Credits</a></div>
 
@@ -50,7 +52,7 @@
                 
             </tr>
         </thead>
-        <tbody>
+        <tbody id="myTable">
             {% for e in v_credits %}
             <tr style="color:white;">
                 <td><a href="{% url 'show_credits' e.id %}">{{ e.vendor_date }}</a></td>
@@ -100,6 +102,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <div class="image-container">
+    <br><br>
   <img src="https://www.zoho.com/inventory/help/images/sales-returns/sales-return-workflow.png" alt="Flowchart Image" style="width: 100%;">
 </div>
 {% endblock %}

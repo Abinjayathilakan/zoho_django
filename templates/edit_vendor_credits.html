@@ -42,7 +42,7 @@
       <div class="col-sm-10">
 
         <select   class="registration-type" id="vendor-select" name="sel" style="width: 38%;height: 55px;" onchange="redirectToVendorPage(this)">
-            <option type="hidden" value="vendor">select one</option>
+            <option value="{{i.company_name}}"  selected>{{i.company_name}}</option>
 
             {% for v in vendors %}
             <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
@@ -254,6 +254,13 @@
                     <td></td>
                     <td><input type="number" id="total_taxamount" name="totaltax" value="{{i.t_tax}}"
                             class="form-control border-0 text-right text-black"readonly></td>
+                </tr>
+
+                <tr>
+                    <td>Adjustment</td>
+                    <td></td>
+                    <td><input type="number" id="adjustment" name="adjustment_charge" step="any"  value="{{i.adjustment}}"
+                            class="form-control bg-transparent border-0 text-right adjustment bg-white"></td>
                 </tr>
                
                
@@ -499,51 +506,84 @@
   
 
 <script>
- $(document).ready(function() {
-    // add event listener to trigger calc() function whenever a change is made to input fields
-    $('#item_table').on('input', 'input', calc);
-});
-
-function calc() {
-    // loop through each row in the table
-    $('#item_table tbody tr').each(function() {
-        // get the values of the input fields for this row
-        var qty = $(this).find('.qty').val();
-        var rate = $(this).find('.rate').val();
-        var desc = $(this).find('.desc').val();
-        var tax = $(this).find('.tax').val();
-        
-        // calculate the tax amount and total amount for this row
-        var taxamount = (qty * rate - desc) * (tax / 100);
-        var amount = qty * rate - desc;
-        
-        // update the tax amount and total amount input fields for this row
-        $(this).find('.taxamount').val(taxamount.toFixed(2));
-        $(this).find('.amount').val(amount.toFixed(2));
+    $(document).ready(function() {
+        // add event listener to trigger calc() function whenever a change is made to input fields
+        $('#item_table').on('input', 'input', calc);
+    });
+    $(document).ready(function() {
+      // Add event listener to trigger calc() function whenever a change is made to input fields
+      $('#item_table').on('input', 'input', calc);
+      
+      // Trigger calc() function when there is a change in the adjustment input field
+      $('#adjustment').on('input', calc);
     });
     
-    // calculate the total amount and total tax amount for all rows
-    var total = 0;
-    var taxamount = 0;
-    $('.amount').each(function() {
-        total += parseFloat($(this).val());
-    });
-    $('.taxamount').each(function() {
-        taxamount += parseFloat($(this).val());
-    });
+    function calc() {
+      // loop through each row in the table
+      $('#item_table tbody tr').each(function() {
+          // get the values of the input fields for this row
+          var qty = $(this).find('.qty').val();
+          var rate = $(this).find('.rate').val();
+          var desc = $(this).find('.desc').val();
+          var tax = $(this).find('.tax').val();
+          
+          // calculate the tax amount and total amount for this row
+          var taxamount = (qty * rate - desc) * (tax / 100);
+          var amount = qty * rate - desc;
+          
+          // update the tax amount and total amount input fields for this row
+          $(this).find('.taxamount').val(taxamount.toFixed(2));
+          $(this).find('.amount').val(amount.toFixed(2));
+      });
+      
+      // calculate the total amount and total tax amount for all rows
+      var total = 0;
+      var taxamount = 0;
+      $('.amount').each(function() {
+          total += parseFloat($(this).val());
+      });
+      $('.taxamount').each(function() {
+          taxamount += parseFloat($(this).val());
+      });
     
-    // update the subtotal and total tax amount input fields
-    $('#subtotal').val(total.toFixed(2));
-    $('#total_taxamount').val(taxamount.toFixed(2));
-
-    var total_with_tax = total + taxamount;
+      var adjustment_charge = parseFloat($('#adjustment').val().replace(",", ".") || 0);
+      
+      // update the subtotal, adjustment charge, and total tax amount input fields
+      $('#subtotal').val(total.toFixed(2));
+      $('#adjustment_charge').val(adjustment_charge.toFixed(2));
+      $('#total_taxamount').val(taxamount.toFixed(2));
     
-    // display the total amount including tax on the page
-    $('#total_with_tax').val(total_with_tax.toFixed(2));
-
-  test(taxamount);
-
-}
+      var total_with_tax = total + taxamount + adjustment_charge;
+      
+      // display the total amount including tax and adjustment on the page
+      $('#total_with_tax').val(total_with_tax.toFixed(2));
+    
+      test(taxamount);
+    }
+    
+    // Update subtotal and total with tax and adjustment when a row is deleted
+    $(document).ready(function () {
+      $('#item_table').on('click', '.delete-row', function () {
+          var tr = $(this).closest('tr');
+          var taxamount = parseFloat(tr.find('input[name^="taxamount"]').val());
+          var amount = parseFloat(tr.find('input[name^="amount"]').val());
+          var subtotal = parseFloat($('#subtotal').val());
+    
+          var total_taxamount = parseFloat($('#total_taxamount').val());
+          $('#total_taxamount').val((total_taxamount - taxamount).toFixed(2));
+          
+          var adjustment_charge = parseFloat($('#adjustment').val() || 0);
+          $('#adjustment_charge').val(adjustment_charge.toFixed(2));
+          
+          $('#subtotal').val((subtotal - amount).toFixed(2));
+    
+          var total_with_tax = subtotal + total_taxamount + adjustment_charge;
+          $('#total_with_tax').val(total_with_tax.toFixed(2));
+    
+          tr.remove();
+        });
+    });
+       
 
   // Update subtotal when a row is deleted
     $(document).ready(function dlt () {

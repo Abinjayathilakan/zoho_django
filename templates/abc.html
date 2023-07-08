@@ -49,7 +49,10 @@
 
 <div style="overflow-y: scroll;height: 600px;">
     <div style="height: 600px;overflow-y: scroll;">
+      <div>
         <h3  class="mb-3  text-white " style="font-size: 2rem;">Vendor Credits</h3><br>
+        <input type="hidden" id="state" value="{{ company.state }}">
+      </div>
 
     <form method="post" action="{% url 'vendor_credits' %}" enctype="multipart/form-data"  class="">
         {% csrf_token %}
@@ -67,6 +70,7 @@
                 </select>
             </div>
         </div>
+        
         <script>
           function redirectToVendorPage(selectElement) {
               var selectedValue = selectElement.value;
@@ -242,18 +246,17 @@
                       <option>Select Tax</option>
                       <optgroup label="GST">
                         <option value="0">GST 0%</option>
-                        <option value="5">GST 5%</option>
-                        <option value="12">GST 12%</option>
-                        <option value="18">GST 18%</option>
-                        <option value="28">GST 28%</option>
+                          <option value="5">GST 5%</option>
+                          <option value="12">GST 12%</option>
+                          <option value="18">GST 18%</option>
+                          <option value="28">GST 28%</option>
                       </optgroup>
                       <optgroup label="IGST">
-
                         <option value="0">IGST 0%</option>
-                        <option value="5">IGST 5%</option>
-                        <option value="12">IGST 12%</option>
-                        <option value="18">IGST 18%</option>
-                        <option value="28">IGST 28%</option>
+                          <option value="5">IGST 5%</option>
+                          <option value="12">IGST 12%</option>
+                          <option value="18">IGST 18%</option>
+                          <option value="28">IGST 28%</option>
                       </optgroup>
                   </select>
                     
@@ -321,7 +324,14 @@
                           }
                         });
                       });
-                    </script>   -->
+                    </script>
+                     -->
+                    
+                    
+                    
+                    
+                    
+              
                   
                   <script>
                     $(document).on('click','#item1',function(){
@@ -544,7 +554,7 @@
                     <tr id="tr_igst" >
                         <td>IGST</td>
                         <td></td>
-                        <td><input type="number" id='igst' name="IGST" value="0.00"
+                        <td><input type="number" id='igst' name="igst" value="0.00"
                                 class="form-control border-0 text-right text-black" readonly></td>
                     </tr>
                     <tr   id="tr_cgst">
@@ -568,9 +578,9 @@
 
                     <tr>
                       <td>Adjustment</td>
-                      <td><input type="number" id="adjustment" step="0.01"></td>
-                      <td><input type="text" id="adjustment_charge" name="adjustment_charge" step="any" value="0.00"
-                              class="form-control bg-transparent border-0 text-right adjustment"></td>
+                      <td><input type="number" id="adjustment"  name="adjustment_charge"  value="0.00"></td>
+                      <!-- <td><input type="text" id="adjustment" name="adjustment_charge" step="any" value="0.00"
+                              class="form-control bg-transparent border-0 text-right adjustment"></td> -->
                   </tr>
                   
                    
@@ -970,12 +980,12 @@ $(document).ready(function () {
 
 
             
-    var pos = $("#customer_sel option:selected").data("pos");
+    var placeofsupply = $("#vendor-select option:selected").data("placeofsupply");
 var state = document.getElementById("state").value;
 var d = 0;
 var gst = 0;
 
-if (pos == state) {
+if (placeofsupply == state) {
     gst = taxamount / 2;
     console.log(gst);
     $('#cgst').val(parseFloat(gst.toFixed(2)));
@@ -1000,14 +1010,14 @@ function test(taxamount) {
     console.log('test333');
     console.log(taxamount);
     var d = 0;
-    var pos = $("#customer_sel option:selected").data("pos");
+    var placeofsupply = $("#vendor-select option:selected").data("placeofsupply");
     var state = document.getElementById("state").value;
-    console.log(pos);
+    console.log(placeofsupply);
     console.log(state);
     console.log('----------');
 
-    if (pos == state) {
-        console.log(pos);
+    if (placeofsupply == state) {
+        console.log(placeofsupply);
         console.log(state);
         console.log(taxamount);
         var gst = taxamount / 2;
@@ -1019,7 +1029,7 @@ function test(taxamount) {
         // document.getElementById('tr_sgst').style = 'display: flex';
         // document.getElementById('tr_igst').style = 'display: none';
     } else {
-        console.log(pos);
+        console.log(placeofsupply);
         console.log(state);
         $('#igst').val(taxamount.toFixed(2));
         $('#cgst').val(d.toFixed(2));
@@ -1035,8 +1045,8 @@ function test(taxamount) {
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 <script>
-  $(document).on('change', '#customer_sel', function () {
-    var customer = $('#customer_sel').val();
+  $(document).on('change', '#vendor-select', function () {
+    var customer = $('#vendor-select').val();
     console.log(customer);
     $.ajax({
         type: "GET",
@@ -1055,67 +1065,44 @@ function test(taxamount) {
 
 </script>
 
-<script>
-    var source_supply='';
-    $(document).ready(function () {
+$(document).ready(function () {
+  var placeofsupply = '';
 
-        
-        var roinc = 0
-        console.log("ajax");
-        // var place = document.getElementById('pos').value;
+  $(document).on('click', '#item1', function () {
+      var select = $('#item1').val();
+      var customer = $('#vendor-select').val();
+      $.ajax({
+          type: "GET",
+          url: "{% url 'itemdata2' %}",
+          data: {
+              id: select,
+              cust: customer
+          },
+          success: function (response) {
+              console.log(response);
+              var data = response.rate;
+              var data3 = response.pos;
+              var customerState = data3.toLowerCase();
+              var companyState = response.place.toLowerCase();
 
-        $(document).on('click', '#item1', function () {
-            select = $('#item1').val();
-            customer = $('#customer_sel').val();
-            console.log(select);
-            console.log(customer);
-            $.ajax({
-                type: "GET",
-                url: "{% url 'itemdata2' %}",
-                data: {
-                    id: select,
-                    cust: customer
-                },
-                success: function (response) {
-                    console.log(response)
-                    data = response.rate
-                    data1 = response.gst
-                    data2 = response.igst
-                    data3 = response.pos
-                    data5 = response.place
-                    data4 = response.desc
-                    data6 = response.mail
-                    // place_of_supply=data3;
-                    // console.log('pos:'+place_of_supply);
-              
-             
-                   document.getElementById('rate1').value = data
-                    document.getElementById('desc1').value = data4
-                    document.getElementById('state').value = data5
-                    document.getElementById('cx_mail').value = data6
-                    console.log(data2,data1)
-                   
-                  
-                   // Assuming you have the customer state and company state values in variables
-                   var customerState = data3;
-                   var companyState = data5;
-               
-                   $(document).ready(function() {
-                       if (customerState === companyState) {
-                           $('#tax1 optgroup[label="GST"]').show();
-                           $('#tax1 optgroup[label="IGST"]').hide();
-                       } else {
-                           $('#tax1 optgroup[label="GST"]').hide();
-                           $('#tax1 optgroup[label="IGST"]').show();
-                       }
-                   });
-                }
-            });
+              // Update the tax options based on the source of supply and place of business
+              if (customerState === 'kerala' && companyState !== 'kerala') {
+                  $('#tax1 optgroup[label="GST"]').show();
+                  $('#tax1 optgroup[label="IGST"]').hide();
+              } else {
+                  $('#tax1 optgroup[label="GST"]').hide();
+                  $('#tax1 optgroup[label="IGST"]').show();
+              }
 
-        });
+              document.getElementById('rate1').value = data;
+          }
+      });
+  });
+});
+
         $(document).on('click', '#item2', function () {
             select = $('#item2').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1130,7 +1117,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1149,7 +1136,7 @@ function test(taxamount) {
                   });
              
                     // place_of_supply=data3;
-                    // console.log('pos:'+place_of_supply);
+                    // console.log('placeofsupply:'+place_of_supply);
                     document.getElementById('rate2').value = data
                     document.getElementById('desc2').value = data4
                     document.getElementById('state').value = data5
@@ -1168,7 +1155,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item3', function () {
             select = $('#item3').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1183,7 +1170,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1224,7 +1211,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item4', function () {
             select = $('#item4').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1240,7 +1227,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1277,7 +1264,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item5', function () {
             select = $('#item5').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1292,7 +1279,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1329,7 +1316,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item6', function () {
             select = $('#item6').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1344,7 +1331,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1382,7 +1369,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item7', function () {
             select = $('#item7').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1397,7 +1384,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1414,7 +1401,7 @@ function test(taxamount) {
                        }
                    });
                     // place_of_supply=data3;
-                    // console.log('pos:'+source_supply);
+                    // console.log('pos:'+place_of_supply);
                     document.getElementById('rate7').value = data
                     document.getElementById('desc7').value = data4
                     document.getElementById('state').value = data5
@@ -1435,7 +1422,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item8', function () {
             select = $('#item8').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1450,7 +1437,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data4 = response.desc
                     // place_of_supply=data3;
                     // console.log('pos:'+place_of_supply);
@@ -1484,7 +1471,7 @@ function test(taxamount) {
 
         $(document).on('click', '#item9', function () {
             select = $('#item9').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1499,7 +1486,7 @@ function test(taxamount) {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.pos
+                    data3 = response.placeofsupply
                     data4 = response.desc
                     var customerState = data3;
                    var companyState = data5;

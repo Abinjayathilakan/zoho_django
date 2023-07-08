@@ -427,6 +427,7 @@ class Vendor_Credits(models.Model):
     baddress=models.CharField(max_length=300,default='')
     credit_note = models.CharField(max_length=100, null=True, blank=True)
     order_no = models.CharField(max_length=100, null=True, blank=True)
+    adjustment = models.CharField(max_length=100, null=True, blank=True)
     vendor_date = models.DateField()
     
     igst=models.TextField(max_length=255)
