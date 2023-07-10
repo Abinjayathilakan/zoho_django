@@ -21,26 +21,38 @@
 </style>
 
 <div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
+    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style=" width: 30%;">
     <div>
+     <!-- <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style="margin-top: 3px; width: 30%;"> -->
+        <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
+               
+                              
+
+        </div>
+        
+        
         <div class="row">
             <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="row">
-                    <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                       
+                    <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                        -->
 
-                    <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
-                        <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                         -->
+                    <!-- <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
+                        <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">   
+                                             
 
-                    </div>
+                    </div> -->
 
-              
-
-
-
+                    <!-- <div class="col-md-12 mt-2">
+                        <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
+                    </div> -->
+                    
                     <br><br>
                     <div class="col-md-2 form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
                         <div class="row">
+                           
                             <div class="col-md-10">
-                                <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor_credits' %}"><i class="fa-solid fa-plus "></i>New</a>
+                                <br><br>
+                                <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+New</a>
                             </div>
                             <div class="col-md-12 mt-2">
                                 <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
@@ -52,7 +64,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
 
-                            <table class="table  text-white" id="myTable">
+                            <table class="table  text-white">
                               <thead>
                                 <tr>
                                   <th>Name</th>
@@ -64,7 +76,7 @@
                               </thead>
                    
                                 
-                                <tbody>
+                                <tbody id="myTable">
                                   {% for v in vdata %}                    
                                   <tr id="over">                     
                                     <td><i class="fa-sharp fa-light fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a id="aover" href="{% url 'show_credits' v.id %}" style="color: rgb(230, 171, 45);">{{v.company_name}} </a></td>     
@@ -78,7 +90,8 @@
                     </div> 
                 </div>
             </div>
-            <div class="col-sm-12 col-md-8 col-lg-8">
+         
+            <div class="col-sm-12 col-md-8 col-lg-8" >
                 <div class="row">
                     <div class="col-sm-12 col-md-8 col-lg-8 mt-2">              
                         <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{vcredit.company_name}}</a>
@@ -206,11 +219,12 @@
                   </fieldset1> 
 
                   <fieldset2 id="comments" style="display: none;">
+                    
                     <form action="{% url 'Credits_add_comment' vcredit.id %}" method="post">
                         {% csrf_token %}
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                 <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
+                                 <textarea name="comment" id="commentInput" cols="60" rows="5" required> </textarea>
                                  <div class="valid-feedback">Valid.</div>
                                  <div class="invalid-feedback">Please fill out this field.</div> 
                                  <label>(For Internal Use)</label> 
@@ -225,7 +239,7 @@
                     </form>   
                     <br><br>
                     <div class="col-sm-12 col-md-4 col-lg-4">
-                        <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset6_function()">View</button> 
+                        <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset7_function()">Comments</button> 
 
                     </div>                
                   </fieldset2>
@@ -284,7 +298,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 17.5rem; margin-left: 18rem;">
+                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
                                 <div style="height: 400px;overflow-y: scroll;">
                                     
                                 
@@ -374,7 +388,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 17.5rem; margin-left: 18rem;">
+                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
                                 <div style="height: 400px;overflow-y: scroll;">
                                     
                                 
@@ -385,9 +399,9 @@
                                             <table class="table  text-white">
                                                 <thead>
                                                   <tr>
-                                                    <th>Comment</th>
-                                                    <!-- <th>Document</th>
-                                                    <th>Action</th> -->
+                                                    <th>Title</th>
+                                                    <th>Document</th>
+                                                    <th>Action</th>
                                                     
                                                   </tr>
                                                 </thead>
@@ -396,9 +410,9 @@
                                          
                                                   <tr>
                                          
-                                                    <td>{{v.c_comment}}</td>
-                                                    <!-- <td>{{v.document.url}}</td>
-                                                    <td><a href="{% url 'credit_download_doc' v.id %}" class="btn btn-outline-warning">download</a></td> -->
+                                                    <td>{{v.title}}</td>
+                                                    <td>{{v.document.url}}</td>
+                                                    <td><a href="{% url 'credit_download_doc' v.id %}" class="btn btn-outline-warning">download</a></td>
                                     
                                                    
                                                   </tr>
@@ -412,6 +426,94 @@
                         </div>
                     </div>
                   </fieldset6>
+
+                  <fieldset7 id="com_list" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
+                                <div style="height: 400px;overflow-y: scroll;">
+                                    
+                                
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+        
+                                        <div class="col-sm-12 col-md-8 col-lg-8">
+                                            <table class="table  text-white">
+                                                <thead>
+                                                  <tr>
+                                                    
+                                                    <th>Comment</th>
+                                                    
+                                                  </tr>
+                                                </thead>
+                                                <tbody id="over">
+                                                  {% for ven in cdata %}
+                                         
+                                                  <tr>
+                                         
+                                                    
+                                                    <td>{{ven.comment}}</td>
+                                    
+                                                   
+                                                  </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                            
+                                    </div>
+                                  
+                            
+                                       
+                                    
+                            
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                  </fieldset7>
+
+
+                  <!-- <fieldset7 id="com_list" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
+                                <div style="height: 400px;overflow-y: scroll;">
+                                    
+                                
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+        
+                                        <div class="col-sm-12 col-md-8 col-lg-8">
+                                            <table class="table text-white">
+                                                <thead>
+                                                  <tr>
+                                                    <th>Comment</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody id="over">
+                                                  {% for v in cdata %}
+                                                  <tr>
+                                                    <td>{{ v.comment }}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                              </table>
+                                              
+                                        </div>                           
+                                    </div>                           
+                                </div>                           
+                            </div>
+                        </div>
+                    </div>
+                  </fieldset7> -->
             </div>
         </div>
     </div>
@@ -427,6 +529,7 @@
         document.getElementById("sentmail").style.display="none";
         document.getElementById("attach").style.display="none";
         document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="none";
 
 
 
@@ -441,6 +544,7 @@
         document.getElementById("attach").style.display="none";
 
         document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="none";
 
 
 
@@ -453,6 +557,7 @@
         document.getElementById("sentmail").style.display="none";
         document.getElementById("attach").style.display="none";
         document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="none";
 
 
 
@@ -466,6 +571,7 @@
         document.getElementById("sentmail").style.display="block";
         document.getElementById("attach").style.display="none";
         document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="none";
 
 
 
@@ -479,6 +585,7 @@
         document.getElementById("sentmail").style.display="none";
         document.getElementById("attach").style.display="block";
         document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="none";
 
 
 
@@ -492,12 +599,28 @@
         document.getElementById("sentmail").style.display="none";
         document.getElementById("attach").style.display="none";
         document.getElementById("doc_list").style.display="block";
+        document.getElementById("com_list").style.display="none";
 
 
 
 
 
     }
+    function fieldset7_function(){
+        document.getElementById("overview").style.display="none";
+        document.getElementById("comments").style.display="none";
+        document.getElementById("mail").style.display="none";
+        document.getElementById("sentmail").style.display="none";
+        document.getElementById("attach").style.display="none";
+        document.getElementById("doc_list").style.display="none";
+        document.getElementById("com_list").style.display="block";
+
+
+
+
+
+    }
+    
     function myFunction(){
         var input,filter,table,tr,td,i,txtValue;
         input=document.getElementById("myInput");
@@ -551,6 +674,24 @@
     
       
 </script>
+<!-- 
+ <script>
+    function fieldset7_function() {
+      // Show the comments fieldset
+      document.getElementById("com_list").style.display = "block";
+  
+      // Get the value of the comment textarea
+      var comment = document.getElementById("commentInput").value;
+  
+      // Create a new table row to display the comment
+      var newRow = document.createElement("tr");
+      newRow.innerHTML = "<td>" + comment + "</td>";
+  
+      // Append the new row to the table body
+      document.getElementById("over").appendChild(newRow);
+    }
+  </script>
+   -->
 
 
 

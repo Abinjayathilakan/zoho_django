@@ -2631,7 +2631,7 @@ def itemdata2(request):
     cur_user = request.user.id
     user = User.objects.get(id=cur_user)
     company = company_details.objects.get(user = user)
-    # print(company.state)
+    print(company.state)
     id = request.GET.get('id')
     cust = request.GET.get('cust')
     
@@ -2816,10 +2816,11 @@ def show_credits(request,pk):
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
     vcredit=Vendor_Credits.objects.get(id=pk)
-    # mdata=mail_table.objects.filter(vendor=vcredit)
-    # ddata=doc_upload_table.objects.filter(user=udata,vendor=vcredit)
+    cdata=Credits_comments_table.objects.filter()
+    mdata=Credits_mail_table.objects.filter(vendor=vcredit)
+    ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit})
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata})
 
 def Credits_add_comment(request,pk):
     if request.method=='POST':
@@ -2887,6 +2888,14 @@ def credit_delete_vendor(request,pk):
     user1=Vendor_Credits.objects.get(id=pk)
     user1.delete()
     return redirect("vendor_credits_home")
+
+# def view_vendor_details(request,pk):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     vdata1=vendor_table.objects.filter(user=udata)
+#     vdata2=vendor_table.objects.get(id=pk)
+#     mdata=mail_table.objects.filter(vendor=vdata2)
+#     ddata=doc_upload_table.objects.filter(user=udata,vendor=vdata2)
 
 
 # def edit_credit(request,id):

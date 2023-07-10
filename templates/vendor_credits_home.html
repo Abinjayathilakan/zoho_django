@@ -5,7 +5,7 @@
     .table-container {
         height: 600px;
         overflow-y: scroll;
-        margin-left:10px;
+        margin-left: 10px;
     }
 
     .image-container {
@@ -14,87 +14,117 @@
         left: 0;
         width: 50%;
         text-align: center;
-        margin-bottom:10px;
-        margin-left:500px;
-        opacity:0.5;
+        margin-bottom: 10px;
+        margin-left: 500px;
+        opacity: 0.5;
     }
 
     .button-container {
         top: 0;
-        margin-bottom:-30px;
+        margin-bottom: -30px;
         margin-left: 930px;
     }
 </style>
-<div class="fixed-top" style="top: 8rem; margin-left: 18rem;" >
-    <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;"> -->
-    <input type="text" id="vendorSearchInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style=" width: 30%;"><br>
+<div class="fixed-top" style="top: 4rem; margin-left: 18rem;">
+    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style="margin-top: 5px; width: 30%;"><br>
 
-<div style="height: 600px; overflow-y: scroll;">
-    <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">Vender Credits</a></div>
+    <!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" style="border-radius: 15px;"> -->
+    <div style="height: 600px; overflow-y: scroll;">
+        <div class="col-md-3"><a class="text-white" style="font-size: 2rem;">Vendor Credits</a></div>
 
-<div class="button-container">
-    <button type="button" class="btn btn-success ml-auto" style="width: 100px;" onclick="window.location.href='{% url 'vendor_credits' %}'">+new</button>
-</div>
+        <div class="col-md-12 mt-2">
+            <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
+        </div>
 
-<div class="table-container">
-    <div class="col-sm-12 col-md-11 col-lg-11">
-    <table class="table " style="width:50%; margin-left: auto; margin-right: auto; margin-top: 40px;">
-        <thead>
-            <tr style="color:white; font-size: 50px;" >
-                <th>Date</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Source of Supply</th>
-                <th>Tax Amount</th>
-                
-                <th>Total Amount</th>
-                
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            {% for e in v_credits %}
-            <tr style="color:white;">
-                <td><a href="{% url 'show_credits' e.id %}">{{ e.vendor_date }}</a></td>
-                <td>{{ e.company_name }}</td>
-                <td>{{ e.baddress }}</td>
-                <td>{{ e.vendor_email }}</td>
-                <td>{{ e.source_supply }}</td>
-                <td>{{ e.t_tax }}</td>
-                <td>{{ e.grandtotal }}</td>
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
-</div>
+        <div class="button-container">
+            <button type="button" class="btn btn-success ml-auto" style="width: 100px;" onclick="window.location.href='{% url 'vendor_credits' %}'">+new</button>
+        </div>
+
+        <div class="table-container">
+            <div class="col-sm-12 col-md-11 col-lg-11">
+                <table class="table" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 40px;">
+                    <thead>
+                        <tr style="color: white; font-size: 50px;">
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Source of Supply</th>
+                            <th>Tax Amount</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        {% for e in v_credits %}
+                        <tr style="color: white;">
+                            <td><a href="{% url 'show_credits' e.id %}">{{ e.company_name }}</a></td>
+                            <td>{{ e.vendor_date }}</td>
+                            <td>{{ e.baddress }}</td>
+                            <td>{{ e.vendor_email }}</td>
+                            <td>{{ e.source_supply }}</td>
+                            <td>{{ e.t_tax }}</td>
+                            <td>{{ e.grandtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="col-sm-12 col-md-1 col-lg-1"></div>
 </div>
-<!-- <script>
-    function myFunction(){
-        var input,filter,table,tr,td,i,txtValue;
-        input=document.getElementById("myInput");
-        filter=input.value.toUpperCase();
-        table=document.getElementById("myTable");
-        tr=table.getElementsByTagName("tr");
-        for(i = 0; i < tr.length; i++)
-        {
-            td=tr[i].getElementsByTagName("td")[0];
-            if(td){
-                txtValue=td.textContent || td.innerText;
-                if(txtValue.toUpperCase().indexOf(filter) > -1){
-                    tr[i].style.display="";
-                }
-                else{
-                    tr[i].style.display="none";
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
     }
-</script> -->
+    function sortTable()
+    {
+        var table,i,x,y;
+        table=document.getElementById("myTable");
+        var switching=true;
+        while(switching)
+        {
+            switching=false;
+            var rows=table.rows
+            for(i = 0 ; i < (rows.length - 1) ; i++)
+            {
+                var Switch=false;
+                x = rows[i].getElementsByTagName("TD") [0];
+                y = rows[i + 1].getElementsByTagName("TD") [0];
+                if(x.innerText.toLowerCase() > y.innerText.toLowerCase())
+                {
+                    Switch=true;
+                    break;
+                }
+
+            }
+            if(Switch)
+            {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching=true
+            }
+        }
+    }
+</script>
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

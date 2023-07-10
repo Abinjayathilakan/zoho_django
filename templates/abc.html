@@ -65,7 +65,7 @@
                     {% for v in vendors %}
                     <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
                     {% endfor %}
-                    <option value="">Register a Vendor</option>
+                    <option value="" href="{% url 'add_customer' %}">+ New Vendor</option>
     
                 </select>
             </div>
@@ -75,7 +75,7 @@
           function redirectToVendorPage(selectElement) {
               var selectedValue = selectElement.value;
               if (selectedValue === "") {
-                  window.location.href = "{% url 'vendor' %}";
+                  window.location.href = "{% url 'add_customer' %}";
               }
           }
       </script>
@@ -527,11 +527,62 @@
                     <td class='text-center'><button type='button' id='del_btn1'
                             class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
                             style='width:30px'><i class='fa fa-times'></i></button></td>
+                    <td class='text-center'>
+                        <button type='button'  class='btn btn-transparent text-primary btn-sm btn-outline-primary rounded-circle clone-row' style='width:30px'>
+                          <i class='fa fa-clone'></i>
+                        </button>
+                    </td>
+                            
                 </tr>
             </tbody>
       
         </table>
-    
+
+        <!-- <script>
+          // Assuming you have jQuery included in your project
+          $(document).ready(function() {
+            $(document).on('click', '.clone-row', function() {
+              var currentRow = $(this).closest('tr');
+              var clonedRow = currentRow.clone();
+        
+              // Increment the row ID and reset the input values
+              var currentRowId = currentRow.attr('id');
+              var clonedRowId = 'row' + (parseInt(currentRowId.replace('row', '')) + 1);
+              clonedRow.attr('id', clonedRowId);
+        
+              // Find the input/select elements in the current row
+              var currentInputs = currentRow.find('input, select');
+        
+              // Set the values of the cloned row from the current row
+              clonedRow.find('input, select').each(function(index) {
+                $(this).val(currentInputs.eq(index).val());
+              });
+        
+              // Insert the cloned row after the current row
+              currentRow.after(clonedRow);
+        
+              // Bind event handlers for input/select elements in the cloned row
+              bindEventHandlers(clonedRow);
+            });
+        
+            // Function to bind event handlers for input/select elements in a given row
+            function bindEventHandlers(row) {
+              row.find('input, select').on('input change', function() {
+                var currentInput = $(this);
+                var currentRow = currentInput.closest('tr');
+                var clonedRow = currentRow.next();
+        
+                // Update the value in the corresponding element of the cloned row
+                clonedRow.find('input, select').eq(currentInput.index()).val(currentInput.val());
+              });
+            }
+          });
+        </script>
+         -->
+        
+        
+        
+        
     
         <button type="button" class="btn btn-success  text-white" style="background-color: rgb(6, 122, 6) ;"
             id="add-row">Add Row</button>
@@ -578,13 +629,12 @@
 
                     <tr>
                       <td>Adjustment</td>
-                      <td><input type="number" id="adjustment"  name="adjustment_charge"  value="0.00"></td>
-                      <!-- <td><input type="text" id="adjustment" name="adjustment_charge" step="any" value="0.00"
-                              class="form-control bg-transparent border-0 text-right adjustment"></td> -->
+                      <td><input type="number" id="adjustment" step="0.01"></td>
+                      <td><input type="text" id="adjustment_charge" name="adjustment_charge" step="any" value="0.00"
+                              class="form-control bg-transparent border-0 text-right adjustment"></td>
                   </tr>
                   
-                   
-                   
+              
                     <tr>
                         <th>Total (&#x20B9;)</th>
                         <th></th>
@@ -619,7 +669,7 @@
             <button type="submit" name="sd" class="btn btn-warning text-white" 
                 value="Save and Send">Save and Send</button>
             <input class="btn btn-danger text-white"
-                type="reset" ></a>
+                type="reset" value="Cancel" ></a>
         </div>
       </form>
 </div>
@@ -677,7 +727,7 @@ color: black;
 
 
 
-
+<script>
 
   // Select the form and the container for the terms rows
 const form = document.getElementById('terms-form');
@@ -859,6 +909,11 @@ modalEl.addEventListener('click', (event) => {
                 <td class='text-center'><button type='button' id='del_btn${RowCount}'
                         class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
                         style='width:30px'><i class='fa fa-times'></i></button></td>
+                <td class='text-center'>
+                        <button type='button'  class='btn btn-transparent text-primary btn-sm btn-outline-primary rounded-circle clone-row' style='width:30px'>
+                          <i class='fa fa-clone'></i>
+                        </button>
+                    </td>
             </tr>`);
 
             $(document).on("input", ".hsn", function() {
@@ -875,6 +930,10 @@ modalEl.addEventListener('click', (event) => {
         $('#item_table').on('click', '.delete-row', function () {
             $(this).closest('tr').remove();
         });
+
+        $('#item_table').on('click', '.delete-row', function () {
+          $(this).closest('tr').remove();
+      });
 
     });
     $(document).on('change', '.item_select', function() {
@@ -977,10 +1036,47 @@ $(document).ready(function () {
     });
 });
       
+$(document).ready(function() {
+  $(document).on('click', '.clone-row', function() {
+    var currentRow = $(this).closest('tr');
+    var clonedRow = currentRow.clone();
+
+    // Increment the row ID and reset the input values
+    var currentRowId = currentRow.attr('id');
+    var clonedRowId = 'row' + (parseInt(currentRowId.replace('row', '')) + 1);
+    clonedRow.attr('id', clonedRowId);
+
+    // Find the input/select elements in the current row
+    var currentInputs = currentRow.find('input, select');
+
+    // Set the values of the cloned row from the current row
+    clonedRow.find('input, select').each(function(index) {
+      $(this).val(currentInputs.eq(index).val());
+    });
+
+    // Insert the cloned row after the current row
+    currentRow.after(clonedRow);
+
+    // Bind event handlers for input/select elements in the cloned row
+    bindEventHandlers(clonedRow);
+  });
+
+  // Function to bind event handlers for input/select elements in a given row
+  function bindEventHandlers(row) {
+    row.find('input, select').on('input change', function() {
+      var currentInput = $(this);
+      var currentRow = currentInput.closest('tr');
+      var clonedRow = currentRow.next();
+
+      // Update the value in the corresponding element of the cloned row
+      clonedRow.find('input, select').eq(currentInput.index()).val(currentInput.val());
+    });
+  }
+});
 
 
             
-    var placeofsupply = $("#vendor-select option:selected").data("placeofsupply");
+    var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
 var state = document.getElementById("state").value;
 var d = 0;
 var gst = 0;
@@ -1065,44 +1161,18 @@ function test(taxamount) {
 
 </script>
 
-$(document).ready(function () {
-  var placeofsupply = '';
+  <script>
+    var place_of_supply='';
+    $(document).ready(function () {
 
-  $(document).on('click', '#item1', function () {
-      var select = $('#item1').val();
-      var customer = $('#vendor-select').val();
-      $.ajax({
-          type: "GET",
-          url: "{% url 'itemdata2' %}",
-          data: {
-              id: select,
-              cust: customer
-          },
-          success: function (response) {
-              console.log(response);
-              var data = response.rate;
-              var data3 = response.pos;
-              var customerState = data3.toLowerCase();
-              var companyState = response.place.toLowerCase();
+        
+        var roinc = 0
+        console.log("ajax");
+        // var place = document.getElementById('pos').value;
 
-              // Update the tax options based on the source of supply and place of business
-              if (customerState === 'kerala' && companyState !== 'kerala') {
-                  $('#tax1 optgroup[label="GST"]').show();
-                  $('#tax1 optgroup[label="IGST"]').hide();
-              } else {
-                  $('#tax1 optgroup[label="GST"]').hide();
-                  $('#tax1 optgroup[label="IGST"]').show();
-              }
-
-              document.getElementById('rate1').value = data;
-          }
-      });
-  });
-});
-
-        $(document).on('click', '#item2', function () {
-            select = $('#item2').val();
-            customer = $('#vendor-select').val();
+        $(document).on('click', '#item1', function () {
+            select = $('#item1').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1117,7 +1187,60 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
+                    data5 = response.place
+                    data4 = response.desc
+                    data6 = response.mail
+                    // place_of_supply=data3;
+                    // console.log('pos:'+place_of_supply);
+              
+             
+                   document.getElementById('rate1').value = data
+                    document.getElementById('desc1').value = data4
+                    document.getElementById('state').value = data5
+                    document.getElementById('cx_mail').value = data6
+                    console.log(data2,data1)
+                   
+                  
+                   // Assuming you have the customer state and company state values in variables
+                   var customerState = data3;
+                   var companyState = data5;
+                   console.log('tax')
+               
+                   $(document).ready(function() {
+                       if (customerState == companyState) {
+                       
+                           $('#tax1 optgroup[label="GST"]').show();
+                           $('#tax1 optgroup[label="IGST"]').hide();
+                       } else {
+                          
+                           $('#tax1 optgroup[label="GST"]').hide();
+                           $('#tax1 optgroup[label="IGST"]').show();
+                       }
+                   });
+                }
+            });
+
+
+        });
+        $(document).on('click', '#item2', function () {
+            select = $('#item2').val();
+            customer = $('#customer_sel').val();
+            console.log(select);
+            console.log(customer);
+            $.ajax({
+                type: "GET",
+                url: "{% url 'itemdata2' %}",
+                data: {
+                    id: select,
+                    cust: customer
+                },
+                success: function (response) {
+                    console.log(response)
+                    data = response.rate
+                    data1 = response.gst
+                    data2 = response.igst
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1136,7 +1259,7 @@ $(document).ready(function () {
                   });
              
                     // place_of_supply=data3;
-                    // console.log('placeofsupply:'+place_of_supply);
+                    // console.log('pos:'+place_of_supply);
                     document.getElementById('rate2').value = data
                     document.getElementById('desc2').value = data4
                     document.getElementById('state').value = data5
@@ -1155,7 +1278,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item3', function () {
             select = $('#item3').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1170,7 +1293,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1211,7 +1334,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item4', function () {
             select = $('#item4').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1221,13 +1344,12 @@ $(document).ready(function () {
                     id: select,
                     cust: customer
                 },
-
                 success: function (response) {
                     console.log(response)
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1264,7 +1386,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item5', function () {
             select = $('#item5').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1279,7 +1401,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1316,7 +1438,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item6', function () {
             select = $('#item6').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1331,7 +1453,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1369,7 +1491,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item7', function () {
             select = $('#item7').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1384,7 +1506,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data5 = response.place
                     data4 = response.desc
                     data6 = response.mail
@@ -1422,7 +1544,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item8', function () {
             select = $('#item8').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1437,7 +1559,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data4 = response.desc
                     // place_of_supply=data3;
                     // console.log('pos:'+place_of_supply);
@@ -1471,7 +1593,7 @@ $(document).ready(function () {
 
         $(document).on('click', '#item9', function () {
             select = $('#item9').val();
-            customer = $('#vendor-select').val();
+            customer = $('#customer_sel').val();
             console.log(select);
             console.log(customer);
             $.ajax({
@@ -1486,7 +1608,7 @@ $(document).ready(function () {
                     data = response.rate
                     data1 = response.gst
                     data2 = response.igst
-                    data3 = response.placeofsupply
+                    data3 = response.pos
                     data4 = response.desc
                     var customerState = data3;
                    var companyState = data5;

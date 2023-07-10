@@ -59,6 +59,8 @@
                    </div>
                 
                </div> -->
+
+               
                <div class="dropdown ml-2" >
                
                  <a class=" text-dark p-1 " style="font-weight: bold;" href="" onclick="printSelectedArea()"  >
@@ -199,8 +201,8 @@
                                <p class="text-dark">Vendor Date: {{sale.vendor_date}}</p> -->
                            </div>
                            <div class="client-details">
-                               <p class="text-dark">Client : {{sale.company_name}}</p>
-                               <p class="text-dark">Source of Supply: {{sale.source_supply}}</p>
+                               <p class="text-dark" style="font-weight: bold;">Client : {{sale.company_name}}</p>
+                               <p class="text-dark" style="font-weight: bold;">Place of Supply: {{sale.source_supply}}</p>
                            </div>
                        </div>
                        <table>
@@ -233,7 +235,7 @@
                            <p class="text-dark ">Subtotal: {{sale.subtotal}}</p>
                            <p class="text-dark ">IGST: <span class="ml-4"></span><b>{{sale.igst}}</b> </p>
                            <p class="text-dark">SGST: <span class="ml-4"></span><b> {{sale.sgst}}</b></p>
-                           <p class="text-dark">CGST: <span class="ml-4"></span> <b>{{sale.cgst}}</b></p>
+                           <!-- <p class="text-dark">CGST: <span class="ml-4"></span> <b>{{sale.cgst}}</b></p> -->
                            <p class="text-dark">Tax: <span class="ml-4"></span> <b>{{sale.t_tax}}</b></p>
                            <p class="text-dark" style="font-size: 1.5rem;">Total: <span class="ml-4"></span> <b>{{sale.grandtotal}}</b></p>
                        </div>
