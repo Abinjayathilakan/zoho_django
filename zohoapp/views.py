@@ -2650,50 +2650,7 @@ def itemdata2(request):
     print(place_of_supply)
     return JsonResponse({"status":" not",'mail':mail,'desc':desc,'place':place,'rate':rate,'pos':place_of_supply,'gst':gst,'igst':igst})
     return redirect('/')
-    
 
-
-# def itemdata(request):
-#     cur_user = request.user.id
-#     user = User.objects.get(id=cur_user)
-#     company = company_details.objects.get(user=user)
-#     id = request.GET.get('id')
-#     cust = request.GET.get('cust')
-
-#     item = AddItem.objects.get(Name=id)
-#     cus = Vendor_Credits.objects.get(company_name=cust)
-#     rate = item.s_price
-#     place = company.state
-#     gst = item.intrastate
-#     igst = item.interstate
-#     mail = cus.vendor_email
-
-#     place_of_supply = vendor_table.objects.get(company_name=cust).source_supply
-
-#     # Determine the tax options based on the source of supply and place of business
-#     if place_of_supply == "kerala" and place != "kerala":
-#         tax_options = {
-#             "GST": ["0%", "5%", "12%", "18%", "28%"],
-#             "IGST": []
-#         }
-#     else:
-#         tax_options = {
-#             "GST": [],
-#             "IGST": ["0%", "5%", "12%", "18%", "28%"]
-#         }
-
-#     return JsonResponse({
-#         "status": "not",
-#         "mail": mail,
-#         "place": place,
-#         "rate": rate,
-#         "pos": place_of_supply,
-#         "gst": gst,
-#         "igst": igst,
-#         "tax_options": tax_options
-#     })
-
-    
 
      
                 
@@ -2816,7 +2773,7 @@ def show_credits(request,pk):
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
     vcredit=Vendor_Credits.objects.get(id=pk)
-    cdata=Credits_comments_table.objects.filter()
+    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
@@ -3014,8 +2971,35 @@ def credits_statement(request,id):
 
 
 
+# def itemdata3(request):
+#     cur_user = request.user.id
+#     user = User.objects.get(id=cur_user)
+#     company = company_details.objects.get(user = user)
+#     # print(company.state)
+#     id = request.GET.get('id')
+#     cust = request.GET.get('cust')
+    
+        
+#     item = AddItem.objects.get(Name=id)
+#     cus=Vendor_Credits.objects.get(customerName=cust)
+#     rate = item.s_price
+#     place=company.state
+#     gst = item.intrastate
+#     igst = item.interstate
+#     desc=item.s_desc
+#     print(place)
+#     mail=cus.customerEmail
+    
+#     place_of_supply = Vendor_Credits.objects.get(customerName=cust).source_supply
+#     print(place_of_supply)
+#     return JsonResponse({"status":" not",'mail':mail,'desc':desc,'place':place,'rate':rate,'pos':place_of_supply,'gst':gst,'igst':igst})
+#     return redirect('/')
 
-
+# def itemview3(request):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     data=Vendor_Credits.objects.filter(user=udata)
+#     return render(request,'view_vendor_credits.html',{'data':data})
 # def inn(request):
 #     return render(request,'aaa.html')
 
@@ -3044,3 +3028,6 @@ def credits_statement(request,id):
 #     print(place_of_supply)
 #     return JsonResponse({"status":" not",'mail':mail,'desc':desc,'place':place,'rate':rate,'pos':place_of_supply,'gst':gst,'igst':igst})
 #     return redirect('/')
+
+# def itemdata2(request):
+#     return render(request,'abc.html')

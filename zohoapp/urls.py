@@ -154,6 +154,7 @@ urlpatterns = [
     path('credits_statement/<int:id>',views.credits_statement,name='credits_statement'),
     
     path('itemdata2',views.itemdata2,name='itemdata2'),
+    # path('itemdata3',views.itemdata3,name='itemdata3'),
 
 
 

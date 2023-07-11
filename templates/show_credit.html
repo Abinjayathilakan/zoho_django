@@ -21,7 +21,7 @@
 </style>
 
 <div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
-    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style=" width: 30%;">
+    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control text-black" placeholder="Search vendors..." style=" width: 30%;background-color:white;">
     <div>
      <!-- <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style="margin-top: 3px; width: 30%;"> -->
         <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
@@ -67,7 +67,7 @@
                             <table class="table  text-white">
                               <thead>
                                 <tr>
-                                  <th>Name</th>
+                                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name</th>
                                   <th>Date</th>
                                   <th>Amount</th>
                                  
@@ -150,7 +150,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
 
-                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">GST Treatment*</label></div>
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">GST Treatment*</label></div>
                                  <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
                                     <label style="font-weight: bold;">{{ vcredit.gst_treatment }}</label>      
                                  </div>   
@@ -204,9 +204,9 @@
                         <div class="form-group row">
                             <div class="col-sm-12 col-md-2 col-lg-2"></div>
 
-                            <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">Order Number</label></div>
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Order Number</label></div>
                              <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
-                                <label style="font-weight:lighter;">{{ vcredit.order_no }}</label>      
+                                <label style="font-weight:bold;">{{ vcredit.order_no }}</label>      
                              </div>   
                         </div>
                                          
@@ -219,6 +219,16 @@
                   </fieldset1> 
 
                   <fieldset2 id="comments" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset7_function()">Comments</button> 
+
+                        </div>
+                    </div>
                     
                     <form action="{% url 'Credits_add_comment' vcredit.id %}" method="post">
                         {% csrf_token %}
@@ -238,10 +248,10 @@
                         </div>
                     </form>   
                     <br><br>
-                    <div class="col-sm-12 col-md-4 col-lg-4">
+                    <!-- <div class="col-sm-12 col-md-4 col-lg-4">
                         <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset7_function()">Comments</button> 
 
-                    </div>                
+                    </div>                 -->
                   </fieldset2>
 
                   <fieldset3 id="mail" style="display: none;">
@@ -444,7 +454,7 @@
                                                 <thead>
                                                   <tr>
                                                     
-                                                    <th>Comment</th>
+                                                    <th>Comments</th>
                                                     
                                                   </tr>
                                                 </thead>
