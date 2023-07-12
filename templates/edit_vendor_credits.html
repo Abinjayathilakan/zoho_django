@@ -248,12 +248,12 @@
                     <td><input type="number" id='cgst' name="cgst" value="{{i.cgst}}"
                             class="form-control border-0 text-right cgst text-black" readonly></td>
                 </tr>
-                <!-- <tr  id="tr_sgst">
+                <tr  id="tr_sgst">
                     <td>SGST</td>
                     <td></td>
                     <td><input type="number" id='sgst' name="sgst" value="{{i.sgst}}"
                             class="form-control border-0 text-right text-black" readonly></td>
-                </tr> -->
+                </tr>
                 <tr>
                     <td>Tax Amount</td>
                     <td></td>
@@ -644,7 +644,7 @@
             var total_with_tax= parseFloat($('#total_with_tax').val());
             $('#total_with_tax').val((total_with_tax  - amount - taxamount).toFixed(2));
             
-            var pos = $("#customer_sel option:selected").data("pos");
+            var pos = $("#vendor-select option:selected").data("pos");
             var state = document.getElementById("state").value;
             d=0
 
@@ -687,7 +687,7 @@ function test(taxamount) {
         console.log('test333');
         console.log(taxamount)
         d = 0;
-        var pos = $("#customer_sel option:selected").data("pos");
+        var pos = $("#vendor-select option:selected").data("pos");
         var state = document.getElementById("state").value;
         console.log(pos)
         console.log('state')
@@ -736,12 +736,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item1', function () {
             select = $('#item1').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -771,7 +771,7 @@ function test(taxamount) {
                    var companyState = data5;
                
                    $(document).ready(function() {
-                       if (customerState === companyState) {
+                       if (customerState === "[KL]-Kerala") {
                            $('#tax1 optgroup[label="GST"]').show();
                            $('#tax1 optgroup[label="IGST"]').hide();
                        } else {
@@ -785,12 +785,12 @@ function test(taxamount) {
         });
         $(document).on('click', '#item2', function () {
             select = $('#item2').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -809,7 +809,7 @@ function test(taxamount) {
                   var companyState = data5;
               
                   $(document).ready(function() {
-                      if (customerState === companyState) {
+                      if (customerState === "[KL]-Kerala") {
                           $('#tax2 optgroup[label="GST"]').show();
                           $('#tax2 optgroup[label="IGST"]').hide();
                       } else {
@@ -838,12 +838,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item3', function () {
             select = $('#item3').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -894,12 +894,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item4', function () {
             select = $('#item4').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -946,12 +946,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item5', function () {
             select = $('#item5').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -998,12 +998,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item6', function () {
             select = $('#item6').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -1051,12 +1051,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item7', function () {
             select = $('#item7').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -1104,12 +1104,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item8', function () {
             select = $('#item8').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -1153,12 +1153,12 @@ function test(taxamount) {
 
         $(document).on('click', '#item9', function () {
             select = $('#item9').val();
-            customer = $('#customer_sel').val();
+            customer = $('#vendor-select').val();
             console.log(select);
             console.log(customer);
             $.ajax({
                 type: "GET",
-                url: "{% url 'itemdata' %}",
+                url: "{% url 'itemdata2' %}",
                 data: {
                     id: select,
                     cust: customer
@@ -1231,6 +1231,17 @@ function test(taxamount) {
                 gstInput.value = gstTreatment;
                 addressInput.value = address;
                 placeofsupplyInput.value = placeofsupply;
+                var place = document.getElementById('placeofsupply').value
+                       if (place == "[KL]-Kerala") {
+                       
+                           $('#tax1 optgroup[label="GST"]').show();
+                           $('#tax1 optgroup[label="IGST"]').hide();
+                       } else {
+                          
+                           $('#tax1 optgroup[label="GST"]').hide();
+                           $('#tax1 optgroup[label="IGST"]').show();
+                       }
+  
             });
         });
     </script>

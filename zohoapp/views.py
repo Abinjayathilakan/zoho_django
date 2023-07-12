@@ -2678,7 +2678,7 @@ def vendor_credits(request):
             subtotal = request.POST['subtotal']
             igst = request.POST['igst']
             cgst = request.POST['cgst']
-            # sgst = request.POST['sgst']
+            sgst = request.POST['sgst']
             adjustment = request.POST['adjustment_charge']
             totaltax = request.POST['totaltax']
             t_total = request.POST['t_total']
@@ -2712,7 +2712,7 @@ def vendor_credits(request):
                 order_no=order_no,
                 vendor_date=vendor_date,
                 cgst=cgst,
-                # sgst=sgst,
+                sgst=sgst,
                 adjustment=adjustment,
                 cxnote=cxnote,
                 subtotal=subtotal,
@@ -2897,7 +2897,7 @@ def edit_vendor_credits(request,id):
         invoic.subtotal = request.POST['subtotal']
         invoic.igst = request.POST['igst']
         invoic.cgst = request.POST['cgst']
-        # invoic.sgst = request.POST['sgst']
+        invoic.sgst = request.POST['sgst']
         invoic.adjustment = request.POST['adjustment_charge']
         invoic.t_tax = request.POST['totaltax']
         invoic.grandtotal = request.POST['t_total']
