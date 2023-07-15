@@ -599,6 +599,7 @@
 
 
 
+
 <script>
   $(document).ready(function() {
     // Add event listener to trigger calc() function whenever a change is made to input fields
@@ -742,6 +743,28 @@
   }
 </script>
 
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<script>
+  $(document).on('change', '#vendor-select', function () {
+    var customer = $('#vendor-select').val();
+    console.log(customer);
+    $.ajax({
+        type: "GET",
+        url: "{% url 'customerdata' %}",
+        data: {
+            id: customer
+        },
+        success: function (response) {
+            console.log(response)
+            data7 = response.email
+            console.log(data7)
+            document.getElementById('cx_mail').value = data7
+        }
+    });
+});
+
+</script>
   
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>

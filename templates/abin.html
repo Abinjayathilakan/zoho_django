@@ -956,8 +956,12 @@ modalEl.addEventListener('click', (event) => {
 
 
 
+
 <script>
   $(document).ready(function() {
+    // Add event listener to trigger calc() function whenever a change is made to input fields
+    $('#adjustment').on('input', calc);
+    $('#vendor-select').on('change', calc);
     $(document).on('click', '.clone-row', function() {
       var currentRow = $(this).closest('tr');
       var clonedRow = currentRow.clone();
@@ -994,105 +998,65 @@ modalEl.addEventListener('click', (event) => {
     row.find('.delete-row').on('click', deleteRow);
   }
   
-  function calcRow(row) {
-    var qty = row.find('.qty').val();
-    var rate = row.find('.rate').val();
-    var desc = row.find('.desc').val();
-    var tax = row.find('.tax').val();
-  
-    var taxamount = (qty * rate - desc) * (tax / 100);
-    var amount = qty * rate - desc;
-  
-    row.find('.taxamount').val(taxamount.toFixed(2));
-    row.find('.amount').val(amount.toFixed(2));
-  
-    calc();
-  }
-  
-  function deleteRow() {
-    var row = $(this).closest('tr');
-    var taxamount = parseFloat(row.find('input[name^="taxamount"]').val());
-    var amount = parseFloat(row.find('input[name^="amount"]').val());
-  
-    var subtotal = parseFloat($('#subtotal').val());
-    var totalTaxAmount = parseFloat($('#total_taxamount').val());
-    var adjustmentCharge = parseFloat($('#adjustment').val() || 0);
-  
-    $('#subtotal').val((subtotal - amount).toFixed(2));
-    $('#total_taxamount').val((totalTaxAmount - taxamount).toFixed(2));
-    $('#adjustment_charge').val(adjustmentCharge.toFixed(2));
-  
-    var totalWithTax = subtotal + totalTaxAmount + adjustmentCharge;
-    $('#total_with_tax').val(totalWithTax.toFixed(2));
-  
-    row.remove();
-  
-    calc();
-  }
-  
-  $(document).ready(function() {
-    bindEventHandlers($('#item_table tbody tr'));
-  
-    // Rest of the code...
-  });
-</script>
-
-
-
-
-<script>
-  $(document).ready(function() {
-    // Add event listener to trigger calc() function whenever a change is made to input fields
-    $('#item_table').on('input', 'input', calc);
-    $('#adjustment').on('input', calc);
-    $('#vendor-select').on('change', calc);
-  });
-
   function calc() {
+    // Your existing calc() function code here
+  
+    var total = 0;
+    var taxamount = 0;
+  
     $('#item_table tbody tr').each(function() {
       var qty = $(this).find('.qty').val();
       var rate = $(this).find('.rate').val();
       var desc = $(this).find('.desc').val();
       var tax = $(this).find('.tax').val();
-
-      var taxamount = (qty * rate - desc) * (tax / 100);
-      var amount = qty * rate - desc;
-
-      $(this).find('.taxamount').val(taxamount.toFixed(2));
-      $(this).find('.amount').val(amount.toFixed(2));
+  
+      var rowTaxAmount = (qty * rate - desc) * (tax / 100);
+      var rowAmount = qty * rate - desc;
+  
+      $(this).find('.taxamount').val(rowTaxAmount.toFixed(2));
+      $(this).find('.amount').val(rowAmount.toFixed(2));
+  
+      total += rowAmount;
+      taxamount += rowTaxAmount;
     });
-
-    var total = 0;
-    var taxamount = 0;
-    $('.amount').each(function() {
-      total += parseFloat($(this).val());
-    });
-    $('.taxamount').each(function() {
-      taxamount += parseFloat($(this).val());
-    });
-
+  
     var adjustment_charge = parseFloat($('#adjustment').val().replace(",", ".") || 0);
-
+  
     $('#subtotal').val(total.toFixed(2));
     $('#adjustment_charge').val(adjustment_charge.toFixed(2));
     $('#total_taxamount').val(taxamount.toFixed(2));
-
+  
     var total_with_tax = total + taxamount + adjustment_charge;
     $('#total_with_tax').val(total_with_tax.toFixed(2));
-
+  
     updateGSTFields(taxamount);
   }
-
+  
   function updateGSTFields(taxamount) {
     var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
     var gstTreatment = $("#vendor-select option:selected").data("gst");
   
-    if (place_of_supply === "[KL]-Kerala" || gstTreatment === "GST") {
+    if (place_of_supply == "[KL]-Kerala") {
       $('#tr_igst').hide();
       $('#tr_cgst').show();
       $('#tr_sgst').show();
-      $('#cgst').prop('readonly', false).val((taxamount / 2).toFixed(2));
-      $('#sgst').prop('readonly', false).val((taxamount / 2).toFixed(2));
+      $('#cgst').prop('readonly', false);
+      $('#sgst').prop('readonly', false);
+  
+      var gst = taxamount / 2;
+      $('#cgst').val(parseFloat(gst.toFixed(2)));
+      $('#sgst').val(parseFloat(gst.toFixed(2)));
+      $('#igst').val("0.00");
+    } else if (gstTreatment == "GST") {
+      $('#tr_igst').hide();
+      $('#tr_cgst').show();
+      $('#tr_sgst').show();
+      $('#cgst').prop('readonly', false);
+      $('#sgst').prop('readonly', false);
+  
+      var gst = taxamount * 0.5;
+      $('#cgst').val(parseFloat(gst.toFixed(2)));
+      $('#sgst').val(parseFloat(gst.toFixed(2)));
       $('#igst').val("0.00");
     } else {
       $('#tr_igst').show();
@@ -1100,11 +1064,14 @@ modalEl.addEventListener('click', (event) => {
       $('#tr_sgst').hide();
       $('#cgst').prop('readonly', true).val("");
       $('#sgst').prop('readonly', true).val("");
-      $('#igst').val(taxamount.toFixed(2));
+      $('#igst').val(parseFloat(taxamount.toFixed(2)));
     }
   
     test(taxamount);
   }
+
+  
+  // Rest of the code...
   
   
   $(document).ready(function() {

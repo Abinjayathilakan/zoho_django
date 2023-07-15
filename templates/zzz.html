@@ -956,6 +956,7 @@ modalEl.addEventListener('click', (event) => {
 
 
 
+
 <script>
   $(document).ready(function() {
     $(document).on('click', '.clone-row', function() {
@@ -1087,12 +1088,27 @@ modalEl.addEventListener('click', (event) => {
     var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
     var gstTreatment = $("#vendor-select option:selected").data("gst");
   
-    if (place_of_supply === "[KL]-Kerala" || gstTreatment === "GST") {
+    if (place_of_supply == "[KL]-Kerala") {
       $('#tr_igst').hide();
       $('#tr_cgst').show();
       $('#tr_sgst').show();
-      $('#cgst').prop('readonly', false).val((taxamount / 2).toFixed(2));
-      $('#sgst').prop('readonly', false).val((taxamount / 2).toFixed(2));
+      $('#cgst').prop('readonly', false);
+      $('#sgst').prop('readonly', false);
+  
+      var gst = taxamount / 2;
+      $('#cgst').val(parseFloat(gst.toFixed(2)));
+      $('#sgst').val(parseFloat(gst.toFixed(2)));
+      $('#igst').val("0.00");
+    } else if (gstTreatment == "GST") {
+      $('#tr_igst').hide();
+      $('#tr_cgst').show();
+      $('#tr_sgst').show();
+      $('#cgst').prop('readonly', false);
+      $('#sgst').prop('readonly', false);
+  
+      var gst = taxamount * 0.5;
+      $('#cgst').val(parseFloat(gst.toFixed(2)));
+      $('#sgst').val(parseFloat(gst.toFixed(2)));
       $('#igst').val("0.00");
     } else {
       $('#tr_igst').show();
@@ -1100,12 +1116,11 @@ modalEl.addEventListener('click', (event) => {
       $('#tr_sgst').hide();
       $('#cgst').prop('readonly', true).val("");
       $('#sgst').prop('readonly', true).val("");
-      $('#igst').val(taxamount.toFixed(2));
+      $('#igst').val(parseFloat(taxamount.toFixed(2)));
     }
   
     test(taxamount);
   }
-  
   
   $(document).ready(function() {
     $('#item_table').on('click', '.delete-row', function() {
