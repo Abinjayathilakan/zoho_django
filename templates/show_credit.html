@@ -16,43 +16,25 @@
         background: #fff;
         border-radius: 30px;
         align-items: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 25px #9d1c1c9f;
     }
+
 </style>
 
-<div class="fixed-top" style="top: 5rem; margin-left: 18rem;">
-    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control text-black" placeholder="Search vendors..." style=" width: 30%;background-color:white;">
+<div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
     <div>
-     <!-- <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search vendors..." style="margin-top: 3px; width: 30%;"> -->
-        <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
-               
-                              
-
-        </div>
-        
-        
         <div class="row">
+            <h2><a class="text-white" style="font-size: 1.5rem;">All Vendor Credits</a></h2>
             <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="row">
-                    <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">                        -->
+                    <div class="col-md-2">
+                        <input type="text" id="myInput"  onkeyup="myFunction()" placeholder="search for names" style="border-radius: 15px;">                        
 
-                    <!-- <div class="col-md-3"><a class="text-white" style="font-size: 1.5rem;"><br> All Vendors Credits</a>
-                        <input type="text" id="myInput"  onkeyup="myFunction()" placeholder=" Search" style="border-radius: 15px;">   
-                                             
-
-                    </div> -->
-
-                    <!-- <div class="col-md-12 mt-2">
-                        <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
-                    </div> -->
-                    
-                    <br><br>
+                    </div>
                     <div class="col-md-2 form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
                         <div class="row">
-                           
-                            <div class="col-md-10">
-                                <br><br>
-                                <a style="color: #ccc;" class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+New</a>
+                            <div class="col-md-12">
+                                <a  class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+ New</a>
                             </div>
                             <div class="col-md-12 mt-2">
                                 <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
@@ -65,8 +47,9 @@
                         <div class="col-sm-12 col-md-12 col-lg-12">
 
                             <table class="table  text-white">
-                              <thead>
+                              <thead style="font-weight: bold;">
                                 <tr>
+                                    <br>
                                   <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name</th>
                                   <th>Date</th>
                                   <th>Amount</th>
@@ -76,7 +59,7 @@
                               </thead>
                    
                                 
-                                <tbody id="myTable">
+                                <tbody id="myTable"  >
                                   {% for v in vdata %}                    
                                   <tr id="over">                     
                                     <td><i class="fa-sharp fa-light fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a id="aover" href="{% url 'show_credits' v.id %}" style="color: rgb(230, 171, 45);">{{v.company_name}} </a></td>     
@@ -93,50 +76,56 @@
          
             <div class="col-sm-12 col-md-8 col-lg-8" >
                 <div class="row">
-                    <div class="col-sm-12 col-md-8 col-lg-8 mt-2">              
+                    <div class="col-sm-12 col-md-8 col-lg-8 mt-1">              
                         <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{vcredit.company_name}}</a>
                     </div>
 
-                    <div class="col-sm-1 col-md-1 col-lg-2 mt-3"> 
+                    <!-- <div class="col-sm-1 col-md-1 col-lg-2 mt-3"> 
                         <a style="color: #ccc;" class="btn btn-primary mr-2" href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
-                        <!-- <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="" ></i><i class="fa-solid fa-paperclip"></i></a>
-                        <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
-                    </div> 
+                         <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="{% url 'credits_statement' vcredit.id %}" ></i><i class="fa-solid fa-paperclip"></i>Statement</a> -->
+                        <!-- <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
+                    <!-- </div> 
                     <div class="col-sm-1 col-md-1 col-lg-1 mt-3">                      
                         <a style="color: #ccc;" class="btn btn-primary mr-2" href="{% url 'edit_vendor_credits' vcredit.id %}"></i>Edit</a>
-                        <!-- <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="" ></i><i class="fa-solid fa-paperclip"></i></a>
+                        <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href="" ></i><i class="fa-solid fa-paperclip"></i></a>
                         <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
-                    </div>                   
+                    <!-- </div>                     -->
                 </div>
                 <span class="input-group mb-1 pt-3" style="border-bottom: 1px solid rgb(37, 37, 37);border-top: 1px solid rgb(37, 37, 37);">
-                    <div id="over" class="toggle1"
-                      style="color: rgb(230, 171, 45);font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                      <button onclick="fieldset1_function()"   class="btn btn-warning">Overview</button> </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div id="over" class="toggle1" style="font-size: 22px;">
+                      <button onclick="fieldset1_function()" class="btn btn-warning">Overview</button>
+                    </div>&nbsp;&nbsp;
+                  
+                    <div id="over" class="toggle2" style="font-size: 22px;">
+                      <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button>
+                    </div>&nbsp;&nbsp;
+                  
+                    <div id="over" class="toggle4" style="font-size: 22px;">
+                      <button onclick="fieldset3_function()" class="btn btn-warning">Mail</button>
+                    </div>&nbsp;&nbsp;
+                  
+                    <div id="over" class="toggle6" style="font-size: 22px;">
+                      <button onclick="fieldset5_function()" class="btn btn-warning">Attach</button>
+                    </div>&nbsp;&nbsp;
+                  
+                    <!-- <div id="over" style="font-size: 22px;">
+                      <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-warning" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                    </div>&nbsp;&nbsp; -->
 
-                    <div id="over"  class="toggle2"
-                      style="color: rgb(230, 171, 45);font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                      <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     
-                    <div id="over" class="toggle4"
-                      style="color: rgb(230, 171, 45);;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                      <button onclick="fieldset3_function()" class="btn btn-warning">
-                      Mail</button></div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div id="over" class="toggle6"
-                      style="color: rgb(230, 171, 45);;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                      <button onclick="fieldset5_function()" class="btn btn-warning">
+                    <div id="over" style="font-size: 22px;">
+                        <a  class="btn btn-warning mr-2 " href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
+                      </div>&nbsp;&nbsp;
 
-                      Attach</button></div>
-                    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                    <div id="over"
-                      style="color: rgb(230, 171, 45);;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                      <!-- <button class="btn btn-warning">
+                      <div id="over" style="font-size: 22px;">
+                        <a  class="btn btn-warning mr-2" href="{% url 'edit_vendor_credits' vcredit.id %}"></i>Edit</a>
+                      </div>&nbsp;&nbsp;
 
-                      Delete</button> -->
-                      <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-danger"onclick="return confirm('Are you sure to delete?')">Delete</a>
-                    </div>
-                    
-                  </span> 
+                      <div id="over" style="font-size: 22px;">
+                        <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                      </div>&nbsp;&nbsp;
+                  </span>
+                  
+                  
 
                   <fieldset1 id="overview" class="Overview" >
                     <div style="height: 400px;overflow-y: scroll;">
@@ -158,12 +147,12 @@
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
 
-                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">Tax Amount*</label></div>
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Tax Amount*</label></div>
                                  <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
                                     {% if vcredit.gst_number == "null" %}
-                                    <label>{{ vcredit.t_tax }}</label> 
+                                    <label style="font-weight: bold;">{{ vcredit.t_tax }}</label> 
                                     {% else %}   
-                                    <label >{{ vcredit.t_tax }}</label> 
+                                    <label style="font-weight: bold;">{{ vcredit.t_tax }}</label> 
                                     
     
                                     {% endif %}                
@@ -175,6 +164,14 @@
                                 <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Total Amount*</label></div>
                                  <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
                                     <label style="font-weight: bold;">{{ vcredit.grandtotal }}</label>      
+                                 </div>   
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 col-md-2 col-lg-2"></div>
+    
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Order Number</label></div>
+                                 <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
+                                    <label style="font-weight:bold;">{{ vcredit.order_no }}</label>      
                                  </div>   
                             </div>
                         <div class="form-group row">
@@ -201,14 +198,7 @@
                                 <label style="font-weight:lighter;">{{ vcredit.credit_note }}</label>      
                              </div>   
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-md-2 col-lg-2"></div>
-
-                            <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Order Number</label></div>
-                             <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
-                                <label style="font-weight:bold;">{{ vcredit.order_no }}</label>      
-                             </div>   
-                        </div>
+                        
                                          
                         
                        
@@ -225,7 +215,8 @@
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset7_function()">View Comments</button> 
+                            <br>
+                            <button style="color: #ccc;" class="btn btn-info mr-2" onclick="fieldset7_function()">View Comments</button> 
 
                         </div>
                     </div>
@@ -261,7 +252,8 @@
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset4_function()">Sent</button> 
+                            <br>
+                            <button style="color: #ccc;" class="btn btn-info mr-2" onclick="fieldset4_function()">Sent</button> 
 
                         </div>
                     </div>
@@ -308,7 +300,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
+                            <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
                                 <div style="height: 400px;overflow-y: scroll;">
                                     
                                 
@@ -361,7 +353,8 @@
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset6_function()">View</button> 
+                            <br>
+                            <button style="color: #ccc;" class="btn btn-info mr-2" onclick="fieldset6_function()">View</button> 
 
                         </div>
                     </div>
@@ -398,7 +391,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
+                            <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
                                 <div style="height: 400px;overflow-y: scroll;">
                                     
                                 
@@ -442,7 +435,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
+                            <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
                                 <div style="height: 400px;overflow-y: scroll;">
                                     
                                 

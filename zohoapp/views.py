@@ -3031,3 +3031,12 @@ def credits_statement(request,id):
 
 # def itemdata2(request):
 #     return render(request,'abc.html')
+
+# def customerdata(request):
+#     customer_id = request.GET.get('id')
+#     print(customer_id)
+#     cust = customer.objects.get(customerName=customer_id)
+#     data7 = {'email': cust.customerEmail}
+    
+#     print(data7)
+#     return JsonResponse(data7)
