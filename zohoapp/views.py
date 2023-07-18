@@ -180,13 +180,6 @@ def additem(request):
     sale=Sales.objects.all()
     purchase=Purchase.objects.all()
     
-    
-
-
-  
-    
-        
-
 
 
     accounts = Purchase.objects.all()
@@ -3040,3 +3033,97 @@ def credits_statement(request,id):
     
 #     print(data7)
 #     return JsonResponse(data7)
+
+# def add_customer_for_invoice(request):
+#     pt=payment_terms.objects.all()
+#     if request.user.is_authenticated:
+#         if request.method=='POST':
+#             type=request.POST.get('type')
+#             txtFullName=request.POST['txtFullName']
+#             cpname=request.POST['cpname']
+           
+#             email=request.POST.get('myEmail')
+#             wphone=request.POST.get('wphone')
+#             mobile=request.POST.get('mobile')
+#             skname=request.POST.get('skname')
+#             desg=request.POST.get('desg')      
+#             dept=request.POST.get('dept')
+#             wbsite=request.POST.get('wbsite')
+
+#             gstt=request.POST.get('gstt')
+#             posply=request.POST.get('posply')
+#             tax1=request.POST.get('tax1')
+#             crncy=request.POST.get('crncy')
+#             obal=request.POST.get('obal')
+
+#             select=request.POST.get('pterms')
+#             pterms=payment_terms.objects.get(id=select)
+#             pterms=request.POST.get('pterms')
+
+#             plst=request.POST.get('plst')
+#             plang=request.POST.get('plang')
+#             fbk=request.POST.get('fbk')
+#             twtr=request.POST.get('twtr')
+        
+#             atn=request.POST.get('atn')
+#             ctry=request.POST.get('ctry')
+            
+#             addrs=request.POST.get('addrs')
+#             addrs1=request.POST.get('addrs1')
+#             bct=request.POST.get('bct')
+#             bst=request.POST.get('bst')
+#             bzip=request.POST.get('bzip')
+#             bpon=request.POST.get('bpon')
+#             bfx=request.POST.get('bfx')
+
+#             sal=request.POST.get('sal')
+#             ftname=request.POST.get('ftname')
+#             ltname=request.POST.get('ltname')
+#             mail=request.POST.get('mail')
+#             bworkpn=request.POST.get('bworkpn')
+#             bmobile=request.POST.get('bmobile')
+
+#             bskype=request.POST.get('bskype')
+#             bdesg=request.POST.get('bdesg')
+#             bdept=request.POST.get('bdept')
+#             u = User.objects.get(id = request.user.id)
+
+          
+#             ctmr=customer(customerName=txtFullName,customerType=type,
+#                         companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
+#                          customerMobile=mobile,skype=skname,designation=desg,department=dept,
+#                            website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
+#                              currency=crncy,OpeningBalance=obal,PaymentTerms=pterms,
+#                                 PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
+#                                  Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
+#                                   city=bct,state=bst,zipcode=bzip,phone1=bpon,
+#                                    fax=bfx,CPsalutation=sal,Firstname=ftname,
+#                                     Lastname=ltname,CPemail=mail,CPphone=bworkpn,
+#                                     CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
+#                                      CPdepartment=bdept,user=u )
+#             ctmr.save()  
+            
+#             return redirect("add_prod")
+#         return render(request,"createinvoice.html",)
+
+
+@login_required(login_url='login')
+def additem_vendor_credit(request):
+    unit=Unit.objects.all()
+    sale=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    accounts = Purchase.objects.all()
+    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
+
+    
+    account = Sales.objects.all()
+    account_type = set(Sales.objects.values_list('Account_type', flat=True))
+    
+    
+          
+    return render(request,'add_vendor_credit_items.html',{'unit':unit,'sale':sale,'purchase':purchase,
+               
+                            "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
+                            
+                            })
+    
