@@ -473,6 +473,8 @@ class Credits_doc_upload_table(models.Model):
     title=models.TextField(max_length=200)
     document=models.FileField(upload_to='doc/')
     
+    
+
 
     
    

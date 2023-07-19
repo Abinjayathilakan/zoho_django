@@ -2659,6 +2659,10 @@ def vendor_credits(request):
     if request.user.is_authenticated:
         vendors = vendor_table.objects.all()
         if request.method == 'POST':
+            c=request.POST['cx_name']
+            cus=customer.objects.get(customerName=c) 
+            print(cus.id)  
+            custo=cus.id
             company_name = request.POST.get('sel')
             vendor_email = request.POST.get('email')
             baddress = request.POST.get('address')
@@ -2695,7 +2699,9 @@ def vendor_credits(request):
             print(total)
 
             inv = Vendor_Credits.objects.create(
+                
                 user=request.user,
+                customer_id=custo,
                 company_name=company_name,
                 vendor_email=vendor_email,
                 baddress=baddress,
@@ -3105,6 +3111,199 @@ def credits_statement(request,id):
             
 #             return redirect("add_prod")
 #         return render(request,"createinvoice.html",)
+    
+    
+   
+# @login_required(login_url='login')
+# def create_sales_order(request):
+#     cust=customer.objects.all()
+#     pay=payment_terms.objects.all()
+#     itm=AddItem.objects.all()
+#     context={
+#         "c":cust,
+#         "pay":pay,
+#         "itm":itm,
+#     }
+#     return render(request,'create_sales_order.html',context)
+
+    
+# @login_required(login_url='login')
+# def add_customer_for_vcredit(request):
+#     if request.user.is_authenticated:
+#         if request.method=='POST':
+#             type=request.POST.get('type')
+#             txtFullName=request.POST['txtFullName']
+#             cpname=request.POST['cpname']
+           
+#             email=request.POST.get('myEmail')
+#             wphone=request.POST.get('wphone')
+#             mobile=request.POST.get('mobile')
+#             skname=request.POST.get('skname')
+#             desg=request.POST.get('desg')      
+#             dept=request.POST.get('dept')
+#             wbsite=request.POST.get('wbsite')
+
+#             gstt=request.POST.get('gstt')
+#             posply=request.POST.get('posply')
+#             tax1=request.POST.get('tax1')
+#             crncy=request.POST.get('crncy')
+#             obal=request.POST.get('obal')
+
+
+
+
+
+
+
+          
+#             pterms=request.POST.get('pterms')
+
+#             plst=request.POST.get('plst')
+#             plang=request.POST.get('plang')
+#             fbk=request.POST.get('fbk')
+#             twtr=request.POST.get('twtr')
+        
+#             atn=request.POST.get('atn')
+#             ctry=request.POST.get('ctry')
+            
+#             addrs=request.POST.get('addrs')
+#             addrs1=request.POST.get('addrs1')
+#             bct=request.POST.get('bct')
+#             bst=request.POST.get('bst')
+#             bzip=request.POST.get('bzip')
+#             bpon=request.POST.get('bpon')
+#             bfx=request.POST.get('bfx')
+
+#             sal=request.POST.get('sal')
+#             ftname=request.POST.get('ftname')
+#             ltname=request.POST.get('ltname')
+#             mail=request.POST.get('mail')
+#             bworkpn=request.POST.get('bworkpn')
+#             bmobile=request.POST.get('bmobile')
+
+#             bskype=request.POST.get('bskype')
+#             bdesg=request.POST.get('bdesg')
+#             bdept=request.POST.get('bdept')
+#             u = User.objects.get(id = request.user.id)
+
+          
+#             ctmr=customer(customerName=txtFullName,customerType=type,
+#                         companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
+#                          customerMobile=mobile,skype=skname,designation=desg,department=dept,
+#                            website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
+#                              currency=crncy,OpeningBalance=obal,PaymentTerms=pterms,
+#                                 PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
+#                                  Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
+#                                   city=bct,state=bst,zipcode=bzip,phone1=bpon,
+#                                    fax=bfx,CPsalutation=sal,Firstname=ftname,
+#                                     Lastname=ltname,CPemail=mail,CPphone=bworkpn,
+#                                     CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
+#                                      CPdepartment=bdept,user=u )
+#             ctmr.save()  
+            
+#             return redirect("vendor_credits")
+#         return render(request,"add_vendor_vcredits.html",)
+
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
+
+def add_customer_for_vcredit(request):
+    if request.method=='POST':
+        vdata=vendor_table.objects.get(id)
+        vdata.salutation=request.POST['salutation']
+        vdata.first_name=request.POST['first_name']
+        vdata.last_name=request.POST['last_name']
+        vdata.company_name=request.POST['company_name']
+        vdata.vendor_display_name=request.POST['v_display_name']
+        vdata.vendor_email=request.POST['vendor_email']
+        vdata.vendor_wphone=request.POST['w_phone']
+        vdata.vendor_mphone=request.POST['m_phone']
+        vdata.skype_number=request.POST['skype_number']
+        vdata.designation=request.POST['designation']
+        vdata.department=request.POST['department']
+        vdata.website=request.POST['website']
+        vdata.gst_treatment=request.POST['gst']
+        if vdata.gst_treatment=="Unregistered Business-not Registered under GST":
+            vdata.pan_number=request.POST['pan_number']
+            vdata.gst_number="null"
+        else:
+            vdata.gst_number=request.POST['gst_number']
+            vdata.pan_number=request.POST['pan_number']
+
+        vdata.source_supply=request.POST['source_supply']
+        vdata.currency=request.POST['currency']
+        vdata.opening_bal=request.POST['opening_bal']
+        vdata.payment_terms=request.POST['payment_terms']
+
+        vdata.battention=request.POST['battention']
+        vdata.bcountry=request.POST['bcountry']
+        vdata.baddress=request.POST['baddress']
+        vdata.bcity=request.POST['bcity']
+        vdata.bstate=request.POST['bstate']
+        vdata.bzip=request.POST['bzip']
+        vdata.bphone=request.POST['bphone']
+        vdata.bfax=request.POST['bfax']
+
+        vdata.sattention=request.POST['sattention']
+        vdata.scountry=request.POST['scountry']
+        vdata.saddress=request.POST['saddress']
+        vdata.scity=request.POST['scity']
+        vdata.sstate=request.POST['sstate']
+        vdata.szip=request.POST['szip']
+        vdata.sphone=request.POST['sphone']
+        vdata.sfax=request.POST['sfax']
+
+        vdata.save()
+             # .................................edit remarks_table ..........................
+        vendor=vdata
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        if remarks_table.objects.filter(vendor=vdata).exists():
+            rdata=remarks_table.objects.get(vendor=vdata)
+            rdata.remarks=request.POST['remark']
+            rdata.save()
+        else:
+            rdata=remarks_table()
+            rdata.remarks=request.POST["remark"]
+            rdata.vendor=vendor
+            rdata.user=udata
+            rdata.save()
+
+            # .......................contact_person_table................ deleting existing entries and inserting  ...............
+
+        pdata=contact_person_table.objects.filter(vendor=vdata)
+        salutation =request.POST.getlist('salutation[]')
+        first_name =request.POST.getlist('first_name[]')
+        last_name =request.POST.getlist('last_name[]')
+        email =request.POST.getlist('email[]')
+        work_phone =request.POST.getlist('wphone[]')
+        mobile =request.POST.getlist('mobile[]')
+        skype_number =request.POST.getlist('skype[]')
+        designation =request.POST.getlist('designation[]')
+        department =request.POST.getlist('department[]') 
+
+        vdata=vendor_table.objects.get(id=vdata.id)
+        vendor=vdata
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+
+        # .....  deleting existing rows......
+        pdata.delete()
+        if len(salutation)==len(first_name)==len(last_name)==len(email)==len(work_phone)==len(mobile)==len(skype_number)==len(designation)==len(department):
+            mapped2=zip(salutation,first_name,last_name,email,work_phone,mobile,skype_number,designation,department)
+            mapped2=list(mapped2)
+            print(mapped2)
+            for ele in mapped2:
+                created = contact_person_table.objects.get_or_create(salutation=ele[0],first_name=ele[1],last_name=ele[2],email=ele[3],
+                         work_phone=ele[4],mobile=ele[5],skype_number=ele[6],designation=ele[7],department=ele[8],user=udata,vendor=vendor)
+        
+
+
+
+        return redirect("vendor_credits")
+    else:
+        # Handle the case when the request method is not POST (optional)
+        return HttpResponse("Method not allowed.", status=405)
 
 
 @login_required(login_url='login')

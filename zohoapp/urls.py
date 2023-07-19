@@ -155,10 +155,9 @@ urlpatterns = [
     
     path('itemdata2',views.itemdata2,name='itemdata2'),
     path('additem_vendor_credit',views.additem_vendor_credit,name='additem_vendor_credit'),
+    path('add_customer_for_vcredit',views.add_customer_for_vcredit,name='add_customer_for_vcredit'),
 
 
-
-    
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     
     
