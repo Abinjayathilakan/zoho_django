@@ -196,7 +196,7 @@
                             {% for i in p %}
                               <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
                             {% endfor %}
-                            <option value="" id="add-item-option">Add an Item</option>
+                            <option value="" style="color: blue;" id="add-item-option">+ Add an Item</option>
                           </select>
                         </div>
                       </td>
@@ -206,7 +206,7 @@
                         $(document).ready(function() {
                           $('#item1').change(function() {
                             if ($(this).val() === "") {
-                              window.location.href = "{% url 'additem' %}";
+                              window.location.href = "{% url 'additem_vendor_credit' %}";
                             }
                           });
                         });
