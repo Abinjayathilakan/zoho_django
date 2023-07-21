@@ -65,20 +65,22 @@
                     {% for v in vendors %}
                     <option value="{{v.company_name}}" data-email="{{v.vendor_email}}" data-gst="{{v.gst_treatment}}" data-address="{{v.baddress}}" data-placeofsupply="{{v.source_supply}}" style="background-color: #ffffff; color: #000000; font-size: 14px;">{{v.company_name}}</option>
                     {% endfor %}
-                    <option value="" style="color: blue;">+ New Vendor</option>
+                    <option value="customer" style="color: blue;">+ New Vendor</option>
     
                 </select>
             </div>
         </div>
         
-        <script>
+        <!-- <script>
           function redirectToVendorPage(selectElement) {
               var selectedValue = selectElement.value;
               if (selectedValue === "") {
                   window.location.href = "{% url 'add_customer_for_vcredit' %}";
               }
           }
-      </script>
+      </script> -->
+
+
         <div class="row mb-4">
             <div class="col-sm-2"><label for="email">Email</label></div>
             <div class="col-sm-10"><input type="email" id="email" name="email" placeholder="Enter Email" value="{{user.vendor_email}}"
@@ -592,7 +594,7 @@
       
                 <label for="">Customer Notes</label>
                 <textarea name="customer_note" id="" cols="8" rows="8"
-                    placeholder=" Customer information for future Buisness"></textarea>
+                    placeholder=" Notes  "></textarea>
             </div>
             <div class="col-sm-6">
                 <table class="rounded table  text-white" style="background-color: rgba(51, 50, 48, 0.8);">
@@ -1759,59 +1761,12 @@ if (bc != "{{ cmp1.state }}"  ) {
   </script>
 
 
-  <style>
-    .modal {
-width: 50%;
-top:8rem;
-left: 30%;
-    }
-
-  .modal-container {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
- 
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .label {
-color: black;
-  }
-</style>
-
-
-
 
   <div  class="modal-container registration-modal">
     <div class="modal-content" style="background-color: black;">
       <span class="close-btn">&times;</span>
       <div style="height: 600px; overflow-y: scroll;">
-        <form action="{% url 'add_customer_for_vcredit' %}" method="POST" enctype="multipart/form-data"
+        <form action="{% url 'add_customer_for_invoice' %}" method="POST" enctype="multipart/form-data"
           style="color: azure ; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
           {% csrf_token %}
           <h2 style=" font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"><b>New Customer</b></h2>
@@ -2035,12 +1990,12 @@ color: black;
                 Payment Terms </label>
               &nbsp;&nbsp;&nbsp;
   
-              <select name="pterms" id="PLACE" style="width: 15%;">
+              <select name="pterms" id="PLACE">
   
   
-                {% for i in pay %}
+                {% for cs in sb %}
   
-                <option type="text" value='{{ i.id }}'> {{ i.Terms}}</option>
+                <option type="text" value='{{ cs.id }}'> {{ cs.Terms}}</option>
                 {% endfor %}
               </select>
               <div type="button" onclick="openpop()"
@@ -2265,7 +2220,7 @@ color: black;
           </div>
   
   
-          <form style="" action="{% url 'payment_term_for_sorder' %}" method="post">
+          <form style="" action="{% url 'payment_term_for_invoice' %}" method="post">
             {% csrf_token %}
             <div class="col-sm-10 form-inline">
               <label style="color: black;" for="name">Term Name</label> &nbsp;&nbsp;&nbsp;
@@ -2431,13 +2386,10 @@ color: black;
   </script>
 
 
-
-
-
 <div class="modal modal-1">
     <div class="modal-content">
-      <h6 class="label">Payment Terms</h6>
-      <form id="terms-form" action="" method="post">
+      <h6>Payment Terms</h6>
+      <form id="terms-form" action="{% url 'payment_term' %}" method="post">
         {% csrf_token %}
         <div id="terms-container">
           <div class="form-row">
@@ -2445,7 +2397,7 @@ color: black;
             <div class="col-6">
                 <input type="text" value="{{p.Terms}}" class="form-control" placeholder="Terms">
               </div>
-              <div class="col-6">
+              <div class="col-5">
                 <input type="text" value="{{p.Days}}" class="form-control" placeholder="No of Days">
               </div>
             {% endfor %}
@@ -2469,34 +2421,6 @@ color: black;
       </form>
     </div>
   </div>
-
-
-  <script>
-    const selectEl = document.querySelector('.my-select');
-    selectEl.addEventListener('click', () => {
-    
-    const selectedOption = selectEl.value;
-    const modalEl = document.querySelector(`.modal.${selectedOption}`);
-    modalEl.style.display = 'block';
-    });
-      
-
-
-    // Close the modal when the user clicks outside of it
-    const modalEls = document.querySelectorAll('.modal');
-    modalEls.forEach((modalEl) => {
-    modalEl.addEventListener('click', (event) => {
-      if (event.target === modalEl) {
-        modalEl.style.display = 'none';
-      }
-    });
-
-    selectEl.addEventListener('change', function() {
-    modalEl.style.display = 'none';
-      });
-    });
-    </script>  
-    
  <script>
      
   // Select the form and the container for the terms rows
@@ -2564,8 +2488,24 @@ form.addEventListener('click', (event) => {
  </script>
 
 
+<script>
+const selectE2 = document.querySelector('.my-select');
+selectEl.addEventListener('change', () => {
+const selectedOption = selectEl.value;
+const modalEl = document.querySelector(`.modal.${selectedOption}`);
+modalEl.style.display = 'block';
+});
 
-
+// Close the modal when the user clicks outside of it
+const modalE2s = document.querySelectorAll('.modal');
+modalEls.forEach((modalEl) => {
+modalEl.addEventListener('click', (event) => {
+  if (event.target === modalEl) {
+    modalEl.style.display = 'none';
+  }
+});
+});
+</script>  
 
 
 
