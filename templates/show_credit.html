@@ -32,12 +32,13 @@
                         <input type="text" id="myInput" onkeyup="myFunction()" class="form-control text-black" placeholder="Search vendors..." style="margin-top: 5px; width: 450%;background-color:white;">
 
                     </div>
-                    <div class="col-md-2 form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
+                    <div class="col-md form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <a  class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+ New</a>
-                            </div><br>
-                            <div class="col-md-12 mt-2">
+                                
+                            </div>
+                            <div class="col-md-6">
                                 <button onclick="sortTable()" class="btn btn-primary" style="width: 4.5rem;">a-z</button>
                             </div>
                         </div>

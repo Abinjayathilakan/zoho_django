@@ -3253,7 +3253,6 @@ def add_customer_for_vcredit(request):
             return redirect("vendor_credits")
         return render(request,"add_vendor_vcredits.html",)
         
-@login_required(login_url='login')
 def additem_vendor_credit(request):
     unit=Unit.objects.all()
     sale=Sales.objects.all()
@@ -3273,7 +3272,7 @@ def additem_vendor_credit(request):
                             
                             })
 
-def additem_vendor_credit(request):
+def additem_est(request):
     if request.user.is_authenticated:
         if request.method=='POST':
             radio=request.POST.get('radio')
