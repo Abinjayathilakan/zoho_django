@@ -3127,131 +3127,131 @@ def credits_statement(request,id):
 #     return render(request,'create_sales_order.html',context)
 
     
-# @login_required(login_url='login')
-# def add_customer_for_vcredit(request):
-#     if request.user.is_authenticated:
-#         if request.method=='POST':
-            
-#             salutation=request.POST['salutation']
-#             first_name=request.POST['first_name']
-#             last_name=request.POST['last_name']
-#             company_name=request.POST['company_name']
-#             vendor_display_name=request.POST['v_display_name']
-#             vendor_email=request.POST['vendor_email']
-#             vendor_wphone=request.POST['w_phone']
-#             vendor_mphone=request.POST['m_phone']
-#             skype_number=request.POST['skype_number']
-#             designation=request.POST['designation']
-#             department=request.POST['department']
-#             website=request.POST['website']
-#             gst_treatment=request.POST['gst']
-            
-#             gst_number=request.POST['gst_number']
-#             pan_number=request.POST['pan_number']
-            
-#             source_supply=request.POST['source_supply']
-#             currency=request.POST['currency']
-#             opening_bal=request.POST['opening_bal']
-#             payment_terms=request.POST['payment_terms']
-            
-#             battention=request.POST['battention']
-#             bcountry=request.POST['bcountry']
-#             baddress=request.POST['baddress']
-#             bcity=request.POST['bcity']
-#             bstate=request.POST['bstate']
-#             bzip=request.POST['bzip']
-#             bphone=request.POST['bphone']
-#             bfax=request.POST['bfax']
-        
-
-          
-           
-#             u = User.objects.get(id = request.user.id)
-
-          
-#             ctmr=vendor_table(salutation=salutation,first_name=first_name,
-#                         last_name=last_name,company_name=company_name,vendor_display_name=vendor_display_name,
-#                          vendor_email=vendor_email,vendor_wphone=vendor_wphone,vendor_mphone=vendor_mphone,
-#                            skype_number=skype_number,designation=designation,department=department, website=website,
-#                              gst_treatment=gst_treatment,gst_number=gst_number,pan_number=pan_number,
-#                                 source_supply=source_supply,currency=currency,opening_bal=opening_bal,payment_terms=payment_terms,baddress=baddress,
-#                                  battention=battention,bcountry=bcountry,bcity=bcity,bstate=bstate,
-#                                   bzip=bzip,bphone=bphone,bfax=bfax,user=u )
-#             ctmr.save()  
-            
-#             return redirect("vendor_credits")
-#         return render(request,"add_vendor_vcredits.html",)
-
 @login_required(login_url='login')
 def add_customer_for_vcredit(request):
     if request.user.is_authenticated:
         if request.method=='POST':
-            type=request.POST.get('type')
-            txtFullName=request.POST['txtFullName']
-            cpname=request.POST['cpname']
-           
-            email=request.POST.get('myEmail')
-            wphone=request.POST.get('wphone')
-            mobile=request.POST.get('mobile')
-            skname=request.POST.get('skname')
-            desg=request.POST.get('desg')      
-            dept=request.POST.get('dept')
-            wbsite=request.POST.get('wbsite')
-
-            gstt=request.POST.get('gstt')
-            posply=request.POST.get('posply')
-            tax1=request.POST.get('tax1')
-            crncy=request.POST.get('crncy')
-            obal=request.POST.get('obal')
+            
+            salutation=request.POST['salutation']
+            first_name=request.POST['first_name']
+            last_name=request.POST['last_name']
+            company_name=request.POST['company_name']
+            vendor_display_name=request.POST['v_display_name']
+            vendor_email=request.POST['vendor_email']
+            vendor_wphone=request.POST['w_phone']
+            vendor_mphone=request.POST['m_phone']
+            skype_number=request.POST['skype_number']
+            designation=request.POST['designation']
+            department=request.POST['department']
+            website=request.POST['website']
+            gst_treatment=request.POST['gst']
+            
+            gst_number=request.POST['gst_number']
+            pan_number=request.POST['pan_number']
+            
+            source_supply=request.POST['source_supply']
+            currency=request.POST['currency']
+            opening_bal=request.POST['opening_bal']
+            payment_terms=request.POST['payment_terms']
+            
+            battention=request.POST['battention']
+            bcountry=request.POST['bcountry']
+            baddress=request.POST['baddress']
+            bcity=request.POST['bcity']
+            bstate=request.POST['bstate']
+            bzip=request.POST['bzip']
+            bphone=request.POST['bphone']
+            bfax=request.POST['bfax']
+        
 
           
-            # pterms=request.POST.get('pterms')
-
-            plst=request.POST.get('plst')
-            plang=request.POST.get('plang')
-            fbk=request.POST.get('fbk')
-            twtr=request.POST.get('twtr')
-        
-            atn=request.POST.get('atn')
-            ctry=request.POST.get('ctry')
-            
-            addrs=request.POST.get('addrs')
-            addrs1=request.POST.get('addrs1')
-            bct=request.POST.get('bct')
-            bst=request.POST.get('bst')
-            bzip=request.POST.get('bzip')
-            bpon=request.POST.get('bpon')
-            bfx=request.POST.get('bfx')
-
-            sal=request.POST.get('sal')
-            ftname=request.POST.get('ftname')
-            ltname=request.POST.get('ltname')
-            mail=request.POST.get('mail')
-            bworkpn=request.POST.get('bworkpn')
-            bmobile=request.POST.get('bmobile')
-
-            bskype=request.POST.get('bskype')
-            bdesg=request.POST.get('bdesg')
-            bdept=request.POST.get('bdept')
+           
             u = User.objects.get(id = request.user.id)
 
           
-            ctmr=vendor_table(customerName=txtFullName,customerType=type,
-                        companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
-                         customerMobile=mobile,skype=skname,designation=desg,department=dept,
-                           website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
-                             currency=crncy,OpeningBalance=obal,
-                                PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
-                                 Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
-                                  city=bct,state=bst,zipcode=bzip,phone1=bpon,
-                                   fax=bfx,CPsalutation=sal,Firstname=ftname,
-                                    Lastname=ltname,CPemail=mail,CPphone=bworkpn,
-                                    CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
-                                     CPdepartment=bdept,user=u )
+            ctmr=vendor_table(salutation=salutation,first_name=first_name,
+                        last_name=last_name,company_name=company_name,vendor_display_name=vendor_display_name,
+                         vendor_email=vendor_email,vendor_wphone=vendor_wphone,vendor_mphone=vendor_mphone,
+                           skype_number=skype_number,designation=designation,department=department, website=website,
+                             gst_treatment=gst_treatment,gst_number=gst_number,pan_number=pan_number,
+                                source_supply=source_supply,currency=currency,opening_bal=opening_bal,payment_terms=payment_terms,baddress=baddress,
+                                 battention=battention,bcountry=bcountry,bcity=bcity,bstate=bstate,
+                                  bzip=bzip,bphone=bphone,bfax=bfax,user=u )
             ctmr.save()  
             
             return redirect("vendor_credits")
         return render(request,"add_vendor_vcredits.html",)
+
+# @login_required(login_url='login')
+# def add_customer_for_vcredit(request):
+#     if request.user.is_authenticated:
+#         if request.method=='POST':
+#             type=request.POST.get('type')
+#             txtFullName=request.POST['txtFullName']
+#             cpname=request.POST['cpname']
+           
+#             email=request.POST.get('myEmail')
+#             wphone=request.POST.get('wphone')
+#             mobile=request.POST.get('mobile')
+#             skname=request.POST.get('skname')
+#             desg=request.POST.get('desg')      
+#             dept=request.POST.get('dept')
+#             wbsite=request.POST.get('wbsite')
+
+#             gstt=request.POST.get('gstt')
+#             posply=request.POST.get('posply')
+#             tax1=request.POST.get('tax1')
+#             crncy=request.POST.get('crncy')
+#             obal=request.POST.get('obal')
+
+          
+#             # pterms=request.POST.get('pterms')
+
+#             plst=request.POST.get('plst')
+#             plang=request.POST.get('plang')
+#             fbk=request.POST.get('fbk')
+#             twtr=request.POST.get('twtr')
+        
+#             atn=request.POST.get('atn')
+#             ctry=request.POST.get('ctry')
+            
+#             addrs=request.POST.get('addrs')
+#             addrs1=request.POST.get('addrs1')
+#             bct=request.POST.get('bct')
+#             bst=request.POST.get('bst')
+#             bzip=request.POST.get('bzip')
+#             bpon=request.POST.get('bpon')
+#             bfx=request.POST.get('bfx')
+
+#             sal=request.POST.get('sal')
+#             ftname=request.POST.get('ftname')
+#             ltname=request.POST.get('ltname')
+#             mail=request.POST.get('mail')
+#             bworkpn=request.POST.get('bworkpn')
+#             bmobile=request.POST.get('bmobile')
+
+#             bskype=request.POST.get('bskype')
+#             bdesg=request.POST.get('bdesg')
+#             bdept=request.POST.get('bdept')
+#             u = User.objects.get(id = request.user.id)
+
+          
+#             ctmr=vendor_table(customerName=txtFullName,customerType=type,
+#                         companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
+#                          customerMobile=mobile,skype=skname,designation=desg,department=dept,
+#                            website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
+#                              currency=crncy,OpeningBalance=obal,
+#                                 PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
+#                                  Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
+#                                   city=bct,state=bst,zipcode=bzip,phone1=bpon,
+#                                    fax=bfx,CPsalutation=sal,Firstname=ftname,
+#                                     Lastname=ltname,CPemail=mail,CPphone=bworkpn,
+#                                     CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
+#                                      CPdepartment=bdept,user=u )
+#             ctmr.save()  
+            
+#             return redirect("vendor_credits")
+#         return render(request,"add_vendor_vcredits.html",)
         
 def additem_vendor_credit(request):
     unit=Unit.objects.all()
