@@ -50,14 +50,14 @@
 <div style="overflow-y: scroll;height: 600px;">
     <div style="height: 600px;overflow-y: scroll;">
       <div>
-        <h3  class="mb-3  text-white " style="font-size: 2rem;">Vendor Credits</h3><br>
+        <h3  class="mb-3  text-white " style="font-size: 2rem;color:rgb(214, 75, 75) ;font-weight: bold;">Vendor Credits</h3><br>
         <input type="hidden" id="state" value="{{ company.state }}">
       </div>
 
     <form method="post" action="{% url 'vendor_credits' %}" enctype="multipart/form-data"  class="">
         {% csrf_token %}
         <div class="row mb-4 border-top pt-5">
-            <div class="col-sm-2"><label for="customer_name">Customer Name*</label></div>
+            <div class="col-sm-2"><label for="customer_name" style="color:rgb(214, 75, 75) ;font-weight: bold;">Customer Name *</label></div>
             <div class="col-sm-10">
                 <select   class="registration-type" id="vendor-select" name="sel" style="width: 38%;height: 55px;" onchange="redirectToVendorPage(this)">
                     <option type="hidden" value="vendor">select one</option>
@@ -101,14 +101,14 @@
       </div>
 
       <div class="row mb-4">
-        <div class="col-sm-2"><label for="placeofsupply">Source of Supply</label></div>
+        <div class="col-sm-2"><label for="placeofsupply" style="color:rgb(214, 75, 75) ;font-weight: bold;">Source of Supply *</label></div>
         <div class="col-sm-10"> <input type="text" id="placeofsupply" name="placeofsupply" value="{{user.source_supply}}"
                 style="width: 38%;height: 45px;"></div>
     </div>
 
     <div class="row mb-4">
         <div class="col-sm-2">
-          <label for="credit_note">Credit Note</label>
+          <label for="credit_note" style="color:rgb(214, 75, 75) ;font-weight: bold;">Credit Note *</label>
         </div>
         <div class="col-sm-10">
           <input type="text" id="credit_note" name="credit_note" maxlength="8" placeholder="Enter Credit Note" style="width: 38%;height: 45px;" value="DUS-" required>

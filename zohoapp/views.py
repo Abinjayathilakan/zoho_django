@@ -2760,11 +2760,11 @@ def vendor_credits(request):
 #     viewitem=Vendor_Credits.objects.all(user=udata)
 #     return render(request,'view_vendor_credits.html',{'view':viewitem})
 
-def itemview(request):
-    user_id=request.user.id
-    udata=User.objects.get(id=user_id)
-    data=Vendor_Credits.objects.filter(user=udata)
-    return render(request,'view_vendor_credits.html',{'data':data})
+# def itemview(request):
+#     user_id=request.user.id
+#     udata=User.objects.get(id=user_id)
+#     data=Vendor_Credits.objects.filter(user=udata)
+#     return render(request,'view_vendor_credits.html',{'data':data})
 
 
 def show_credits(request,pk):
