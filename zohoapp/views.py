@@ -2659,10 +2659,10 @@ def vendor_credits(request):
     if request.user.is_authenticated:
         vendors = vendor_table.objects.all()
         if request.method == 'POST':
-            c=request.POST['cx_name']
-            cus=customer.objects.get(customerName=c) 
-            print(cus.id)  
-            custo=cus.id
+            # c=request.POST['cx_name']
+            # cus=customer.objects.get(customerName=c) 
+            # print(cus.id)  
+            # custo=cus.id
             company_name = request.POST.get('sel')
             vendor_email = request.POST.get('email')
             baddress = request.POST.get('address')
@@ -2701,7 +2701,7 @@ def vendor_credits(request):
             inv = Vendor_Credits.objects.create(
                 
                 user=request.user,
-                customer_id=custo,
+                # customer_id=custo,
                 company_name=company_name,
                 vendor_email=vendor_email,
                 baddress=baddress,

@@ -1,0 +1,1018 @@
+def recurring_bill(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    context = {
+                'company' : company,
+                'recur_bill' : recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+# filter
+
+@login_required(login_url='login')
+def recur_custasc(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    sorted_recur = sorted(recur, key=lambda r: r['cust_name'])    
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def recur_custdesc(request):
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    sorted_recur = sorted(recur, key=lambda r: r['cust_name'],reverse=True)    
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def recur_vendorasc(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    sorted_recur = sorted(recur, key=lambda r: r['vend_name'])    
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def recur_vendordesc(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+        sorted_recur = sorted(recur, key=lambda r: r['vend_name'],reverse=True)    
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def recur_profileasc(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    sorted_recur = sorted(recur, key=lambda r: r['profile_name'],reverse=False) 
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def recur_profiledesc(request):
+
+    company = company_details.objects.get(user = request.user)
+    recur = recurring_bills.objects.filter(user = request.user.id).values()
+    for r in recur:
+        vn = r['vendor_name'].split()[1:]
+        r['vend_name'] = " ".join(vn)
+        cn = r['customer_name'].split()[2:]
+        r['cust_name'] = " ".join(cn)
+
+    sorted_recur = sorted(recur, key=lambda r: r['profile_name'],reverse=True) 
+
+    context = {
+                'company' : company,
+                'recur_bill' : sorted_recur
+            }
+    return render(request,'recurring_bills.html',context)
+
+@login_required(login_url='login')
+def add_recurring_bills(request):
+
+    company = company_details.objects.get(user = request.user)
+    vendor = vendor_table.objects.filter(user = request.user)
+    acnt_name = Chart_of_Account.objects.filter(user = request.user)
+    acnt_type = Chart_of_Account.objects.filter(user = request.user).values('account_type').distinct()
+    cust = customer.objects.filter(user = request.user)
+    item = AddItem.objects.filter(user = request.user)
+    payments = payment_terms.objects.filter(user = request.user)
+    units = Unit.objects.all()
+    sales=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    sales_type = set(Sales.objects.values_list('Account_type', flat=True))
+    purchase_type = set(Purchase.objects.values_list('Account_type', flat=True))
+    context = {
+                'company' : company,
+                'vendor' : vendor,
+                'account': acnt_name,
+                'account_type' : acnt_type,
+                'customer' : cust,
+                'item' : item,
+                'payments' :payments,
+                'units' :units,
+                'sales' :sales,
+                'purchase':purchase,
+                'sales_type':sales_type,
+                'purchase_type':purchase_type,
+            }
+    return render(request,'add_recurring_bills.html',context)
+
+@login_required(login_url='login')
+def create_recurring_bills(request):
+
+    company = company_details.objects.get(user = request.user)
+    # print(request.POST.get('customer').split(" ")[0])
+    cust = customer.objects.get(id=request.POST.get('customer').split(" ")[0],user = request.user)
+
+    if request.method == 'POST':
+        # vname = request.POST.get('vendor').rsplit(' ', 1)
+        # cname = request.POST.get('customer').split(" ")[1:]
+        vname  = request.POST.get('vendor')
+        cname = request.POST.get('customer')
+        # cname = " ".join(cname)
+        src_supply = request.POST.get('srcofsupply')
+        prof = request.POST['prof_name']
+        repeat = request.POST['repeat']
+        start = request.POST.get('start_date')
+        end = None if request.POST.get('end_date') == "" else  request.POST.get('end_date')
+        pay_term =request.POST['terms']
+
+        sub_total =request.POST['subtotal']
+
+        sgst=None if request.POST.get('sgst') == "" else  request.POST.get('sgst')
+        cgst=None if request.POST.get('cgst') == "" else  request.POST.get('cgst')
+        igst= None if request.POST.get('igst') == "" else  request.POST.get('igst')
+        # print(igst)
+
+        if src_supply == company.state:
+            tax1 = sgst + cgst
+        else:
+            tax1 = igst
+           
+        # print(tax1)
+
+        shipping_charge=0 if request.POST['addcharge'] == "" else request.POST['addcharge']
+        grand_total=request.POST['grand_total']
+        note=request.POST.get('note')
+
+        u = User.objects.get(id = request.user.id)
+
+        bills = recurring_bills(vendor_name=vname,profile_name=prof,customer_name = cname,
+                    source_supply=src_supply,repeat_every = repeat,start_date = start,end_date = end,
+                    payment_terms =pay_term,sub_total=sub_total,sgst=sgst,cgst=cgst,igst=igst,
+                    tax_amount=tax1, shipping_charge = shipping_charge,
+                    grand_total=grand_total,note=note,company=company,user = u,  )
+        bills.save()
+
+        r_bill = recurring_bills.objects.get(id=bills.id)
+
+        if len(request.FILES) != 0:
+            r_bill.document=request.FILES['file'] 
+            r_bill.save()
+
+        items = request.POST.getlist("item[]")
+        accounts = request.POST.getlist("account[]")
+        quantity = request.POST.getlist("qty[]")
+        rate = request.POST.getlist("rate[]")
+        
+        if (" ".join(src_supply.split(" ")[1:])) == company.state:
+            tax = request.POST.getlist("tax1[]")
+        else:
+            tax = request.POST.getlist("tax2[]")
+
+        discount = 0 if request.POST.getlist("discount[]") == " " else request.POST.getlist("discount[]")
+        amount = request.POST.getlist("amount[]")
+
+        if len(items)==len(accounts)==len(amount) == len(quantity) == len(rate)==len(tax) == len(discount) and items and accounts and quantity and rate and tax and discount and amount:
+                
+                mapped=zip(items,accounts,quantity,rate,tax,discount,amount)
+                mapped=list(mapped)
+
+                for ele in mapped:
+
+                    it = AddItem.objects.get(user = request.user, id = ele[0]).Name
+                    try:
+                        int(ele[1])
+                        ac = Chart_of_Account.objects.get(user = request.user,id = ele[1]).account_name
+                        
+                    except ValueError:
+                        
+                        ac = ele[1]
+                    
+                    created = recurring_bills_items.objects.create(item = it,account = ac,quantity=ele[2],rate=ele[3],
+                    tax=ele[4],discount = ele[5],amount=ele[6],user = u,company = company, recur_bills = r_bill)
+
+        return redirect('recurring_bill')
+    return redirect('recurring_bill')
+
+
+
+
+
+@login_required(login_url='login')
+def edit_recurring_bills(request,id):
+
+    company = company_details.objects.get(user = request.user)
+    vendor = vendor_table.objects.filter(user = request.user)
+    acnt = Chart_of_Account.objects.filter(user = request.user)
+    acnt_type = Chart_of_Account.objects.filter(user = request.user).values('account_type').distinct()
+    cust = customer.objects.filter(user = request.user)
+    item = AddItem.objects.filter(user = request.user)
+    payments = payment_terms.objects.filter(user = request.user)
+    units = Unit.objects.all()
+    sales=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    
+    sales_type = set(Sales.objects.values_list('Account_type', flat=True))
+    purchase_type = set(Purchase.objects.values_list('Account_type', flat=True))
+    recur_bills = recurring_bills.objects.get(user = request.user,id=id)
+    recur_item = recurring_bills_items.objects.filter(user = request.user,recur_bills = id)   
+
+    c = customer.objects.filter(user = request.user).get(id = recur_bills.customer_name.split(' ')[0])
+    v = vendor_table.objects.filter(user = request.user).get(id = recur_bills.vendor_name.split(" ")[0])
+    # print(recur_bills.customer_name.split(" ")[2:])
+    context = {
+        'company' : company,
+        'vendor' : vendor,
+        'account': acnt,
+        'account_type' : acnt_type,
+        'customer' : cust,
+        'item' : item,
+        'payments' :payments,
+        'units' :units,
+        'sales' :sales,
+        'purchase':purchase,
+        'sales_type':sales_type,
+        'purchase_type':purchase_type,
+        'recur_bills': recur_bills,
+        'recur_items' : recur_item,
+        'cust':c,
+        'vend' : v,
+        'vend_name' : " ".join(recur_bills.vendor_name.split(" ")[1:]),
+        'cust_name' : " ".join(recur_bills.customer_name.split(" ")[2:])
+    }
+
+    return render(request,'edit_recurring_bills.html',context)
+
+
+def change_recurring_bills(request,id):
+            
+    company = company_details.objects.get(user = request.user)
+    # cust = customer.objects.get(customerName=request.POST.get('customer').strip(" "),user = request.user)
+    r_bill=recurring_bills.objects.get(user = request.user,id=id)
+
+    if request.method == 'POST':
+        
+        r_bill.vendor_name = request.POST.get('vendor')
+        r_bill.customer_name= request.POST.get('customer')
+        r_bill.profile_name = request.POST['prof_name']
+        r_bill.source_supply=request.POST['srcofsupply']
+        r_bill.repeat_every=request.POST['repeat']
+        r_bill.start_date=request.POST['start_date']
+        r_bill.end_date=None if request.POST.get('end_date') == "" else  request.POST.get('end_date')
+        r_bill.payment_terms=request.POST['terms']
+        r_bill.note=request.POST['note']
+        r_bill.sub_total=None if request.POST.get('subtotal') == "" else  request.POST.get('subtotal')
+        r_bill.igst=None if request.POST.get('igst') == "" else  request.POST.get('igst')
+        r_bill.cgst=None if request.POST.get('cgst') == "" else  request.POST.get('cgst')
+        r_bill.sgst=None if request.POST.get('sgst') == "" else  request.POST.get('sgst')
+        r_bill.shipping_charge=request.POST['addcharge']
+        r_bill.grand_total=request.POST.get('grand_total')
+
+        if len(request.FILES) != 0:
+             
+            r_bill.document = request.FILES['file']
+            
+
+        r_bill.save()          
+
+        items = request.POST.getlist("item[]")
+        accounts = request.POST.getlist("account[]")
+        quantity = request.POST.getlist("quantity[]")
+        rate = request.POST.getlist("rate[]")
+
+        if (" ".join(request.POST['srcofsupply'].split(" ")[1:])) == company.state:
+            tax = request.POST.getlist("tax1[]")
+        else:
+            tax = request.POST.getlist("tax2[]")
+
+        discount = 0 if request.POST.getlist("discount[]") == " " else request.POST.getlist("discount[]")
+        amount = request.POST.getlist("amount[]")
+
+        if len(items)==len(accounts)==len(amount) == len(quantity) == len(rate)==len(tax) == len(discount) and items and accounts and quantity and rate and tax and discount and amount:
+                
+            mapped=zip(items,accounts,quantity,rate,tax,discount,amount)
+            mapped=list(mapped)
+
+            
+            count = recurring_bills_items.objects.filter(recur_bills=r_bill.id).count()
+            
+            for ele in mapped:
+
+                if int(len(items))>int(count):
+
+                    pbillss=recurring_bills.objects.get(id=id)
+                    company = company_details.objects.get(user = request.user)
+                    it = AddItem.objects.get(user = request.user, id = ele[0]).Name
+                    it = AddItem.objects.get(user = request.user, id = ele[0]).Name
+                    try:
+                        int(ele[1])
+                        ac = Chart_of_Account.objects.get(user = request.user,id = ele[1]).account_name
+                        
+                    except ValueError:
+                        
+                        ac = ele[1]
+                    
+                    created = recurring_bills_items.objects.get_or_create(item = it,account = ac,quantity=ele[2],rate=ele[3],
+                    tax=ele[4],discount = ele[5],amount=ele[6],recur_bills=r_bill.id,company=company,user = request.user)
+
+
+                else:
+                    
+                    dbs=recurring_bills_items.objects.get(recur_bills =r_bill.id,item = ele[0],account=ele[1])
+                    created = recurring_bills_items.objects.filter(recur_bills =dbs.recur_bills,items = ele[0],account=ele[1]).update(item = ele[0],
+                        account = ele[1],quantity=ele[2],rate=ele[3], tax=ele[4],discount=ele[5],amount= ele[6])
+ 
+
+        return redirect('view_recurring_bills',id)
+    return redirect('recurring_bill')
+
+
+@login_required(login_url='login')
+def delete_recurring_bills(request, id):
+
+    company = company_details.objects.get(user = request.user)
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    rbill.delete() 
+    billitem.delete() 
+     
+    return redirect('recurring_bill')
+
+
+    
+@login_required(login_url='login')
+def view_recurring_bills(request,id):
+
+    company = company_details.objects.get(user = request.user)
+    bills = recurring_bills.objects.filter(user = request.user)
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+    
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if company.state == (" ".join(rbill.source_supply.split(" ")[1:])) else "IGST"
+    tax_total = [] 
+    for b in billitem:
+        if b.tax not in tax_total: 
+            tax_total.append(b.tax)
+    
+    cust_name = cust.customerName
+    vend_name = vend.salutation+ " " +vend.first_name + " " +vend.last_name
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+                'customer_name' : cust_name,
+                'vendor_name' : vend_name,
+            }
+
+    return render(request, 'view_recurring_bills.html',context)
+
+
+@login_required(login_url='login')
+def view_custasc(request,id):
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('customer_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(customerName = rbill.customer_name)
+
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    comp_state = company.state
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+
+@login_required(login_url='login')
+def view_custdesc(request,id):
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('-customer_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+@login_required(login_url='login')
+def view_vendorasc(request,id):
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('vendor_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+@login_required(login_url='login')
+def view_vendordesc(request,id):
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('-vendor_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+@login_required(login_url='login')
+def view_profileasc(request,id):
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('profile_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(id = rbill.customer_name.split(" ")[0])
+    vend = vendor_table.objects.get(id = rbill.vendor_name.split(" ")[0])
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+                'vendor' : vend,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+@login_required(login_url='login')
+def view_profiledesc(request,id):
+
+    company = company_details.objects.get(user = request.user)
+    bills =recurring_bills.objects.filter(user = request.user).order_by('-profile_name')
+
+    rbill=recurring_bills.objects.get(user = request.user, id= id)
+    billitem = recurring_bills_items.objects.filter(user = request.user,recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(customerName = rbill.customer_name)
+
+    gst_or_igst = "GST" if comp_state == rbill.source_supplysupply else "IGST"
+
+
+    tax_total = 0 
+    for b in billitem:
+        tax_total += b.tax
+
+    context = {
+                'company' : company,
+                'recur_bills' : bills,
+                'recur_bill' : rbill,
+                'bill_item' : billitem,
+                'tax' : tax_total,
+                "gst_or_igst" : gst_or_igst,
+                'customer' : cust,
+            }
+    return render(request,'view_recurring_bills.html',context)
+
+
+@login_required(login_url='login')
+def get_vendordet(request):
+
+    company= company_details.objects.get(user = request.user)
+
+    # fname = request.POST.get('fname')
+    # lname = request.POST.get('lname')
+    id = request.POST.get('id')
+    vdr = vendor_table.objects.get(user=company.user_id, id=id)
+    vemail = vdr.vendor_email
+    gstnum = vdr.gst_number
+    gsttr = vdr.gst_treatment
+
+    return JsonResponse({'vendor_email' :vemail, 'gst_number' : gstnum,'gst_treatment':gsttr},safe=False)
+
+@login_required(login_url='login')
+def get_customerdet(request):
+
+    company= company_details.objects.get(user = request.user)
+
+    name = request.POST.get('name')
+    id = request.POST.get('id')
+    # print(name)
+
+    cust = customer.objects.get(user=company.user_id,id= id)
+    email = cust.customerEmail
+    gstin = 0
+    gsttr = cust.GSTTreatment
+    cstate = cust.placeofsupply.split("] ")[1:]
+    print(email)
+    print(gstin)
+    state = 'Not Specified' if cstate == "" else cstate
+
+    return JsonResponse({'customer_email' :email, 'gst_treatment':gsttr, 'gstin': gstin , 'state' : state},safe=False)
+
+@login_required(login_url='login')
+def recurbills_vendor(request):
+    
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        title=request.POST.get('title')
+        first_name=request.POST.get('firstname')
+        last_name=request.POST.get('lastname')
+        comp=request.POST.get('company_name')
+        dispn = request.POST.get('display_name')
+        email=request.POST.get('email')
+        website=request.POST.get('website')
+        w_mobile=request.POST.get('work_mobile')
+        p_mobile=request.POST.get('pers_mobile')
+        skype = request.POST.get('skype')
+        desg = request.POST.get('desg')
+        dpt = request.POST.get('dpt')
+        gsttype=request.POST.get('gsttype')
+        gstin=request.POST.get('gstin')
+        panno=request.POST.get('panno')
+        supply=request.POST.get('sourceofsupply')
+        currency=request.POST.get('currency')
+        balance=request.POST.get('openingbalance')
+        payment=request.POST.get('paymentterms')
+        street=request.POST.get('street')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        country=request.POST.get('country')
+        fax=request.POST.get('fax')
+        phone=request.POST.get('phone')
+        shipstreet=request.POST.get('shipstreet')
+        shipcity=request.POST.get('shipcity')
+        shipstate=request.POST.get('shipstate')
+        shippincode=request.POST.get('shippincode')
+        shipcountry=request.POST.get('shipcountry')
+        shipfax=request.POST.get('shipfax')
+        shipphone=request.POST.get('shipphone')
+
+        u = User.objects.get(id = request.user.id)
+
+        vndr = vendor_table(salutation=title, first_name=first_name, last_name=last_name,vendor_display_name = dispn, company_name= comp, gst_treatment=gsttype, gst_number=gstin, 
+                    pan_number=panno,vendor_wphone = w_mobile,vendor_mphone = p_mobile, vendor_email=email,skype_number = skype,
+                    source_supply=supply,currency=currency, website=website, designation = desg, department = dpt,
+                    opening_bal=balance,baddress=street, bcity=city, bstate=state, payment_terms=payment,bzip=pincode, 
+                    bcountry=country, saddress=shipstreet, scity=shipcity, sstate=shipstate,szip=shippincode, scountry=shipcountry,
+                    bfax = fax, sfax = shipfax, bphone = phone, sphone = shipphone,user = u)
+        vndr.save()
+
+        return HttpResponse({"message": "success"})
+        
+@login_required(login_url='login')
+def vendor_dropdown(request):
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = vendor_table.objects.filter(user = user)
+    for option in option_objects:
+        
+        options[option.id] = [option.salutation, option.first_name, option.last_name, option.id]
+    return JsonResponse(options)
+
+
+
+@login_required(login_url='login')
+def recurbills_pay(request):
+    
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        name=request.POST.get('name')
+        days=request.POST.get('days')
+        
+        u = User.objects.get(id = request.user.id)
+
+        pay = payment_terms(Terms=name, Days=days, user = u)
+        pay.save()
+
+        return HttpResponse({"message": "success"})
+        
+@login_required(login_url='login')
+def pay_dropdown(request):
+
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = payment_terms.objects.filter(user = user)
+    for option in option_objects:
+        options[option.id] = [option.Terms,option.Days]
+
+    return JsonResponse(options)
+
+
+@login_required(login_url='login')
+def recurbills_unit(request):
+    
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        unit =request.POST.get('unit')
+        
+        u = User.objects.get(id = request.user.id)
+
+        unit = Unit(unit= unit)
+        unit.save()
+
+        return HttpResponse({"message": "success"})
+        
+@login_required(login_url='login')
+def unit_dropdown(request):
+
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = Unit.objects.all()
+    for option in option_objects:
+        options[option.id] = [option.unit,option.id]
+
+    return JsonResponse(options)
+
+@login_required(login_url='login')
+def recurbills_item(request):
+
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+        
+        type=request.POST.get('type')
+        name=request.POST.get('name')
+        ut=request.POST.get('unit')
+        inter=request.POST.get('inter')
+        intra=request.POST.get('intra')
+        sell_price=request.POST.get('sell_price')
+        sell_acc=request.POST.get('sell_acc')
+        sell_desc=request.POST.get('sell_desc')
+        cost_price=request.POST.get('cost_price')
+        cost_acc=request.POST.get('cost_acc')      
+        cost_desc=request.POST.get('cost_desc')
+        
+        units=Unit.objects.get(id=ut)
+        sel=Sales.objects.get(id=sell_acc)
+        cost=Purchase.objects.get(id=cost_acc)
+
+        history="Created by " + str(request.user)
+
+        u  = User.objects.get(id = request.user.id)
+
+        item=AddItem(type=type,Name=name,p_desc=cost_desc,s_desc=sell_desc,s_price=sell_price,p_price=cost_price,
+                     user=u ,creat=history,interstate=inter,intrastate=intra,unit = units,sales = sel, purchase = cost)
+
+        item.save()
+
+        return HttpResponse({"message": "success"})
+    
+    return HttpResponse("Invalid request method.")
+
+        
+@login_required(login_url='login')
+def item_dropdown(request):
+
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = AddItem.objects.filter(user = request.user)
+    for option in option_objects:
+        options[option.id] = [option.Name,option.id]
+
+    return JsonResponse(options)
+
+
+@login_required(login_url='login')
+def recurbills_account(request):
+
+    company = company_details.objects.get(user = request.user)
+
+
+    if request.method=='POST':
+        type=request.POST.get('actype')
+        name=request.POST['acname']
+        u = User.objects.get(id = request.user.id)
+        
+        acnt=Account(accountType=type,accountName=name,user = u)
+
+        acnt.save()
+
+        return HttpResponse({"message": "success"})
+        
+@login_required(login_url='login')
+def account_dropdown(request):
+
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = Chart_of_Account.objects.filter(user = user)
+    for option in option_objects:
+        options[option.id] = [option.account_name,option.id]
+
+    return JsonResponse(options)
+
+
+@login_required(login_url='login')
+def get_rate(request):
+
+    user = User.objects.get(id=request.user.id)
+    if request.method=='POST':
+        id=request.POST.get('id')
+
+        item = AddItem.objects.get( id = id, user = user)
+         
+        rate = 0 if item.s_price == "" else item.s_price
+
+        return JsonResponse({"rate": rate},safe=False)
+    
+@login_required(login_url='login')
+def get_cust_state(request):
+
+    user = User.objects.get(id=request.user.id)
+    if request.method=='POST':
+
+        id=request.POST.get('id')
+        cust = customer.objects.get(id = id, user = user)
+        cstate = cust.placeofsupply.split("] ")[1]
+        state = 'Not Specified' if cstate == "" else cstate
+
+        return JsonResponse({"state": state},safe=False)
+    
+@login_required(login_url='login')
+def export_pdf(request, id):
+    company = company_details.objects.get(user=request.user)
+    bills = recurring_bills.objects.filter(user=request.user)
+    rbill = recurring_bills.objects.get(user=request.user, id=id)
+    billitem = recurring_bills_items.objects.filter(user=request.user, recur_bills=id)
+
+    comp_state = company.state
+    cust = customer.objects.get(customerName=" ".join(rbill.customer_name.split(" ")[1:]))
+
+    gst_or_igst = "GST" if comp_state == rbill.source_supply else "IGST"
+
+    tax_total = 0
+    for b in billitem:
+        tax_total += b.tax
+
+    template_path = 'view_recurring_bills.html'
+    context = {
+        'company': company,
+        'recur_bills': bills,
+        'recur_bill': rbill,
+        'bill_item': billitem,
+        'tax': tax_total,
+        "gst_or_igst": gst_or_igst,
+        'customer': cust,
+    }
+     
+    fname= rbill.profile_name
+   
+    # Create a Django response object, and specify content_type as pdftemp_creditnote
+    response = HttpResponse(content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+    response['Content-Disposition'] =f'attachment; filename= {fname}.pdf'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF( html, dest=response)
+ 
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+
+
+@login_required(login_url='login')
+def recurbill_comment(request):
+
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+        id =request.POST.get('id')
+        cmnt =request.POST.get('comment')
+        
+        u = User.objects.get(id = request.user.id)
+        r_bill = recurring_bills.objects.get(user = request.user, id = id)
+        r_bill.comments = cmnt
+        r_bill.save()
+
+        return HttpResponse({"message": "success"})
+
+@login_required(login_url='login')
+def recurbill_add_file(request,id):
+
+    company = company_details.objects.get(user = request.user)
+    bill = recurring_bills.objects.get(user = request.user,id=id)
+    print(bill)
+
+    if request.method == 'POST':
+
+        bill.document=request.POST.get('file')
+
+        if len(request.FILES) != 0:
+             
+            bill.document = request.FILES['file']
+
+        bill.save()
+        return redirect('view_recurring_bills',id)
+    
+
+@require_POST
+def recurbill_email(request,id):
+
+    company = company_details.objects.get(user = request.user)
+    bill = recurring_bills.objects.get(user = request.user,id=id)
+
+    if request.method == 'POST':
+
+        recipient =request.POST.get('recipient')
+        sender =request.POST.get('sender')
+        sub =request.POST.get('subject')
+        message =request.POST.get('message')
+
+    script_directory = os.path.dirname(os.path.abspath(_file_))
+    template_filename = 'view_recurring_bills.html'
+    template_path = os.path.join(script_directory, 'templates', template_filename)
+
+    with open(template_path, 'r') as file:
+        html_content = file.read()
+        
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+    section = soup.find('div', class_='print-only')
+    section_html = section.prettify()
+    template = Template(section_html)
+
+    if template:
+        prntonly_content = str(template)
+
+    # print(prntonly_content)
+    with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
+        temp_file.write(prntonly_content.encode('utf-8'))
+
+    with open(temp_file.name, 'rb') as attachment_file:
+        attachment_content = attachment_file.read()
+
+    email = EmailMessage(
+        subject=sub,
+        body=message,
+        from_email=sender,
+        to=[recipient],
+    )
+    email.attach('Recurring Bill',attachment_content , 'text/html')
+
+    email.send()
+     
+    return HttpResponse(status=200)
+    
+    
+def get_comments(request, profile_name):
+    expenses = Expense.objects.filter(profile_name=profile_name)
+    comments = [expense.comments for expense in expenses if expense.comments]
+    return JsonResponse(comments,safe=False)

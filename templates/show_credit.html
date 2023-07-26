@@ -4,20 +4,8 @@
 
 
 <style>
-    #over:hover{
-        background-color: rgba(110, 110, 110, 0.616);
-        font-weight:bold ;
-    }
-    .box{
-        height: 30px;
-        display: flex;
-        cursor: pointer;
-        padding: 10px 20px;
-        background: #fff;
-        border-radius: 30px;
-        align-items: center;
-        box-shadow: 0 10px 25px #9d1c1c9f;
-    }
+    
+  
 
 </style>
 
@@ -29,13 +17,14 @@
                 <div class="row">
                     <div class="col-md-2">
                         <!-- <input type="text" id="myInput"  onkeyup="myFunction()" placeholder="search for names" style="border-radius: 15px;">  -->
-                        <input type="text" id="myInput" onkeyup="myFunction()" class="form-control text-black" placeholder="Search vendors..." style="margin-top: 5px; width: 450%;background-color:white;">
+                        <input type="text" id="myInput" onkeyup="myFunction()" class="form-control text-black" placeholder="Search vendors..." style="margin-top: 2px; width: 450%;background-color:white;">
 
                     </div>
-                    <div class="col-md form-inline" style="margin-left: 9rem;margin-top: -2rem;">  
+
+                    <div class="col-md-4 form-inline" style="margin-left: 10rem;margin-top: -2rem;">  
                         <div class="row">
                             <div class="col-md-6">
-                                <a  class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+ New</a>
+                                <a  class="btn btn-success mr-2" href="{% url 'vendor_credits' %}">+New</a>
                                 
                             </div>
                             <div class="col-md-5">
@@ -76,11 +65,51 @@
                 </div>
             </div>
          
-            <div class="col-sm-12 col-md-8 col-lg-8" >
-                <div class="row">
-                    <div class="col-sm-12 col-md-8 col-lg-8 mt-1">              
-                        <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{vcredit.company_name}}</a>
+            <div class="col-sm-12 col-md-8 col-lg-8" style="margin-top: -1rem;">
+                <div>
+                    <span class="input-group mb-1 pt-3" style="border-bottom: 1px solid rgb(37, 37, 37);border-top: 1px solid rgb(37, 37, 37);">
+
+                        <div >              
+                            <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;{{vcredit.company_name}}</a>
+                        </div>
+                        <div id="over" class="toggle1" style="font-size: 22px;">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <button onclick="fieldset1_function()" class="btn btn-warning">Overview</button>
+                        </div>&nbsp;
+                      
+                        <div id="over" class="toggle2" style="font-size: 22px;">
+                          <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button>
+                        </div>&nbsp;
+                      
+                        <div id="over" class="toggle4" style="font-size: 22px;">
+                          <button onclick="fieldset3_function()" class="btn btn-warning">Mail</button>
+                        </div>&nbsp;
+                      
+                        <div id="over" class="toggle6" style="font-size: 22px;">
+                          <button onclick="fieldset5_function()" class="btn btn-warning">Attach</button>
+                        </div>&nbsp;
+                      
+                        <!-- <div id="over" style="font-size: 22px;">
+                          <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-warning" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                        </div>&nbsp;&nbsp; -->
+    
+                        <div id="over" style="font-size: 22px;">
+                            <a  class="btn btn-warning mr-2 " href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
+                          </div>&nbsp;
+    
+                          <div id="over" style="font-size: 22px;">
+                            <a  class="btn btn-warning mr-2" href="{% url 'edit_vendor_credits' vcredit.id %}"></i>Edit</a>
+                          </div>&nbsp;
+    
+                          <div id="over" style="font-size: 22px;">
+                            <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                          </div>
+                      </span>
                     </div>
+                <div class="row">
+                    
+                    <!-- <div class="col-sm-12 col-md-8 col-lg-8 mt-1">              
+                        <a class="text-white" style="font-size: 2rem;"><i class="fa-sharp fa-regular fa-circle-dot"></i>&nbsp;&nbsp;{{vcredit.company_name}}</a>
+                    </div> -->
 
                     <!-- <div class="col-sm-1 col-md-1 col-lg-2 mt-3"> 
                         <a style="color: #ccc;" class="btn btn-primary mr-2" href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
@@ -93,44 +122,12 @@
                         <a style="color: #ccc;background-color: rgb(46, 46, 46);" class="btn  mr-2" href=""></i><i class="fa-sharp fa-solid fa-xmark"></i></a> -->
                     <!-- </div>                     -->
                 </div>
-                <span class="input-group mb-1 pt-3" style="border-bottom: 1px solid rgb(37, 37, 37);border-top: 1px solid rgb(37, 37, 37);">
-                    <div id="over" class="toggle1" style="font-size: 22px;">
-                      <button onclick="fieldset1_function()" class="btn btn-warning">Overview</button>
-                    </div>&nbsp;&nbsp;
-                  
-                    <div id="over" class="toggle2" style="font-size: 22px;">
-                      <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button>
-                    </div>&nbsp;&nbsp;
-                  
-                    <div id="over" class="toggle4" style="font-size: 22px;">
-                      <button onclick="fieldset3_function()" class="btn btn-warning">Mail</button>
-                    </div>&nbsp;&nbsp;
-                  
-                    <div id="over" class="toggle6" style="font-size: 22px;">
-                      <button onclick="fieldset5_function()" class="btn btn-warning">Attach</button>
-                    </div>&nbsp;&nbsp;
-                  
-                    <!-- <div id="over" style="font-size: 22px;">
-                      <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-warning" onclick="return confirm('Are you sure to delete?')">Delete</a>
-                    </div>&nbsp;&nbsp; -->
-
-                    <div id="over" style="font-size: 22px;">
-                        <a  class="btn btn-warning mr-2 " href="{% url 'credits_statement' vcredit.id %}"></i>Statement</a>
-                      </div>&nbsp;&nbsp;
-
-                      <div id="over" style="font-size: 22px;">
-                        <a  class="btn btn-warning mr-2" href="{% url 'edit_vendor_credits' vcredit.id %}"></i>Edit</a>
-                      </div>&nbsp;&nbsp;
-
-                      <div id="over" style="font-size: 22px;">
-                        <a href="{% url 'credit_delete_vendor' vcredit.id %}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')">Delete</a>
-                      </div>&nbsp;&nbsp;
-                  </span>
+                
                   
                   
 
                   <fieldset1 id="overview" class="Overview" >
-                    <div style="height: 400px;overflow-y: scroll;">
+                    <div style="height: 400px;">
                             <div class="form-group row mt-4">
                                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
                                 <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Company Name*</label></div>
@@ -168,12 +165,22 @@
                                     <label style="font-weight: bold;">{{ vcredit.grandtotal }}</label>      
                                  </div>   
                             </div>
+
                             <div class="form-group row">
                                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
     
-                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Order Number</label></div>
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color:rgb(214, 75, 75) ;font-weight: bold;">Credit Note</label></div>
                                  <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
-                                    <label style="font-weight:bold;">{{ vcredit.order_no }}</label>      
+                                    <label style="font-weight:bold;">{{ vcredit.credit_note }}</label>      
+                                 </div>   
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12 col-md-2 col-lg-2"></div>
+    
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);font-size:medium;">Order Number</label></div>
+                                 <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
+                                    <label style="font-weight:lighter;">{{ vcredit.order_no }}</label>      
                                  </div>   
                             </div>
                         <div class="form-group row">
@@ -192,14 +199,7 @@
                                 <label style="font-weight:lighter;">{{ vcredit.source_supply }} </label>      
                              </div>   
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-md-2 col-lg-2"></div>
-
-                            <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">Credit Note</label></div>
-                             <div class="col-sm-12 col-md-6 col-lg-6 col-form-label">
-                                <label style="font-weight:lighter;">{{ vcredit.credit_note }}</label>      
-                             </div>   
-                        </div>
+                        
                         
                                          
                         
@@ -259,7 +259,7 @@
 
                         </div>
                     </div>
-                    <div style="height: 450px;overflow-y: scroll;">
+                    <div style="height: 450px;">
                         <form action="{% url 'credit_sendmail' vcredit.id %}" method="post" enctype="multipart/form-data" class="was-validated">
                             {% csrf_token %}
                             <div class="form-group row mt-4">
@@ -303,7 +303,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
-                                <div style="height: 400px;overflow-y: scroll;">
+                                <div style="height: 400px;">
                                     
                                 
                                     <div class="row">
@@ -394,7 +394,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
-                                <div style="height: 400px;overflow-y: scroll;">
+                                <div style="height: 400px;">
                                     
                                 
                                     <div class="row">
@@ -438,7 +438,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4"></div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="fixed-top" style="top: 16rem; margin-left: 18rem;">
-                                <div style="height: 400px;overflow-y: scroll;">
+                                <div style="height: 400px;">
                                     
                                 
                                     <div class="row">
@@ -480,41 +480,6 @@
                   </fieldset7>
 
 
-                  <!-- <fieldset7 id="com_list" style="display: none;">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
-                            <div class="fixed-top" style="top: 22rem; margin-left: 18rem;">
-                                <div style="height: 400px;overflow-y: scroll;">
-                                    
-                                
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
-        
-                                        <div class="col-sm-12 col-md-8 col-lg-8">
-                                            <table class="table text-white">
-                                                <thead>
-                                                  <tr>
-                                                    <th>Comment</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody id="over">
-                                                  {% for v in cdata %}
-                                                  <tr>
-                                                    <td>{{ v.comment }}</td>
-                                                  </tr>
-                                                  {% endfor %}
-                                                </tbody>
-                                              </table>
-                                              
-                                        </div>                           
-                                    </div>                           
-                                </div>                           
-                            </div>
-                        </div>
-                    </div>
-                  </fieldset7> -->
             </div>
         </div>
     </div>
