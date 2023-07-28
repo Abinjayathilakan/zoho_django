@@ -2772,21 +2772,54 @@ def show_credits(request,pk):
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
     vcredit=Vendor_Credits.objects.get(id=pk)
-    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
+    proj=Credits_comments_table.objects.filter(id=pk)
+    projc = get_object_or_404(Credits_comments_table, id=pk)
+    print(proj)
+    proje=Credits_comments_table.objects.filter(user=request.user)
+    project = get_object_or_404(Credits_comments_table, id=pk)
+    
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            projc.comment = comment_text  # Set the comment field of the specific project object
+            projc.save()  # Save the project object with the updated comment
+
+
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata})
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'proj':proj,'proje':proje,'project':project,'projc':projc})
 
-def Credits_add_comment(request,pk):
-    if request.method=='POST':
-        c_comment=request.POST['comment']
-        c_user_id=request.user.id
-        c_data=User.objects.get(id=c_user_id)
-        c_data2=Vendor_Credits.objects.get(id=pk)
-        comments= Credits_comments_table(user=c_data,vendor=c_data2,comment=c_comment)
-        comments.save()
-        return redirect("vendor_credits_home")
+
+from django.shortcuts import get_object_or_404
+
+def commentdb(request, pk):
+    print("Received pk:", pk)
+    
+    projc = get_object_or_404(Credits_comments_table, pk=pk)
+    print("Found projc:", projc)
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            if projc.comment:
+                projc.comment += "\n" + comment_text  # Add new comment to existing comments
+            else:
+                projc.comment = comment_text  # If no comments exist, set it as the first comment
+            projc.save()
+
+    return redirect('vendor_credits_home', pk=pk)
+# def Credits_add_comment(request,pk):
+#     if request.method=='POST':
+#         c_comment=request.POST['comment']
+#         c_user_id=request.user.id
+#         c_data=User.objects.get(id=c_user_id)
+#         c_data2=Vendor_Credits.objects.get(id=pk)
+#         comments= Credits_comments_table(user=c_data,vendor=c_data2,comment=c_comment)
+#         comments.save()
+#         return redirect("vendor_credits_home")
+
+
 
 def credit_sendmail(request,pk):
     if request.method=='POST':

@@ -5,7 +5,43 @@
 
 <style>
     
-  
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999; /* Set a high z-index to bring the modal to the front */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    }
+    
+    .modal-content {
+        background-color: #fefefe; /* Opaque background for the content */
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+    }
+    
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover {
+        color: #000;
+    }
+    
+    /* Style for the text area */
+    textarea {
+        width: 100%;
+        resize: vertical;
+        margin-bottom: 10px;
+    } 
 
 </style>
 
@@ -76,8 +112,11 @@
                           <button onclick="fieldset1_function()" class="btn btn-warning">Overview</button>
                         </div>&nbsp;
                       
-                        <div id="over" class="toggle2" style="font-size: 22px;">
+                        <!-- <div id="over" class="toggle2" style="font-size: 22px;">
                           <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button>
+                        </div> -->
+                        <div id="over" class="toggle2" style="color: rgb(230, 171, 45); font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 22px;">
+                            <a href="#" class="btn btn-warning" onclick="openModal()">Comments</a>
                         </div>&nbsp;
                       
                         <div id="over" class="toggle4" style="font-size: 22px;">
@@ -211,23 +250,11 @@
                   </fieldset1> 
 
                   <fieldset2 id="comments" style="display: none;">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-4 col-lg-4">
-
-                        </div>
-                        <div class="col-sm-12 col-md-4 col-lg-4"></div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
-                            <br>
-                            <button style="color: #ccc;" class="btn btn-info mr-2" onclick="fieldset7_function()">View Comments</button> 
-
-                        </div>
-                    </div>
-                    
-                    <form action="{% url 'Credits_add_comment' vcredit.id %}" method="post">
+                    <form action="#" method="post">
                         {% csrf_token %}
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                 <textarea name="comment" id="commentInput" cols="60" rows="5" required> </textarea>
+                                 <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
                                  <div class="valid-feedback">Valid.</div>
                                  <div class="invalid-feedback">Please fill out this field.</div> 
                                  <label>(For Internal Use)</label> 
@@ -239,12 +266,7 @@
                                    <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
                             </div>
                         </div>
-                    </form>   
-                    <br><br>
-                    <!-- <div class="col-sm-12 col-md-4 col-lg-4">
-                        <button style="color: #ccc;" class="btn btn-primary mr-2" onclick="fieldset7_function()">Comments</button> 
-
-                    </div>                 -->
+                    </form>
                   </fieldset2>
 
                   <fieldset3 id="mail" style="display: none;">
@@ -266,7 +288,7 @@
                                 <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label style="color: rgb(230, 171, 45);">To</label></div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                      <!-- <label class="col-form-label" name="email" style="color: white;">{{ vcredit.vendor_email }}</label>   -->
-                                     <input type="email" name="email" class="form-control" value="{{ vcredit.vendor_email }}" readonly>
+                                     <input type="email" name="email" class="form-control text-black" value="{{ vcredit.vendor_email }}" readonly>
                                 </div>
     
                             </div>
@@ -484,6 +506,109 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div id="commentModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content bg-dark">
+        <span class="close" onclick="closeModal()">&times;</span>
+        
+        <form method="post" action="{% url 'commentdb' projc.id %}">
+
+            {% csrf_token %}
+            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
+            <!-- Hidden textarea to store previous comments -->
+<textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
+
+            <button type="submit" class="btn btn-warning">Save</button>
+            <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
+            <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // ... Your existing JavaScript code ...
+
+    function viewComment() {
+        var commentTextArea = document.getElementById("commentTextArea");
+        var hiddenComments = document.getElementById("hiddenComments");
+
+        // Set the textarea value with the value fetched from the database
+        commentTextArea.value = hiddenComments.value;
+
+        var modal = document.getElementById("commentModal");
+        modal.style.display = "block";
+    }
+
+    // ... Your existing JavaScript code ...
+</script>
+    
+
+
+<script>
+    function saveComment() {
+        var comment = document.getElementById("commentTextArea").value;
+        var projId = '{{ proj.id }}'; // Assuming 'proj' variable is passed from Django view
+        var csrfToken = '{{ csrf_token }}'; // Assuming CSRF token is passed from Django template
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/commentdb/' + projId + '/');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', csrfToken);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log('Comment saved:', comment);
+                closeModal();
+            } else {
+                console.error('Failed to save comment:', xhr.statusText);
+            }
+        };
+
+        xhr.send('comment=' + encodeURIComponent(comment));
+    }
+</script>
+
+
+<script>
+ // Create an array to store comments
+var comments = [];
+
+function openModal() {
+    var modal = document.getElementById("commentModal");
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    var modal = document.getElementById("commentModal");
+    modal.style.display = "none";
+}
+
+function saveComment() {
+    var comment = document.getElementById("commentTextArea").value;
+    comments.push(comment); // Save the comment to the array
+    console.log("Comment saved:", comment);
+    closeModal();
+}
+
+
+
+function clearTextArea() {
+    var commentTextArea = document.getElementById("commentTextArea");
+    commentTextArea.value = ""; // Clear the text in the textarea
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function (event) {
+    var modal = document.getElementById("commentModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
 
 <script>
    

@@ -138,9 +138,13 @@ urlpatterns = [
     
     path('getitems2',views.getitems2,name='getitems2'),
     path('itemview',views.itemview,name='itemview'),
-    path('show_credits/<int:pk>', views.show_credits, name='show_credits'),
     
-    path(' Credits_add_comment/<int:pk>',views.Credits_add_comment,name='Credits_add_comment'),
+    
+    path('show_credits/<int:pk>', views.show_credits, name='show_credits'),
+    path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
+    
+    
+    #path(' Credits_add_comment/<int:pk>',views.Credits_add_comment,name='Credits_add_comment'),
     path('credit_sendmail/<int:pk>',views.credit_sendmail,name='credit_sendmail'),
     
     #path('edit_credit/<int:pk>',views.edit_credit,name='edit_credit'),
@@ -156,6 +160,8 @@ urlpatterns = [
     path('itemdata2',views.itemdata2,name='itemdata2'),
     path('additem_vendor_credit',views.additem_vendor_credit,name='additem_vendor_credit'),
     path('add_customer_for_vcredit',views.add_customer_for_vcredit,name='add_customer_for_vcredit'),
+    
+    
 
 
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
