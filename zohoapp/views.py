@@ -2775,8 +2775,8 @@ def show_credits(request,pk):
     proj=Credits_comments_table.objects.filter(id=pk)
     projc = get_object_or_404(Credits_comments_table, id=pk)
     print(proj)
-    proje=Credits_comments_table.objects.filter(user=request.user)
-    project = get_object_or_404(Credits_comments_table, id=pk)
+    proje=Credits_comments_table.objects.filter(id=pk)
+    proje = get_object_or_404(Credits_comments_table, id=pk)
     
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
@@ -2788,16 +2788,10 @@ def show_credits(request,pk):
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'proj':proj,'proje':proje,'project':project,'projc':projc})
-
-
-from django.shortcuts import get_object_or_404
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'proje':proje,})
 
 def commentdb(request, pk):
-    print("Received pk:", pk)
-    
-    projc = get_object_or_404(Credits_comments_table, pk=pk)
-    print("Found projc:", projc)
+    projc = get_object_or_404(Credits_comments_table, id=pk)
 
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
@@ -2808,7 +2802,8 @@ def commentdb(request, pk):
                 projc.comment = comment_text  # If no comments exist, set it as the first comment
             projc.save()
 
-    return redirect('vendor_credits_home', pk=pk)
+    return redirect('vendor_credits_home', id=pk)
+
 # def Credits_add_comment(request,pk):
 #     if request.method=='POST':
 #         c_comment=request.POST['comment']
