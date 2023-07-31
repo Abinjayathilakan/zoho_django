@@ -2765,30 +2765,32 @@ def vendor_credits(request):
 #     udata=User.objects.get(id=user_id)
 #     data=Vendor_Credits.objects.filter(user=udata)
 #     return render(request,'view_vendor_credits.html',{'data':data})
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 
+def show_credits(request, pk):
+    print("Received pk:", pk)
+    user_id = request.user.id
+    udata = get_object_or_404(User, id=user_id)
+    vdata1 = Vendor_Credits.objects.filter(user=udata)
+    vcredit = get_object_or_404(Vendor_Credits, id=pk)
+    mdata = Credits_mail_table.objects.filter(vendor=vcredit)
+    ddata = Credits_doc_upload_table.objects.filter(user=udata, vendor=vcredit)
 
-def show_credits(request,pk):
-    user_id=request.user.id
-    udata=User.objects.get(id=user_id)
-    vdata1=Vendor_Credits.objects.filter(user=udata)
-    vcredit=Vendor_Credits.objects.get(id=pk)
-    proj=Credits_comments_table.objects.filter(id=pk)
-    projc = get_object_or_404(Credits_comments_table, id=pk)
-    print(proj)
-    proje=Credits_comments_table.objects.filter(id=pk)
-    proje = get_object_or_404(Credits_comments_table, id=pk)
-    
+    projc_qs = Credits_comments_table.objects.filter(id=pk)
+    proje = Credits_comments_table.objects.filter(user=request.user)
+
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
         if comment_text:
-            projc.comment = comment_text  # Set the comment field of the specific project object
-            projc.save()  # Save the project object with the updated comment
+            projc_qs.comment = comment_text
+            projc_qs.save(update_fields=['comment'])  # Update only the comment field
 
+    return render(request, 'show_credit.html', {'vdata': vdata1, 'vcredit': vcredit, 'mdata': mdata, 'ddata': ddata, 'projc_qs': projc_qs, 'proje': proje})
 
-    mdata=Credits_mail_table.objects.filter(vendor=vcredit)
-    ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
-
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'proje':proje,})
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
+from .models import Credits_comments_table
 
 def commentdb(request, pk):
     projc = get_object_or_404(Credits_comments_table, id=pk)
@@ -2797,12 +2799,13 @@ def commentdb(request, pk):
         comment_text = request.POST.get('comment')
         if comment_text:
             if projc.comment:
-                projc.comment += "\n" + comment_text  # Add new comment to existing comments
+                projc.comment += "\n" + comment_text
             else:
-                projc.comment = comment_text  # If no comments exist, set it as the first comment
+                projc.comment = comment_text
             projc.save()
 
-    return redirect('vendor_credits_home', id=pk)
+    return redirect('vendor_credits_home', pk=pk)
+
 
 # def Credits_add_comment(request,pk):
 #     if request.method=='POST':
@@ -2995,6 +2998,7 @@ def credits_statement(request,id):
         
                     }
     return render(request,'vender_credit_state.html',context)
+
 
 
 

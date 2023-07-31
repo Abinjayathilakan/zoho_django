@@ -140,8 +140,10 @@ urlpatterns = [
     path('itemview',views.itemview,name='itemview'),
     
     
-    path('show_credits/<int:pk>', views.show_credits, name='show_credits'),
-    path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
+    path('show_credits/<int:pk>/', views.show_credits, name='show_credits'),
+path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
+
+    #path('overview/<int:id>',views.overview,name='overview'),
     
     
     #path(' Credits_add_comment/<int:pk>',views.Credits_add_comment,name='Credits_add_comment'),

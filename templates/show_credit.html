@@ -89,7 +89,7 @@
                                 <tbody id="myTable"  >
                                   {% for v in vdata %}                    
                                   <tr id="over">                     
-                                    <td><i class="fa-sharp fa-light fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a id="aover" href="{% url 'show_credits' v.id %}" style="color: rgb(230, 171, 45);">{{v.company_name}} </a></td>     
+                                    <td><i class="fa-sharp fa-light fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="aover" href="{% url 'show_credits' v.id %}" style="color: rgb(230, 171, 45);">{{v.company_name}} </a></td>     
                                     <td>{{v.vendor_date}}</td>  
                                     <td>{{v.grandtotal}}</td>                      
                                   </tr>
@@ -249,25 +249,45 @@
                     <br><br><br> <br><br>          
                   </fieldset1> 
 
-                  <fieldset2 id="comments" style="display: none;">
-                    <form action="#" method="post">
-                        {% csrf_token %}
-                        <div class="form-group row mt-4">
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                 <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
-                                 <div class="valid-feedback">Valid.</div>
-                                 <div class="invalid-feedback">Please fill out this field.</div> 
-                                 <label>(For Internal Use)</label> 
-                                 
-                            </div>
-                        </div> 
-                        <div class="row mt-4">
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                   <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
-                            </div>
-                        </div>
-                    </form>
-                  </fieldset2>
+<!-- Show the comment fieldset only if projc is not None -->
+
+<fieldset2 id="comments" style="display: none;">
+    <form action="#" method="post">
+        {% csrf_token %}
+        <div class="form-group row mt-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                 <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
+                 <div class="valid-feedback">Valid.</div>
+                 <div class="invalid-feedback">Please fill out this field.</div> 
+                 <label>(For Internal Use)</label> 
+            </div>
+        </div> 
+        <div class="row mt-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                   <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
+            </div>
+        </div>
+    </form>
+</fieldset2>
+<div id="commentModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content bg-dark">
+        <span class="close" onclick="closeModal()">&times;</span>
+        
+        <form method="post" action="{% url 'commentdb' vcredit.id %}">
+            {% csrf_token %}
+            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
+            <!-- Hidden textarea to store previous comments -->
+            <textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
+
+            <button type="submit" class="btn btn-warning">Save</button>
+            <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
+            <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
+        </form>
+    </div>
+</div>
+
+
 
                   <fieldset3 id="mail" style="display: none;">
                     <div class="row">
@@ -509,24 +529,24 @@
 
 
 <!-- Modal -->
-<div id="commentModal" class="modal">
-    <!-- Modal content -->
+<!-- <div id="commentModal" class="modal">
+   
     <div class="modal-content bg-dark">
         <span class="close" onclick="closeModal()">&times;</span>
         
-        <form method="post" action="{% url 'commentdb' projc.id %}">
+        <form method="post" action="{% url 'commentdb' vcredit.id %}">
 
             {% csrf_token %}
-            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
+            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea> -->
             <!-- Hidden textarea to store previous comments -->
-<textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
+<!-- <textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
 
             <button type="submit" class="btn btn-warning">Save</button>
             <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
             <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
         </form>
     </div>
-</div>
+</div> -->
 
 <script>
     // ... Your existing JavaScript code ...
