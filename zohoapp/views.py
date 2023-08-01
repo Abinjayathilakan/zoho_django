@@ -2777,34 +2777,38 @@ def show_credits(request, pk):
     mdata = Credits_mail_table.objects.filter(vendor=vcredit)
     ddata = Credits_doc_upload_table.objects.filter(user=udata, vendor=vcredit)
 
-    projc_qs = Credits_comments_table.objects.filter(id=pk)
-    proje = Credits_comments_table.objects.filter(user=request.user)
 
-    if request.method == 'POST':
-        comment_text = request.POST.get('comment')
-        if comment_text:
-            projc_qs.comment = comment_text
-            projc_qs.save(update_fields=['comment'])  # Update only the comment field
 
-    return render(request, 'show_credit.html', {'vdata': vdata1, 'vcredit': vcredit, 'mdata': mdata, 'ddata': ddata, 'projc_qs': projc_qs, 'proje': proje})
+    return render(request, 'show_credit.html', {'vdata': vdata1, 'vcredit': vcredit, 'mdata': mdata, 'ddata': ddata})
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
-from .models import Credits_comments_table
+def add_payrollcomment(request,pid):
+    p=Vendor_Credits.objects.get(id=pid)
+    if request.method== 'POST':
+        comment=request.POST['comments']
+        c= Credits_comments_table(comment=comment,payroll=p)
+        c.save()
+    return redirect('payroll_view',id=pid)
+def delete_payrollcomment(request,cid,pid):
+    try:
+        comment = Credits_comments_table.objects.get(id=cid,payroll=pid)
+        comment.delete()
+        return redirect('payroll_view', pid)
+    except:
+        return redirect('payroll_view', pid)
 
-def commentdb(request, pk):
-    projc = get_object_or_404(Credits_comments_table, id=pk)
+# def commentdb(request, pk):
+#     projc = get_object_or_404(Credits_comments_table, id=pk)
 
-    if request.method == 'POST':
-        comment_text = request.POST.get('comment')
-        if comment_text:
-            if projc.comment:
-                projc.comment += "\n" + comment_text
-            else:
-                projc.comment = comment_text
-            projc.save()
+#     if request.method == 'POST':
+#         comment_text = request.POST.get('comment')
+#         if comment_text:
+#             if projc.comment:
+#                 projc.comment += "\n" + comment_text
+#             else:
+#                 projc.comment = comment_text
+#             projc.save()
 
-    return redirect('vendor_credits_home', pk=pk)
+#     return redirect('vendor_credits_home', pk=pk)
 
 
 # def Credits_add_comment(request,pk):
