@@ -2765,50 +2765,31 @@ def vendor_credits(request):
 #     udata=User.objects.get(id=user_id)
 #     data=Vendor_Credits.objects.filter(user=udata)
 #     return render(request,'view_vendor_credits.html',{'data':data})
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
 
-def show_credits(request, pk):
-    print("Received pk:", pk)
-    user_id = request.user.id
-    udata = get_object_or_404(User, id=user_id)
-    vdata1 = Vendor_Credits.objects.filter(user=udata)
-    vcredit = get_object_or_404(Vendor_Credits, id=pk)
-    mdata = Credits_mail_table.objects.filter(vendor=vcredit)
-    ddata = Credits_doc_upload_table.objects.filter(user=udata, vendor=vcredit)
+def show_credits(request,pk):
+    user_id=request.user.id
+    udata=User.objects.get(id=user_id)
+    vdata1=Vendor_Credits.objects.filter(user=udata)
+    vcredit=Vendor_Credits.objects.get(id=pk)
+    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
+    mdata=Credits_mail_table.objects.filter(vendor=vcredit)
+    ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
+    return render(request,'show_credit_2.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata})
 
+def commentdb(request, id):
+    vcredit = get_object_or_404(Credits_comments_table, id=id)
 
-    return render(request, 'show_credit.html', {'vdata': vdata1, 'vcredit': vcredit, 'mdata': mdata, 'ddata': ddata})
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            if vcredit.comment:
+                vcredit.comment += "\n" + comment_text  # Add new comment to existing comments
+            else:
+                vcredit.comment = comment_text  # If no comments exist, set it as the first comment
+            vcredit.save()
 
-def add_payrollcomment(request,pid):
-    p=Vendor_Credits.objects.get(id=pid)
-    if request.method== 'POST':
-        comment=request.POST['comments']
-        c= Credits_comments_table(comment=comment,payroll=p)
-        c.save()
-    return redirect('payroll_view',id=pid)
-def delete_payrollcomment(request,cid,pid):
-    try:
-        comment = Credits_comments_table.objects.get(id=cid,payroll=pid)
-        comment.delete()
-        return redirect('payroll_view', pid)
-    except:
-        return redirect('payroll_view', pid)
-
-# def commentdb(request, pk):
-#     projc = get_object_or_404(Credits_comments_table, id=pk)
-
-#     if request.method == 'POST':
-#         comment_text = request.POST.get('comment')
-#         if comment_text:
-#             if projc.comment:
-#                 projc.comment += "\n" + comment_text
-#             else:
-#                 projc.comment = comment_text
-#             projc.save()
-
-#     return redirect('vendor_credits_home', pk=pk)
+    return redirect('vendor_credits_home', id=id)
 
 
 # def Credits_add_comment(request,pk):

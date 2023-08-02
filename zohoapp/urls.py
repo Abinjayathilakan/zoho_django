@@ -141,7 +141,7 @@ urlpatterns = [
     
     
     path('show_credits/<int:pk>/', views.show_credits, name='show_credits'),
-    #path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
+    path('commentdb/<int:id>/', views.commentdb, name='commentdb'),
 
     #path('overview/<int:id>',views.overview,name='overview'),
     
