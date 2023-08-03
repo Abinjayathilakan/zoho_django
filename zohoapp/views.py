@@ -2771,11 +2771,22 @@ def show_credits(request,pk):
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
     vcredit=Vendor_Credits.objects.get(id=pk)
-    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    return render(request,'show_credit_2.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata})
+    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
+    
+    
+    proje=Credits_comments_table.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            cdata.comment = comment_text  # Set the comment field of the specific project object
+            cdata.save()  # Save the project object with the updated comment
+
+    
+    return render(request,'show_credit_2.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata,'proje':proje})
 
 def commentdb(request, id):
     vcredit = get_object_or_404(Credits_comments_table, id=id)
@@ -2784,12 +2795,13 @@ def commentdb(request, id):
         comment_text = request.POST.get('comment')
         if comment_text:
             if vcredit.comment:
-                vcredit.comment += "\n" + comment_text  # Add new comment to existing comments
+                vcredit.comment += "\n" + comment_text
             else:
-                vcredit.comment = comment_text  # If no comments exist, set it as the first comment
+                vcredit.comment = comment_text
             vcredit.save()
 
-    return redirect('vendor_credits_home', id=id)
+    # After adding the comment, redirect back to the show_credits view.
+    return redirect('show_credits', pk=vcredit.vendor.id)
 
 
 # def Credits_add_comment(request,pk):
