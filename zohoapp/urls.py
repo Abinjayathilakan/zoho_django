@@ -161,6 +161,7 @@ urlpatterns = [
     path('credits_statement/<int:id>',views.credits_statement,name='credits_statement'),
     
     path('itemdata2',views.itemdata2,name='itemdata2'),
+    path('additem_vendor_page',views.additem_vendor_page,name='additem_vendor_page'),
     path('additem_vendor_credit',views.additem_vendor_credit,name='additem_vendor_credit'),
     path('add_customer_for_vcredit',views.add_customer_for_vcredit,name='add_customer_for_vcredit'),
     

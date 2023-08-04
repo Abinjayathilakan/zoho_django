@@ -3282,7 +3282,7 @@ def add_customer_for_vcredit(request):
 #             return redirect("vendor_credits")
 #         return render(request,"add_vendor_vcredits.html",)
         
-def additem_vendor_credit(request):
+def additem_vendor_page(request):
     unit=Unit.objects.all()
     sale=Sales.objects.all()
     purchase=Purchase.objects.all()
@@ -3295,13 +3295,13 @@ def additem_vendor_credit(request):
     
     
 
-    return render(request,'additem_est.html',{'unit':unit,'sale':sale,'purchase':purchase,
+    return render(request,'add_vendor_credit_items.html',{'unit':unit,'sale':sale,'purchase':purchase,
                
                             "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
                             
                             })
 
-def additem_est(request):
+def additem_vendor_credit(request):
     if request.user.is_authenticated:
         if request.method=='POST':
             radio=request.POST.get('radio')
