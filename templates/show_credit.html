@@ -251,41 +251,25 @@
 
 <!-- Show the comment fieldset only if projc is not None -->
 
-<fieldset2 id="comments" style="display: none;">
-    <form action="#" method="post">
-        {% csrf_token %}
-        <div class="form-group row mt-4">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-                 <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
-                 <div class="valid-feedback">Valid.</div>
-                 <div class="invalid-feedback">Please fill out this field.</div> 
-                 <label>(For Internal Use)</label> 
-            </div>
-        </div> 
-        <div class="row mt-4">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-                   <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
-            </div>
-        </div>
-    </form>
-</fieldset2>
-<div id="commentModal" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content bg-dark">
-        <span class="close" onclick="closeModal()">&times;</span>
-        
-        <form method="post" action="{% url 'commentdb' vcredit.id %}">
-            {% csrf_token %}
-            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
-            <!-- Hidden textarea to store previous comments -->
-            <textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
-
-            <button type="submit" class="btn btn-warning">Save</button>
-            <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
-            <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
-        </form>
-    </div>
-</div>
+            <fieldset2 id="comments" style="display: none;">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="form-group row mt-4">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <textarea name="comment" id="" cols="60" rows="5" required> </textarea>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please fill out this field.</div> 
+                            <label>(For Internal Use)</label> 
+                        </div>
+                    </div> 
+                    <div class="row mt-4">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <input type="submit" class="btn btn-primary form-control" value="Add Comment">   
+                        </div>
+                    </div>
+                </form>
+            </fieldset2>
+            
 
 
 
@@ -520,6 +504,24 @@
                     
                     
                   </fieldset7>
+
+                  <div id="commentModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content bg-dark">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        
+                        <form method="post" action="{% url 'commentdb' projc.id %}">
+                            {% csrf_token %}
+                            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
+                            <!-- Hidden textarea to store previous comments -->
+                            <textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
+    
+                            <button type="submit" class="btn btn-warning">Save</button>
+                            <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
+                            <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
+                        </form>
+                    </div>
+                </div>
 
 
             </div>

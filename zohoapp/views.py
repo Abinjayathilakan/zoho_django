@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,Http404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from django.utils.text import capfirst
@@ -2766,7 +2766,7 @@ def vendor_credits(request):
 #     data=Vendor_Credits.objects.filter(user=udata)
 #     return render(request,'view_vendor_credits.html',{'data':data})
 
-def show_credits(request,pk):
+def show_credits(request, pk):
     user_id=request.user.id
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
@@ -2774,34 +2774,31 @@ def show_credits(request,pk):
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    cdata=Credits_comments_table.objects.filter(vendor=vcredit)
-    
-    
-    proje=Credits_comments_table.objects.filter(user=request.user)
+    cdata=Credits_comments_table.objects.filter(id=pk)
+    projc = get_object_or_404(Credits_comments_table, id=pk)
 
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
         if comment_text:
-            cdata.comment = comment_text  # Set the comment field of the specific project object
-            cdata.save()  # Save the project object with the updated comment
+            projc.comment = comment_text
+            projc.save()
 
     
-    return render(request,'show_credit_2.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata,'proje':proje})
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata,'projc':projc})
 
-def commentdb(request, id):
-    vcredit = get_object_or_404(Credits_comments_table, id=id)
+
+def commentdb(request, pk):
+    projc = get_object_or_404(Credits_comments_table, id=pk, user=request.user)
 
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
         if comment_text:
-            if vcredit.comment:
-                vcredit.comment += "\n" + comment_text
-            else:
-                vcredit.comment = comment_text
-            vcredit.save()
+            projc.comment = comment_text
+            projc.save()
 
-    # After adding the comment, redirect back to the show_credits view.
-    return redirect('show_credits', pk=vcredit.vendor.id)
+    return redirect('vendor_credits_home', id=pk)
+
+
 
 
 # def Credits_add_comment(request,pk):
