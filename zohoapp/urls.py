@@ -142,6 +142,8 @@ urlpatterns = [
     
     path('show_credits/<int:pk>/', views.show_credits, name='show_credits'),
     path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
+    #path('delete_comment/<int:pk>/', views.delete_comment, name='delete_comment'),
+    
 
 
     #path('overview/<int:id>',views.overview,name='overview'),

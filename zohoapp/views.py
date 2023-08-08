@@ -2774,30 +2774,64 @@ def show_credits(request, pk):
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    cdata=Credits_comments_table.objects.filter(id=pk)
-    projc = get_object_or_404(Credits_comments_table, id=pk)
-
-    if request.method == 'POST':
-        comment_text = request.POST.get('comment')
-        if comment_text:
-            projc.comment = comment_text
-            projc.save()
-
-    
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'cdata':cdata,'mdata':mdata,'ddata':ddata,'projc':projc})
+    comments = Credits_comments_table.objects.filter(vendor=vcredit).order_by('-id')
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'comments':comments,'mdata':mdata,'ddata':ddata})
 
 
+@login_required(login_url='login')
 def commentdb(request, pk):
-    projc = get_object_or_404(Credits_comments_table, id=pk, user=request.user)
+    if request.method == 'POST':       
+        c_comment=request.POST['comment']
+        c_user_id=request.user.id
+        c_data=User.objects.get(id=c_user_id)
+        c_data3=Vendor_Credits.objects.all()
+        c_data2=Vendor_Credits.objects.get(id=pk)
+        comments= Credits_comments_table(user=c_data,vendor=c_data2,comment=c_comment)
+        comment = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
+        comments.save()
+        
+        context = {
+            "allproduct": c_data3,
+            "c_data2": c_data2,
+            
+            "comments": comment,
+        }
+        return redirect("vendor_credits_home",context)
 
-    if request.method == 'POST':
-        comment_text = request.POST.get('comment')
-        if comment_text:
-            projc.comment = comment_text
-            projc.save()
 
-    return redirect('vendor_credits_home', id=pk)
+# @login_required(login_url='login')
+# def commentdb(request, pk):
+#     if request.method == 'POST':       
+#         user = request.user
+#         items = Vendor_Credits.objects.all()
+#         product = Vendor_Credits.objects.get(id=pk)
+        
+#         new_comment = request.POST.get('comment')
 
+#         # Save the new comment to the database
+#         Credits_comments_table.objects.create(vendor=product, user=user, comment=new_comment)
+
+#         # Retrieve all the comments for the product
+#         comments = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
+
+#         context = {
+#             "allproduct": items,
+#             "product": product,
+#             "comments": comments,
+#         }
+
+#     return render(request, 'show_credit.html', context)
+
+
+# @login_required(login_url='login')
+# def delete_comment(request, pk):
+#     try:
+#         comment = Credits_comments_table.objects.get(id=pk, vendor=product_id,user=request.user)
+#         comment.delete()
+#     except Credits_comments_table.DoesNotExist:
+#         pass
+
+#     return redirect('vendor_credits_home',id=pk)
 
 
 

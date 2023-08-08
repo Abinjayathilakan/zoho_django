@@ -115,9 +115,15 @@
                         <!-- <div id="over" class="toggle2" style="font-size: 22px;">
                           <button onclick="fieldset2_function()" class="btn btn-warning">Comments</button>
                         </div> -->
-                        <div id="over" class="toggle2" style="color: rgb(230, 171, 45); font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 22px;">
-                            <a href="#" class="btn btn-warning" onclick="openModal()">Comments</a>
+                        <div id="over" class="toggle2" style="color: #e6ab2d; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 22px;">
+                            <button  class="btn btn-warning" onclick="toggleModal()">Comments</button>
                         </div>&nbsp;
+
+                        <!-- <div class="toggle2">
+                            <button onclick="toggleModal()" style="margin-top: -6.5rem; font-size: 18px; margin-left: 45rem;" class="btn btn-secondary text-dark">Comments</button>
+                          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                      </div> -->
                       
                         <div id="over" class="toggle4" style="font-size: 22px;">
                           <button onclick="fieldset3_function()" class="btn btn-warning">Mail</button>
@@ -505,112 +511,73 @@
                     
                   </fieldset7>
 
-                  <div id="commentModal" class="modal">
-                    <!-- Modal content -->
-                    <div class="modal-content bg-dark">
-                        <span class="close" onclick="closeModal()">&times;</span>
-                        
-                        <form method="post" action="{% url 'commentdb' projc.id %}">
-                            {% csrf_token %}
-                            <textarea id="commentTextArea" name="comment" rows="4" placeholder="Enter your comment..." class="form-control bg-dark"></textarea>
-                            <!-- Hidden textarea to store previous comments -->
-                            <textarea id="hiddenComments" style="display: none;">{{ projc.comment }}</textarea>
-    
-                            <button type="submit" class="btn btn-warning">Save</button>
-                            <button type="button" class="btn btn-warning mt-1" onclick="viewComment()">View</button>
-                            <button type="button" class="btn btn-warning mt-1" onclick="clearTextArea()">Clear</button>
-                        </form>
+                  <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Add Comment</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                              <form id="commentForm" method="post" action="{% url 'commentdb' vcredit.id %}">
+                                  {% csrf_token %}
+                                  <div class="form-group">
+                                      <label for="commentInput">Comment:</label>
+                                      <textarea class="form-control bg-dark" id="commentInput" name="comment" rows="3"></textarea>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="submitCommentBtn" onclick="submitComment()">Submit</button>
+                                </div>
+                            
+                                  <div class="container-fluid">
+                                    <table class="table table-responsive-md mt-4 table  text-white">
+                                      <thead>
+                                          <tr>
+                                              <th>sl no.</th>
+                                              <th>Comments</th>
+                                              <th>Delete</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for com in comments %}
+                                              <tr class="table-row">
+                                                  <td style="color: #000;">{{ forloop.counter }}</td>
+                                                  <td style="color: #000;">{{ com.comment }}</td>  <!-- Use com.comment instead of com.content -->
+                                                  <td><a href="">Delete</a></td>
+                                              </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                    </table>  
+                                  </div>
+                              </form>
+                          </div>
                     </div>
-                </div>
+                  </div>
 
 
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-    // ... Your existing JavaScript code ...
-
-    function viewComment() {
-        var commentTextArea = document.getElementById("commentTextArea");
-        var hiddenComments = document.getElementById("hiddenComments");
-
-        // Set the textarea value with the value fetched from the database
-        commentTextArea.value = hiddenComments.value;
-
-        var modal = document.getElementById("commentModal");
-        modal.style.display = "block";
-    }
-
-    // ... Your existing JavaScript code ...
-</script>
-    
-
-
-<script>
-    function saveComment() {
-        var comment = document.getElementById("commentTextArea").value;
-        var projId = '{{ proj.id }}'; // Assuming 'proj' variable is passed from Django view
-        var csrfToken = '{{ csrf_token }}'; // Assuming CSRF token is passed from Django template
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/commentdb/' + projId + '/');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.setRequestHeader('X-CSRFToken', csrfToken);
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log('Comment saved:', comment);
-                closeModal();
-            } else {
-                console.error('Failed to save comment:', xhr.statusText);
-            }
-        };
-
-        xhr.send('comment=' + encodeURIComponent(comment));
-    }
-</script>
-
-
-<script>
- // Create an array to store comments
-var comments = [];
-
-function openModal() {
-    var modal = document.getElementById("commentModal");
-    modal.style.display = "block";
-}
-
-function closeModal() {
-    var modal = document.getElementById("commentModal");
-    modal.style.display = "none";
-}
-
-function saveComment() {
-    var comment = document.getElementById("commentTextArea").value;
-    comments.push(comment); // Save the comment to the array
-    console.log("Comment saved:", comment);
-    closeModal();
-}
-
-
-
-function clearTextArea() {
-    var commentTextArea = document.getElementById("commentTextArea");
-    commentTextArea.value = ""; // Clear the text in the textarea
-}
-
-// Close the modal if the user clicks outside of it
-window.onclick = function (event) {
-    var modal = document.getElementById("commentModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-</script>
+                  <script>
+                    function toggleModal() {
+                      const modal = document.getElementById("myModal");
+                      if (modal.style.display === "none") {
+                        modal.style.display = "block";
+                        // You can add an AJAX call here to load comments dynamically, if needed
+                      } else {
+                        modal.style.display = "none";
+                      }
+                    }
+                  
+                    // Function to close the modal
+                    function closeModal() {
+                      const modal = document.getElementById("myModal");
+                      modal.style.display = "none";
+                    }
+                  
+                    function submitComment() {
+                      document.getElementById('commentForm').submit();
+                    }
+                  </script>
 
 <script>
    
