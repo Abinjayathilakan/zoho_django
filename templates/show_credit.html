@@ -521,7 +521,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                              <form id="commentForm" method="post" action="{% url 'commentdb' vcredit.id %}">
+                              <form id="commentForm" method="post" action="{% url 'commentdb' pk.id %}">
                                   {% csrf_token %}
                                   <div class="form-group">
                                       <label for="commentInput">Comment:</label>
@@ -541,7 +541,7 @@
                                           </tr>
                                       </thead>
                                       <tbody>
-                                          {% for com in comments %}
+                                          {% for com in cdata %}
                                               <tr class="table-row">
                                                   <td style="color: #000;">{{ forloop.counter }}</td>
                                                   <td style="color: #000;">{{ com.comment }}</td>  <!-- Use com.comment instead of com.content -->

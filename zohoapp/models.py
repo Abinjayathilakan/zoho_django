@@ -411,12 +411,6 @@ class sales_item(models.Model):
 
 
 
-
-
-
-
-
-
 class Vendor_Credits(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
     # vendor_id=models.TextField(max_length=255)

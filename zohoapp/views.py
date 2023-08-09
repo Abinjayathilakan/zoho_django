@@ -2774,29 +2774,28 @@ def show_credits(request, pk):
     mdata=Credits_mail_table.objects.filter(vendor=vcredit)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    comments = Credits_comments_table.objects.filter(vendor=vcredit).order_by('-id')
-    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'comments':comments,'mdata':mdata,'ddata':ddata})
+    cdata = Credits_comments_table.objects.filter(vendor=pk).order_by('-id')
+    # comment = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
+    return render(request,'show_credit.html',{'vdata':vdata1,'pk':pk,'mdata':mdata,'ddata':ddata,'cdata':cdata})
 
 
-@login_required(login_url='login')
 def commentdb(request, pk):
-    if request.method == 'POST':       
-        c_comment=request.POST['comment']
-        c_user_id=request.user.id
+    if request.method == 'POST':     
+        c_user_id=request.user.id  
         c_data=User.objects.get(id=c_user_id)
+        c_comment=request.POST['comment']
         c_data3=Vendor_Credits.objects.all()
         c_data2=Vendor_Credits.objects.get(id=pk)
         comments= Credits_comments_table(user=c_data,vendor=c_data2,comment=c_comment)
-        comment = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
+        Credits_comments_table.objects.filter(vendor=pk).order_by('id')
         comments.save()
         
         context = {
             "allproduct": c_data3,
             "c_data2": c_data2,
-            
-            "comments": comment,
+            "comments": comments,
         }
-        return redirect("vendor_credits_home",context)
+        return render(request,"show_credit.html",context)
 
 
 # @login_required(login_url='login')
