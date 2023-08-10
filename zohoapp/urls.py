@@ -142,7 +142,7 @@ urlpatterns = [
     
     path('show_credits/<int:pk>/', views.show_credits, name='show_credits'),
     path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
-    #path('delete_comment/<int:pk>/', views.delete_comment, name='delete_comment'),
+    path('delete_comment_credit/<int:pk>/<int:vid>', views.delete_comment_credit, name='delete_comment_credit'),
     
 
 

@@ -413,7 +413,6 @@ class sales_item(models.Model):
 
 class Vendor_Credits(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
-    # vendor_id=models.TextField(max_length=255)
     company_name=models.CharField(max_length=150)
     vendor_email=models.CharField(max_length=250)
     gst_treatment=models.CharField(max_length=100)

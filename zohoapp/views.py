@@ -2771,12 +2771,12 @@ def show_credits(request, pk):
     udata=User.objects.get(id=user_id)
     vdata1=Vendor_Credits.objects.filter(user=udata)
     vcredit=Vendor_Credits.objects.get(id=pk)
-    mdata=Credits_mail_table.objects.filter(vendor=vcredit)
+    mdata=Credits_mail_table.objects.filter(vendor=pk)
     ddata=Credits_doc_upload_table.objects.filter(user=udata,vendor=vcredit)
 
-    cdata = Credits_comments_table.objects.filter(vendor=pk).order_by('-id')
+    cdata = Credits_comments_table.objects.filter(vendor=vcredit).order_by('-id')
     # comment = Credits_comments_table.objects.filter(vendor=pk).order_by('id')
-    return render(request,'show_credit.html',{'vdata':vdata1,'pk':pk,'mdata':mdata,'ddata':ddata,'cdata':cdata})
+    return render(request,'show_credit.html',{'vdata':vdata1,'vcredit':vcredit,'mdata':mdata,'ddata':ddata,'cdata':cdata})
 
 
 def commentdb(request, pk):
@@ -2795,7 +2795,7 @@ def commentdb(request, pk):
             "c_data2": c_data2,
             "comments": comments,
         }
-        return render(request,"show_credit.html",context)
+        return redirect("show_credits",pk=pk)
 
 
 # @login_required(login_url='login')
@@ -2822,15 +2822,18 @@ def commentdb(request, pk):
 #     return render(request, 'show_credit.html', context)
 
 
-# @login_required(login_url='login')
-# def delete_comment(request, pk):
-#     try:
-#         comment = Credits_comments_table.objects.get(id=pk, vendor=product_id,user=request.user)
-#         comment.delete()
-#     except Credits_comments_table.DoesNotExist:
-#         pass
 
-#     return redirect('vendor_credits_home',id=pk)
+
+@login_required(login_url='login')
+def delete_comment_credit(request, pk,vid):
+    comment = Credits_comments_table.objects.get(id=pk)
+    comment.delete()
+
+    return redirect('show_credits',pk=vid)
+
+
+
+
 
 
 

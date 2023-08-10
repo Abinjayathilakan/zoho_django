@@ -511,6 +511,8 @@
                     
                   </fieldset7>
 
+                  
+
                   <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -521,7 +523,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                              <form id="commentForm" method="post" action="{% url 'commentdb' pk.id %}">
+                              <form id="commentForm" method="post" action="{% url 'commentdb' vcredit.id %}">
                                   {% csrf_token %}
                                   <div class="form-group">
                                       <label for="commentInput">Comment:</label>
@@ -545,7 +547,7 @@
                                               <tr class="table-row">
                                                   <td style="color: #000;">{{ forloop.counter }}</td>
                                                   <td style="color: #000;">{{ com.comment }}</td>  <!-- Use com.comment instead of com.content -->
-                                                  <td><a href="">Delete</a></td>
+                                                  <td><a href="{% url 'delete_comment_credit' com.id vcredit.id  %}">Delete</a></td>
                                               </tr>
                                           {% endfor %}
                                       </tbody>
