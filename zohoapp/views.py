@@ -3208,15 +3208,15 @@ def add_customer_for_vcredit(request):
             website=request.POST['website']
             gst_treatment=request.POST['gst']
             
-            gst_number=request.POST['gst_number']
-            pan_number=request.POST['pan_number']
+            # gst_number=request.POST['gst_number']
+            # pan_number=request.POST['pan_number']
             
             source_supply=request.POST['source_supply']
             currency=request.POST['currency']
             opening_bal=request.POST['opening_bal']
             payment_terms=request.POST['payment_terms']
             
-            battention=request.POST['battention']
+            # battention=request.POST['battention']
             bcountry=request.POST['bcountry']
             baddress=request.POST['baddress']
             bcity=request.POST['bcity']
@@ -3235,14 +3235,42 @@ def add_customer_for_vcredit(request):
                         last_name=last_name,company_name=company_name,vendor_display_name=vendor_display_name,
                          vendor_email=vendor_email,vendor_wphone=vendor_wphone,vendor_mphone=vendor_mphone,
                            skype_number=skype_number,designation=designation,department=department, website=website,
-                             gst_treatment=gst_treatment,gst_number=gst_number,pan_number=pan_number,
+                             gst_treatment=gst_treatment,
                                 source_supply=source_supply,currency=currency,opening_bal=opening_bal,payment_terms=payment_terms,baddress=baddress,
-                                 battention=battention,bcountry=bcountry,bcity=bcity,bstate=bstate,
+                                bcountry=bcountry,bcity=bcity,bstate=bstate,
                                   bzip=bzip,bphone=bphone,bfax=bfax,user=u )
             ctmr.save()  
             
             return redirect("vendor_credits")
         return render(request,"add_vendor_vcredits.html",)
+    
+def additem_bills(request):
+    
+    radio=request.GET.get('radios')
+    inter=request.GET.get('inters')
+    intra=request.GET.get('intras')
+    type=request.GET.get('types')
+    name=request.GET.get('names')
+    unit=request.GET.get('units')
+    sel_price=request.GET.get('sel_prices')
+    sel_acc=request.GET.get('sel_accs')
+    s_desc=request.GET.get('s_descs')
+    cost_price=request.GET.get('cost_prices')
+    cost_acc=request.GET.get('cost_accs')      
+    p_desc=request.GET.get('p_descs')
+    u=request.user.id
+    us=request.user
+    history="Created by" + str(us)
+    user=User.objects.get(id=u)
+    unit=Unit.objects.get(id=unit)
+    sel=Sales.objects.get(id=sel_acc)
+    cost=Purchase.objects.get(id=cost_acc)
+    ad_item=AddItem(type=type,Name=name,p_desc=p_desc,s_desc=s_desc,s_price=sel_price,p_price=cost_price,unit=unit,
+                sales=sel,purchase=cost,user=user,creat=history,interstate=inter,intrastate=intra
+                    )
+    ad_item.save()
+
+    return JsonResponse({"status": " not", 'name': name})
 
 # @login_required(login_url='login')
 # def add_customer_for_vcredit(request):
@@ -3389,6 +3417,8 @@ def additem_vendor_credit(request):
            
             return redirect("vendor_credits")
     return render(request,'add_vendor_credit_items.html')
+
+
     
 # @login_required(login_url='login')
 # def add_customer_for_vcredit(request):

@@ -166,6 +166,7 @@ urlpatterns = [
     path('additem_vendor_page',views.additem_vendor_page,name='additem_vendor_page'),
     path('additem_vendor_credit',views.additem_vendor_credit,name='additem_vendor_credit'),
     path('add_customer_for_vcredit',views.add_customer_for_vcredit,name='add_customer_for_vcredit'),
+    path('additem_bills',views.additem_bills,name='additem_bills'),
     
     
 
