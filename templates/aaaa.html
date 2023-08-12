@@ -92,7 +92,7 @@
 
 <div class="container-fulid containerprof">
 
-  <div class="card radius-15 p-3">
+  <div>
     <div class="card-body">
         <div class="card-title">
           <h2 class="mb-0 text-uppercase text-right"><i class="fa fa-receipt"></i> &nbsp; New Recurring Bills</h2>
@@ -100,7 +100,7 @@
     </div>
   </div>
 
-  <div class="card radius-15 p-3">
+  <div>
     <form action="{% url 'vendor_credits' %}" class="mt-2 mb-4" method="post" enctype="multipart/form-data" id="myForm">
       {% csrf_token %}
       <div class="row">
@@ -184,104 +184,522 @@
 </div>
   
 
-      <div class="row mt-2">
-        <div class="col-md-12 table-responsive-md mt-3">
-          <table class="table table-bordered table-hover mt-3" id="tab_logic">
-            <thead>
-              <tr>
-                <th class="text-center text-uppercase">Item Details <br>
-                  <a href="" data-toggle="modal" data-target="#newitem" class="text-capitalize">+ add item</a>
-                </th>
+            
+<table class="table  text-white" style="width: 100%;" id="item_table" style="background-color: rgba(12, 12, 11, 0.8);" onchange="calc()">
+  <thead >
+      <tr style="background-color: black;">
+          <th>Product
+            <br><br> &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="" data-toggle="modal" data-target="#newitem" class="text-capitalize">+ add item</a>
 
-                <th class="text-center text-uppercase">Hsn</th>
-                <th class="text-center text-uppercase">quantity</th>
-                <th class="text-center text-uppercase">rate</th>
-                <th class="text-center text-uppercase">Discount</th>
-                <th class="text-center text-uppercase">Tax(%)</th>
-                <th class="text-center text-uppercase">Total</th>
-              </tr>
-            </thead>
-            <tbody id="items-table-body">
-              <tr id = 'addr0' class = 'addr'>
-                <td  style="width: 20%;">
-                  <div class="d-flex">
-                    <select name='item[]' id="item0" class="form-control item text-dark bg-light">
-                      <option value=" " selected disabled>Select Item</option>
-                      {% for i in p %}
-                      <option value="{{i.Name}}">{{i.Name}}</option>
-                      {% endfor %}
-                    
-                    </select>
-                  </div>  
-                </td>
-                
-                <td style="width: 10%;">
-                  <input type="number" name='hsn[]' placeholder='Qty' id="hsn1"  class="form-control qty text-dark bg-light" step=0 min=0/>
-                </td>
+          </th>
+          <th class="text-right">Hsn</th>
+          <th class="text-right">Quantity</th>
+          <th class="text-right">Rate</th>
+          <th class="text-right">Discount</th>
+          <th class="text-right">Tax %</th>
+          <th class="text-right">Total</th>
+      </tr>
+  </thead>
+  <tbody>
 
-                <td style="width: 10%;">
-                  <input type="number" name='qty[]' placeholder='Qty' id="qty1"  class="form-control qty text-dark bg-light" step=0 min=0/>
-                </td>
+      <tr id='row1'>
+          <td>
+              <div class='form-group'>
+                <select class='form-control text-black border-0 item_select itm bg-white' name='item[]' id='item1'>
+                  {% for i in p %}
+                    <option class="text-dark" value="{{i.Name}}">{{i.Name}}</option>
+                  {% endfor %}
+                  
+                </select>
+              </div>
+            </td>
+            
+            <!-- <script>
+              // Assuming you have jQuery included in your project
+              $(document).ready(function() {
+                $('#item1').change(function() {
+                  if ($(this).val() === "") {
+                    window.location.href = "{% url 'additem_vendor_page' %}";
+                  }
+                });
+              });
+              $(document).ready(function() {
+                $('#item2').change(function() {
+                  if ($(this).val() === "") {
+                    window.location.href = "{% url 'additem_vendor_page' %}";
+                  }
+                });
+              });
+            </script>
+             -->
+          
+          
+         
+          <td class='text-right'><input type='text' id='hsn1'
+            class='form-control border-0 text-black text-right hsn bg-white' name='hsn[]'
+            value=''  >
+          </td>  
+          <script>
+              $(document).on("input", ".hsn", function() {
+                var hsn_value = $(this).val();
+                var hsn_length = hsn_value.length;
+                if (hsn_length > 6) {
+                    $(this).val(hsn_value.substring(0, 6));
+                    alert("HSN should not be more than 6 digits!");
+                }
+            });
+      </script>  
+          <td class='text-right'>
+              <input type='number' id='qty1' class='form-control border-0 text-black text-right qty bg-white' name='quantity[]' value='0' onchange="calc()">
+          </td>
+          
 
-                <td style="width: 10%;">
-                  <input type="text" name='rate[]' id="rate0" placeholder='Rate' class="form-control rate text-dark bg-light" />
-                </td>
-                <td style="width: 15%;">
-                  <input type="hidden" id="tax_total0" class="form-control mb-2 d-none">
-                  <input type="text" placeholder="Select TAX" class="form-control selecttax text-dark bg-light" id="selecttax0">
-                  <select name="tax1[]" id="intra_tax0" class="form-control tax1 d-none mb-2 text-dark bg-light">
-                    <option id="ta1" value=0 text=' '>Choose GST</option>
-                    <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
-                    <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
-                    <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
-                    <option value=5 text={{ cmp1.state }}>05.0% GST(05%)</option>
-                    <option value=3 text={{ cmp1.state }}>03.0% GST(03%)</option>
-                    <option value=0 text={{ cmp1.state }}>0.0% GST(0%)</option>
-                  </select>
+          <td class='text-right'><input type='number' id='rate1' 
+                  class='form-control border-0 text-black text-right rate bg-white' name='rate[]'
+                  value='0.00' >
+          </td>
+          <td class='text-right'><input type='number' id='desc1' 
+                  class='form-control border-0 text-black text-right desc bg-white' name='desc[]' value='0'>
+          </td>
 
-                  <select name="tax2[]" id="inter_tax0" class="form-control tax2 d-none mb-2 text-dark bg-light">
-                    <option id="ta5" value=0 text=" "  >Choose IGST</option>
-                    <option value=28 text=" ">28.0% IGST(28%)</option>
-                    <option value=18 text=" ">18.0% IGST(18%)</option>
-                    <option value=12 text=" ">12.0% IGST(12%)</option>
-                    <option value=5 text=" ">05.0% IGST(05%)</option>
-                    <option value=3 text=" ">03.0% IGST(03%)</option>
-                    <option value=0 text=" ">0.0% IGST(0%)</option>
-                  </select>
-                </td>
-                <td style="width: 11%;">
-                  <input type="text" name='discount[]' id="disc0" placeholder='Discount' class="form-control disc text-dark bg-light" step="0.00" min="0"/>
-                </td>
-
-                <td style="width: 11%;">
-                  <input type="text" name='amount[]' id="amount0" placeholder='Amount' class="form-control amount text-dark bg-light" step="0.00" min="0"  />
-                </td>
-
-                <td>
-                  <button type="button" id="0" class="btn btn-outline-primary clone_row text-center mb-1 p-1 " data-toggle= "tooltip" data-placement="bottom" tooltip="Clone"
-                      style = "width:25px; height: 25px; border-radius: 90% " >
-                    <i class="fa-solid fa-clone"></i>
-                  </button> 
-                    <br>
-                  <button disabled type="button" id="0" class="btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row text-center p-1" data-toggle= "tooltip" data-placement="bottom" tooltip="Remove"
-                      style = "width:25px; height: 25px; border-radius: 90% " >
-                    <i class="fa fa-times "></i>
-                  </button>
-                </td>
-              
-           
+          <td class='text-right'> <select name="tax[]" id="tax1" class='form-control border-0 text-black text-right bg-white tax'  >
+            <option>Select Tax</option>
+            <optgroup label="GST">
+              <option value="0">GST 0%</option>
+                <option value="5">GST 5%</option>
+                <option value="12">GST 12%</option>
+                <option value="18">GST 18%</option>
+                <option value="28">GST 28%</option>
+            </optgroup>
+            <optgroup label="IGST">
+              <option value="0">IGST 0%</option>
+                <option value="5">IGST 5%</option>
+                <option value="12">IGST 12%</option>
+                <option value="18">IGST 18%</option>
+                <option value="28">IGST 28%</option>
+            </optgroup>
+        </select>
+          
+          <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script>
+            function calc() {
+              // Calculation logic goes here
+            }
+            
+            function redirectToVendorPage(selectElement) {
+              var selectedValue = selectElement.value;
+              if (selectedValue === "") {
+                window.location.href = "{% url 'vendor_credits' %}";
+              }
+            }
+            
+            $(document).ready(function() {
+              $('#placeofsupply').on('input', function() {
+                var sourceOfSupply = $(this).val();
+                var taxSelect = $('#tax1');
+            
+                // Reset tax options
+                taxSelect.empty();
+                taxSelect.append($('<option>', {
+                  value: "",
+                  text: "Select Tax"
+                }));
+            
+                if (sourceOfSupply === 'Kerala') {
+                  // Add GST options
+                  taxSelect.append($('<option>', {
+                    value: 'GST 0%',
+                    text: 'GST 0%'
+                  })).append($('<option>', {
+                    value: 'GST 5%',
+                    text: 'GST 5%'
+                  })).append($('<option>', {
+                    value: 'GST 12%',
+                    text: 'GST 12%'
+                  })).append($('<option>', {
+                    value: 'GST 18%',
+                    text: 'GST 18%'
+                  })).append($('<option>', {
+                    value: 'GST 28%',
+                    text: 'GST 28%'
+                  }));
+                } else {
+                  // Add IGST options
+                  taxSelect.append($('<option>', {
+                    value: 'IGST 0%',
+                    text: 'IGST 0%'
+                  })).append($('<option>', {
+                    value: 'IGST 5%',
+                    text: 'IGST 5%'
+                  })).append($('<option>', {
+                    value: 'IGST 12%',
+                    text: 'IGST 12%'
+                  })).append($('<option>', {
+                    value: 'IGST 18%',
+                    text: 'IGST 18%'
+                  })).append($('<option>', {
+                    value: 'IGST 28%',
+                    text: 'IGST 28%'
+                  }));
+                }
+              });
+            });
+          </script>
+           -->
+          
+          
+          
+          
+          
+    
         
-        <div class="col-md-4">
-          <div class="d-flex">
-            <input type="submit" class="btn save_btn mt-2 py-2 rounded-pill text-grey w-50 my-4 mx-2" style="width: 200px; text-align: center ;" value="SAVE CHANGES" id="save">
-            <button type="button" class="close btn save_btn rounded-pill text-grey w-50 my-4 mt-2 py-2" aria-label="Close" id="cancelButton">CANCEL</button>
-          </div>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4"></div>
-      </div>
-    </form>
+        <script>
+          $(document).on('click','#item1',function(){
+            select = $('#item1').val();
+            console.log(select)
+            $.ajax({
+              type: "GET",
+              url: "{% url 'getitems2' %}",
+              data: {
+                id: select
+              },
+              success:function(response){
+    
+                rate=response.price
+                console.log(rate)
+                document.getElementById('rate1').value=rate
+              }
 
+              
+              
+            });
+          });
+          
+
+            $(document).on('click','#item2',function(){
+              select = $('#item2').val();
+              console.log(select)
+              $.ajax({
+                type: "GET",
+                url: "{% url 'getitems2' %}",
+                data: {
+                  id: select
+                },
+                success:function(response){
+      
+                  rate=response.price
+                  console.log(rate)
+                  document.getElementById('rate2').value=rate
+                }
+                
+              });
+            });
+
+
+            $(document).on('click','#item3',function(){
+              select = $('#item3').val();
+              console.log(select)
+              $.ajax({
+                type: "GET",
+                url: "{% url 'getitems2' %}",
+                data: {
+                  id: select
+                },
+                success:function(response){
+      
+                  rate=response.price
+                  console.log(rate)
+                  document.getElementById('rate3').value=rate
+                }
+                
+              });
+            });
+
+
+            $(document).on('click','#item4',function(){
+              select = $('#item4').val();
+              console.log(select)
+              $.ajax({
+                type: "GET",
+                url: "{% url 'getitems2' %}",
+                data: {
+                  id: select
+                },
+                success:function(response){
+      
+                  rate=response.price
+                  console.log(rate)
+                  document.getElementById('rate4').value=rate
+                }
+                
+              });
+            });
+
+            $(document).on('click','#item5',function(){
+              select = $('#item5').val();
+              console.log(select)
+              $.ajax({
+                type: "GET",
+                url: "{% url 'getitems2' %}",
+                data: {
+                  id: select
+                },
+                success:function(response){
+      
+                  rate=response.price
+                  console.log(rate)
+                  document.getElementById('rate5').value=rate
+                }
+                
+              });
+            });
+
+            $(document).on('click','#item6',function(){
+              select = $('#item6').val();
+              console.log(select)
+              $.ajax({
+                type: "GET",
+                url: "{% url 'getitems2' %}",
+                data: {
+                  id: select
+                },
+                success:function(response){
+      
+                  rate=response.price
+                  console.log(rate)
+                  document.getElementById('rate6').value=rate
+                }
+                
+              });
+            });
+
+
+        </script>
+        
+        
+        
+        
+        
+        
+
+
+<!-- <script>
+$(document).on('click','#item1',function(){
+select = $('#item1').val();
+console.log(select)
+$.ajax({
+type: "GET",
+url: "{% url 'getitems2' %}",
+data: {
+  id: select
+},
+success:function(response){
+
+  rate=response.price
+  document.getElementById('rate1').value
+}                                 
+});
+});
+
+</script>               -->
+
+<script>
+function validateHSN(hsnInput) {
+var hsn = hsnInput.value;
+var errorSpan = hsnInput.nextElementSibling;
+var valid = true;
+
+if (hsn.length != 6) {
+  errorSpan.innerHTML = "HSN must be 6 digits long";
+  valid = false;
+} else {
+  errorSpan.innerHTML = "&#x2713;"; // Check mark
+}
+
+return valid;
+}
+
+</script>
+<style>
+.hsn-validation {
+font-size: 1.2em;
+color: red;
+}
+
+.hsn-validation::before {
+display: inline-block;
+content: attr(data-content);
+width: 1em;
+height: 1em;
+margin-right: 0.2em;
+text-align: center;
+vertical-align: middle;
+color: green;
+}
+
+</style>
+        
+        </td>
+          <td style="display: none;">
+              <input type="text" name='taxamount1' id="taxamount1" class="form-control taxamount" />
+          </td>
+          <td class='text-right'><input type='number' id='amount1'
+                  class='form-control border-0 text-black text-right amount' name='amount[]'
+                  value='0.00' readonly></td>
+          <td class='text-center'><button type='button' id='del_btn1'
+                  class='btn btn-transparent text-danger btn-sm btn-outline-danger rounded-circle delete-row'
+                  style='width:30px'><i class='fa fa-times'></i></button></td>
+          <td class='text-center'>
+              <button type='button'  class='btn btn-transparent text-primary btn-sm btn-outline-primary rounded-circle clone-row' style='width:30px'>
+                <i class='fa fa-clone'></i>
+              </button>
+          </td>
+                  
+      </tr>
+  </tbody>
+
+</table>
+
+<!-- <script>
+// Assuming you have jQuery included in your project
+$(document).ready(function() {
+  $(document).on('click', '.clone-row', function() {
+    var currentRow = $(this).closest('tr');
+    var clonedRow = currentRow.clone();
+
+    // Increment the row ID and reset the input values
+    var currentRowId = currentRow.attr('id');
+    var clonedRowId = 'row' + (parseInt(currentRowId.replace('row', '')) + 1);
+    clonedRow.attr('id', clonedRowId);
+
+    // Find the input/select elements in the current row
+    var currentInputs = currentRow.find('input, select');
+
+    // Set the values of the cloned row from the current row
+    clonedRow.find('input, select').each(function(index) {
+      $(this).val(currentInputs.eq(index).val());
+    });
+
+    // Insert the cloned row after the current row
+    currentRow.after(clonedRow);
+
+    // Bind event handlers for input/select elements in the cloned row
+    bindEventHandlers(clonedRow);
+  });
+
+  // Function to bind event handlers for input/select elements in a given row
+  function bindEventHandlers(row) {
+    row.find('input, select').on('input change', function() {
+      var currentInput = $(this);
+      var currentRow = currentInput.closest('tr');
+      var clonedRow = currentRow.next();
+
+      // Update the value in the corresponding element of the cloned row
+      clonedRow.find('input, select').eq(currentInput.index()).val(currentInput.val());
+    });
+  }
+});
+</script>
+-->
+
+
+
+
+
+<button type="button" class="btn btn-success  text-white" style="background-color: rgb(6, 122, 6) ;"
+  id="add-row">Add Row</button>
+
+<div class="row border-bottom pb-5">
+  <div class="col-sm-6 d-flex flex-column my-auto">
+
+      <label for="">Customer Notes</label>
+      <textarea name="customer_note" id="" cols="8" rows="8"
+          placeholder=" Notes  "></textarea>
+  </div>
+  <div class="col-sm-6">
+      <table class="rounded table  text-white" style="background-color: rgba(51, 50, 48, 0.8);">
+          <tr>
+              <td>Sub Total</td>
+              <td></td>
+              <td><input type="number" id="subtotal" name="subtotal" value="0.00"
+                      class="form-control border-0 text-right text-black bg-white" readonly></td>
+          </tr>
+          <tr id="tr_igst" >
+              <td>IGST</td>
+              <td></td>
+              <td><input type="number" id='igst' name="igst" step="any" value="0.00"
+                      class="form-control border-0 text-right text-black bg-white" readonly></td>
+          </tr>
+          <tr   id="tr_cgst">
+              <td>CGST</td>
+              <td></td>
+              <td><input type="number" id='cgst' name="cgst" step="any" value="0.00"
+                      class="form-control border-0 text-right cgst text-black bg-white" readonly></td>
+          </tr>
+          <tr  id="tr_sgst">
+              <td>SGST</td>
+              <td></td>
+              <td><input type="number" id='sgst' name="sgst" step="any" value="0.00"
+                      class="form-control border-0 text-right text-black bg-white" readonly></td>
+          </tr>
+          
+          <tr>
+              <td>Tax Amount</td>
+              <td></td>
+              <td><input type="number" id="total_taxamount" name="totaltax" value="0.00"
+                      class="form-control border-0 text-right text-black bg-white" readonly></td>
+          </tr>
+
+          <tr>
+            <td>Adjustment</td>
+            <td></td>
+            <td><input type="text" id="adjustment" name="adjustment_charge" step="any" value="0.00"
+                    class="form-control  border-0 text-right adjustment text-black bg-white"></td>
+        </tr>
+        
+    
+          <tr>
+              <th>Total (&#x20B9;)</th>
+              <th></th>
+              <th><input type="number" id="total_with_tax" name="t_total" value="0.00"
+                      class=" form-control border-0 text-right text-black bg-white"readonly></b></th>
+          </tr>
+      </table>
+  </div>
+</div>
+
+<div class="row ">
+  <!-- <div class="col-md-8 d-flex flex-column w-60 m text-black">
+      <label for="">Terms & Conditions</label>
+      <textarea name="ter_cond" id="" cols="20" rows="5"
+          placeholder=" Enter the terms & conditions ."></textarea>
+  </div> -->
+  <div class="col-md-4 py-5 text-center rounded" style="background-color: rgba(31, 30, 29, 0.8);">
+      <label class="text-white" for="">Attach File(s) to Estimate</label><br>
+      
+      <label for="">Upload File</label>
+      <input class="form-control" type="file" name="file">
+      
+
+  </div>
+</div>
+
+<br><br><br>
+
+<div class="" style="margin-bottom: 20rem;">
+  <button type="submit" name="sd" class="btn btn-success text-white " 
+      value="Save As Draft">Save as Draft</button>
+  <button type="submit" name="sd" class="btn btn-warning text-white" 
+      value="Save and Send">Save and Send</button>
+  <input class="btn btn-danger text-white"
+      type="reset" value="Cancel" ></a>
+</div>
+</form>
+</div>
+
+
+</div>
 
 
 
@@ -367,6 +785,7 @@
     height: auto;
   }
   </style>
+  
 
 <div class="modal fade" id="newvendor">
   <div class="modal-dialog modal-xl">
@@ -3274,7 +3693,7 @@ modalEl.addEventListener('click', (event) => {
     // Add event listener to trigger calc() function whenever a change is made to input fields
     $('#item_table').on('input', 'input', calc);
     $('#adjustment').on('input', calc);
-    $('#vendor-select').on('change', calc);
+    $('#vendor').on('change', calc);
   });
 
   function calc() {
@@ -3313,8 +3732,8 @@ modalEl.addEventListener('click', (event) => {
   }
 
   function updateGSTFields(taxamount) {
-    var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
-    var gstTreatment = $("#vendor-select option:selected").data("gst");
+    var place_of_supply = $("#vendor option:selected").data("placeofsupply");
+    var gstTreatment = $("#vendor option:selected").data("gst");
   
     if (place_of_supply === "[KL]-Kerala" || gstTreatment === "GST") {
       $('#tr_igst').hide();
@@ -3364,7 +3783,7 @@ modalEl.addEventListener('click', (event) => {
     console.log('test333');
     console.log(taxamount);
     d = 0;
-    var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
+    var place_of_supply = $("#vendor option:selected").data("placeofsupply");
     var state = document.getElementById("state").value;
     console.log(place_of_supply);
     console.log(state);
@@ -3401,8 +3820,8 @@ modalEl.addEventListener('click', (event) => {
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 <script>
-  $(document).on('change', '#vendor-select', function () {
-    var customer = $('#vendor-select').val();
+  $(document).on('change', '#vendor', function () {
+    var customer = $('#vendor').val();
     console.log(customer);
     $.ajax({
         type: "GET",
@@ -3604,7 +4023,7 @@ modalEl.addEventListener('click', (event) => {
 
      <script>
       document.addEventListener('DOMContentLoaded', function() {
-          var vendorSelect = document.getElementById('vendor-select');
+          var vendorSelect = document.getElementById('vendor');
           var emailInput = document.getElementById('email');
           var gstInput = document.getElementById('gst');
           var addressInput = document.getElementById('address');
@@ -3675,7 +4094,38 @@ if (bc != "{{ cmp1.state }}"  ) {
 
 
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var vendorSelect = document.getElementById('vendor');
+        var emailInput = document.getElementById('email');
+        var gstInput = document.getElementById('gst');
+        var addressInput = document.getElementById('address');
+        var placeofsupplyInput = document.getElementById('placeofsupply');
 
+        // Retrieve initial values from the user object
+        var initialEmail = emailInput.value;
+        var initialGST = gstInput.value;
+        var initialAddress = addressInput.value;
+        var initialPlaceofSupply = placeofsupplyInput.value;
+
+        vendorSelect.addEventListener('change', function() {
+            var selectedOption = vendorSelect.options[vendorSelect.selectedIndex];
+            var email = selectedOption.getAttribute('data-email') || initialEmail;
+            var gstTreatment = selectedOption.getAttribute('data-gst') || initialGST;
+            var address = selectedOption.getAttribute('data-address') || initialAddress;
+            var placeofsupply = selectedOption.getAttribute('data-placeofsupply') || initialPlaceofSupply;
+
+            emailInput.value = email;
+            gstInput.value = gstTreatment;
+            addressInput.value = address;
+            placeofsupplyInput.value = placeofsupply;
+
+          
+        });
+    });
+
+    
+</script>
 
 
  

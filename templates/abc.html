@@ -148,14 +148,15 @@
                  
               </div>
           </div> -->
-      
+ 
       
         <table class="table  text-white" style="width: 100%;" id="item_table" style="background-color: rgba(12, 12, 11, 0.8);" onchange="calc()">
             <thead >
                 <tr style="background-color: black;">
                     <th>Product
                       <br><br> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <a href="" data-toggle="modal" data-target="#create_item" class="text-capitalize">+ add item</a>
+                      <a href="" data-toggle="modal" data-target="#create_item" id="add_item_link" class="text-capitalize">+ add item</a>
+
                     </th>
                     <th class="text-right">Hsn</th>
                     <th class="text-right">Quantity</th>
@@ -1169,7 +1170,8 @@ color: black;
 
 
 
-  <!-- Create Item  ------------------------------------------------------------------------------------------------------------------------------>
+<!-- Create Item  ----------------------------------------->
+
 <div class="modal fade" id="create_item">
   <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
     <div class="modal-content modal-xl  p-5" style="background-color: #000000;height: 700px; overflow-y: scroll;">
@@ -1395,6 +1397,9 @@ color: black;
   </div>
 </div>
 
+<!-- end -->
+
+<!-- add item -->
 <script>
   function create_item() {
 
@@ -1459,6 +1464,9 @@ color: black;
 
   }
 </script>
+
+<!-- end -->
+
       <!-- <div  class="popup-0" id="popup-0" style="background-color:white;">
         <div style="background-color:white;" class="display-flex;">
           <h4 style="color: black;">Configure terms</h4>

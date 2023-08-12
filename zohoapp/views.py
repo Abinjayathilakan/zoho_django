@@ -2663,7 +2663,7 @@ def vendor_credits(request):
             # cus=customer.objects.get(customerName=c) 
             # print(cus.id)  
             # custo=cus.id
-            company_name = request.POST.get('sel')
+            company_name = request.POST.get('vendor')
             vendor_email = request.POST.get('email')
             baddress = request.POST.get('address')
             gst_treatment = request.POST.get('gst')
@@ -2751,7 +2751,7 @@ def vendor_credits(request):
         'vendors': vendors,
     }
 
-    return render(request, 'abc.html', context)
+    return render(request, 'aaaa.html', context)
 
 
 # def itemview(request):
