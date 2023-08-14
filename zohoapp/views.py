@@ -2751,7 +2751,7 @@ def vendor_credits(request):
         'vendors': vendors,
     }
 
-    return render(request, 'aaaa.html', context)
+    return render(request, 'abc.html', context)
 
 
 # def itemview(request):
