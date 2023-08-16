@@ -2751,7 +2751,7 @@ def vendor_credits(request):
         'vendors': vendors,
     }
 
-    return render(request, 'abc.html', context)
+    return render(request, 'abc-recuring.html', context)
 
 
 # def itemview(request):
@@ -3194,36 +3194,36 @@ def add_customer_for_vcredit(request):
     if request.user.is_authenticated:
         if request.method=='POST':
             
-            salutation=request.POST['salutation']
-            first_name=request.POST['first_name']
-            last_name=request.POST['last_name']
-            company_name=request.POST['company_name']
+            salutation=request.POST['title']
+            first_name=request.POST['firstname']
+            last_name=request.POST['lastname']
+            company_name=request.POST['vcompany_name']
             vendor_display_name=request.POST['v_display_name']
-            vendor_email=request.POST['vendor_email']
-            vendor_wphone=request.POST['w_phone']
-            vendor_mphone=request.POST['m_phone']
-            skype_number=request.POST['skype_number']
-            designation=request.POST['designation']
-            department=request.POST['department']
+            vendor_email=request.POST['vemail']
+            vendor_wphone=request.POST['vw_mobile']
+            vendor_mphone=request.POST['vp_mobile']
+            skype_number=request.POST['vskype']
+            designation=request.POST['v_desg']
+            department=request.POST['v_dpt']
             website=request.POST['website']
-            gst_treatment=request.POST['gst']
+            gst_treatment=request.POST['v_gsttype']
             
             # gst_number=request.POST['gst_number']
             # pan_number=request.POST['pan_number']
             
-            source_supply=request.POST['source_supply']
-            currency=request.POST['currency']
-            opening_bal=request.POST['opening_bal']
-            payment_terms=request.POST['payment_terms']
+            source_supply=request.POST['v_sourceofsupply']
+            currency=request.POST['v_curn']
+            opening_bal=request.POST['v_open']
+            payment_terms=request.POST['v_terms']
             
             # battention=request.POST['battention']
-            bcountry=request.POST['bcountry']
-            baddress=request.POST['baddress']
-            bcity=request.POST['bcity']
-            bstate=request.POST['bstate']
-            bzip=request.POST['bzip']
-            bphone=request.POST['bphone']
-            bfax=request.POST['bfax']
+            bcountry=request.POST['vcountry']
+            baddress=request.POST['vstreet']
+            bcity=request.POST['vcity']
+            bstate=request.POST['vstate']
+            bzip=request.POST['vpincode']
+            bphone=request.POST['vphone']
+            bfax=request.POST['vfax']
         
 
           
@@ -3494,3 +3494,321 @@ def additem_vendor_credit(request):
             
 #             return redirect("vendor_credits")
 #         return render(request,"add_vendor_vcredits.html",)
+
+# def create_recurring_bills(request):
+
+    # company = company_details.objects.get(user = request.user)
+    # # print(request.POST.get('customer').split(" ")[0])
+    # cust = customer.objects.get(id=request.POST.get('customer').split(" ")[0],user = request.user)
+
+    # if request.method == 'POST':
+    #     # vname = request.POST.get('vendor').rsplit(' ', 1)
+    #     # cname = request.POST.get('customer').split(" ")[1:]
+    #     vname  = request.POST.get('vendor')
+    #     cname = request.POST.get('customer')
+    #     # cname = " ".join(cname)
+    #     src_supply = request.POST.get('srcofsupply')
+    #     prof = request.POST['prof_name']
+    #     repeat = request.POST['repeat']
+    #     start = request.POST.get('start_date')
+    #     end = None if request.POST.get('end_date') == "" else  request.POST.get('end_date')
+    #     pay_term =request.POST['terms']
+
+    #     sub_total =request.POST['subtotal']
+
+    #     sgst=None if request.POST.get('sgst') == "" else  request.POST.get('sgst')
+    #     cgst=None if request.POST.get('cgst') == "" else  request.POST.get('cgst')
+    #     igst= None if request.POST.get('igst') == "" else  request.POST.get('igst')
+    #     # print(igst)
+
+    #     if src_supply == company.state:
+    #         tax1 = sgst + cgst
+    #     else:
+    #         tax1 = igst
+           
+    #     # print(tax1)
+
+    #     shipping_charge=0 if request.POST['addcharge'] == "" else request.POST['addcharge']
+    #     grand_total=request.POST['grand_total']
+    #     note=request.POST.get('note')
+
+    #     u = User.objects.get(id = request.user.id)
+
+    #     bills = Vendor_Credits(vendor_name=vname,profile_name=prof,customer_name = cname,
+    #                 source_supply=src_supply,repeat_every = repeat,start_date = start,end_date = end,
+    #                 payment_terms =pay_term,sub_total=sub_total,sgst=sgst,cgst=cgst,igst=igst,
+    #                 tax_amount=tax1, shipping_charge = shipping_charge,
+    #                 grand_total=grand_total,note=note,company=company,user = u,  )
+    #     bills.save()
+
+    #     r_bill = Vendor_Credits.objects.get(id=bills.id)
+
+    #     if len(request.FILES) != 0:
+    #         r_bill.document=request.FILES['file'] 
+    #         r_bill.save()
+
+    #     items = request.POST.getlist("item[]")
+    #     accounts = request.POST.getlist("account[]")
+    #     quantity = request.POST.getlist("qty[]")
+    #     rate = request.POST.getlist("rate[]")
+        
+    #     if (" ".join(src_supply.split(" ")[1:])) == company.state:
+    #         tax = request.POST.getlist("tax1[]")
+    #     else:
+    #         tax = request.POST.getlist("tax2[]")
+
+    #     discount = 0 if request.POST.getlist("discount[]") == " " else request.POST.getlist("discount[]")
+    #     amount = request.POST.getlist("amount[]")
+
+    #     if len(items)==len(accounts)==len(amount) == len(quantity) == len(rate)==len(tax) == len(discount) and items and accounts and quantity and rate and tax and discount and amount:
+                
+    #             mapped=zip(items,accounts,quantity,rate,tax,discount,amount)
+    #             mapped=list(mapped)
+
+    #             for ele in mapped:
+
+    #                 it = AddItem.objects.get(user = request.user, id = ele[0]).Name
+    #                 try:
+    #                     int(ele[1])
+    #                     ac = Vendor_invoice_item.objects.get(user = request.user,id = ele[1]).account_name
+                        
+    #                 except ValueError:
+                        
+    #                     ac = ele[1]
+                    
+    #                 created = Vendor_invoice_item.objects.create(item = it,account = ac,quantity=ele[2],rate=ele[3],
+    #                 tax=ele[4],discount = ele[5],amount=ele[6],user = u,company = company, recur_bills = r_bill)
+
+    #     return redirect('vendor_credits_home')
+    # return redirect('vendor_credits_home')
+    
+def get_vendordet(request):
+    
+
+    company= company_details.objects.get(user = request.user)
+
+    # fname = request.POST.get('fname')
+    # lname = request.POST.get('lname')
+    id = request.POST.get('id')
+    vdr = vendor_table.objects.get(user=company.user_id, id=id)
+    vemail = vdr.vendor_email
+    gstnum = vdr.gst_number
+    gsttr = vdr.gst_treatment
+
+    return JsonResponse({'vendor_email' :vemail, 'gst_number' : gstnum,'gst_treatment':gsttr},safe=False)
+
+
+@login_required(login_url='login')
+def recurbills_vendor(request):
+    
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        title=request.POST.get('title')
+        first_name=request.POST.get('firstname')
+        last_name=request.POST.get('lastname')
+        comp=request.POST.get('company_name')
+        dispn = request.POST.get('display_name')
+        email=request.POST.get('email')
+        website=request.POST.get('website')
+        w_mobile=request.POST.get('work_mobile')
+        p_mobile=request.POST.get('pers_mobile')
+        skype = request.POST.get('skype')
+        desg = request.POST.get('desg')
+        dpt = request.POST.get('dpt')
+        gsttype=request.POST.get('gsttype')
+        gstin=request.POST.get('gstin')
+        panno=request.POST.get('panno')
+        supply=request.POST.get('sourceofsupply')
+        currency=request.POST.get('currency')
+        balance=request.POST.get('openingbalance')
+        payment=request.POST.get('paymentterms')
+        street=request.POST.get('street')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        country=request.POST.get('country')
+        fax=request.POST.get('fax')
+        phone=request.POST.get('phone')
+        shipstreet=request.POST.get('shipstreet')
+        shipcity=request.POST.get('shipcity')
+        shipstate=request.POST.get('shipstate')
+        shippincode=request.POST.get('shippincode')
+        shipcountry=request.POST.get('shipcountry')
+        shipfax=request.POST.get('shipfax')
+        shipphone=request.POST.get('shipphone')
+
+        u = User.objects.get(id = request.user.id)
+
+        vndr = vendor_table(salutation=title, first_name=first_name, last_name=last_name,vendor_display_name = dispn, company_name= comp, gst_treatment=gsttype, gst_number=gstin, 
+                    pan_number=panno,vendor_wphone = w_mobile,vendor_mphone = p_mobile, vendor_email=email,skype_number = skype,
+                    source_supply=supply,currency=currency, website=website, designation = desg, department = dpt,
+                    opening_bal=balance,baddress=street, bcity=city, bstate=state, payment_terms=payment,bzip=pincode, 
+                    bcountry=country, saddress=shipstreet, scity=shipcity, sstate=shipstate,szip=shippincode, scountry=shipcountry,
+                    bfax = fax, sfax = shipfax, bphone = phone, sphone = shipphone,user = u)
+        vndr.save()
+
+        return HttpResponse({"message": "success"})
+        
+@login_required(login_url='login')
+def vendor_dropdown(request):
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = vendor_table.objects.filter(user = user)
+    for option in option_objects:
+        
+        options[option.id] = [option.salutation, option.first_name, option.last_name, option.id]
+    return JsonResponse(options)
+
+def item_dropdown(request):
+
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    option_objects = AddItem.objects.filter(user = request.user)
+    for option in option_objects:
+        options[option.id] = [option.Name,option.id]
+
+    return JsonResponse(options)
+
+def get_cust_state(request):
+
+    user = User.objects.get(id=request.user.id)
+    if request.method=='POST':
+
+        id=request.POST.get('id')
+        cust = customer.objects.get(id = id, user = user)
+        cstate = cust.placeofsupply.split("] ")[1]
+        state = 'Not Specified' if cstate == "" else cstate
+
+        return JsonResponse({"state": state},safe=False)
+    
+def recurbills_item(request):
+
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+        
+        type=request.POST.get('type')
+        name=request.POST.get('name')
+        ut=request.POST.get('unit')
+        inter=request.POST.get('inter')
+        intra=request.POST.get('intra')
+        sell_price=request.POST.get('sell_price')
+        sell_acc=request.POST.get('sell_acc')
+        sell_desc=request.POST.get('sell_desc')
+        cost_price=request.POST.get('cost_price')
+        cost_acc=request.POST.get('cost_acc')      
+        cost_desc=request.POST.get('cost_desc')
+        
+        units=Unit.objects.get(id=ut)
+        sel=Sales.objects.get(id=sell_acc)
+        cost=Purchase.objects.get(id=cost_acc)
+
+        history="Created by " + str(request.user)
+
+        u  = User.objects.get(id = request.user.id)
+
+        item=AddItem(type=type,Name=name,p_desc=cost_desc,s_desc=sell_desc,s_price=sell_price,p_price=cost_price,
+                     user=u ,creat=history,interstate=inter,intrastate=intra,unit = units,sales = sel, purchase = cost)
+
+        item.save()
+
+        return HttpResponse({"message": "success"})
+    
+    return HttpResponse("Invalid request method.")
+
+def get_customerdet(request):
+
+    company= company_details.objects.get(user = request.user)
+
+    name = request.POST.get('name')
+    id = request.POST.get('id')
+    # print(name)
+
+    cust = customer.objects.get(user=company.user_id,id= id)
+    email = cust.customerEmail
+    gstin = 0
+    gsttr = cust.GSTTreatment
+    cstate = cust.placeofsupply.split("] ")[1:]
+    print(email)
+    print(gstin)
+    state = 'Not Specified' if cstate == "" else cstate
+
+    return JsonResponse({'customer_email' :email, 'gst_treatment':gsttr, 'gstin': gstin , 'state' : state},safe=False)
+
+@login_required(login_url='login')
+def recurbills_vendor(request):
+    
+    company = company_details.objects.get(user = request.user)
+
+    if request.method=='POST':
+
+        title=request.POST.get('title')
+        first_name=request.POST.get('firstname')
+        last_name=request.POST.get('lastname')
+        comp=request.POST.get('company_name')
+        dispn = request.POST.get('display_name')
+        email=request.POST.get('email')
+        website=request.POST.get('website')
+        w_mobile=request.POST.get('work_mobile')
+        p_mobile=request.POST.get('pers_mobile')
+        skype = request.POST.get('skype')
+        desg = request.POST.get('desg')
+        dpt = request.POST.get('dpt')
+        gsttype=request.POST.get('gsttype')
+        gstin=request.POST.get('gstin')
+        panno=request.POST.get('panno')
+        supply=request.POST.get('sourceofsupply')
+        currency=request.POST.get('currency')
+        balance=request.POST.get('openingbalance')
+        payment=request.POST.get('paymentterms')
+        street=request.POST.get('street')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        country=request.POST.get('country')
+        fax=request.POST.get('fax')
+        phone=request.POST.get('phone')
+        shipstreet=request.POST.get('shipstreet')
+        shipcity=request.POST.get('shipcity')
+        shipstate=request.POST.get('shipstate')
+        shippincode=request.POST.get('shippincode')
+        shipcountry=request.POST.get('shipcountry')
+        shipfax=request.POST.get('shipfax')
+        shipphone=request.POST.get('shipphone')
+
+        u = User.objects.get(id = request.user.id)
+
+        vndr = vendor_table(salutation=title, first_name=first_name, last_name=last_name,vendor_display_name = dispn, company_name= comp, gst_treatment=gsttype, gst_number=gstin, 
+                    pan_number=panno,vendor_wphone = w_mobile,vendor_mphone = p_mobile, vendor_email=email,skype_number = skype,
+                    source_supply=supply,currency=currency, website=website, designation = desg, department = dpt,
+                    opening_bal=balance,baddress=street, bcity=city, bstate=state, payment_terms=payment,bzip=pincode, 
+                    bcountry=country, saddress=shipstreet, scity=shipcity, sstate=shipstate,szip=shippincode, scountry=shipcountry,
+                    bfax = fax, sfax = shipfax, bphone = phone, sphone = shipphone,user = u)
+        vndr.save()
+
+        return HttpResponse({"message": "success"})
+        
+def get_customerdet(request):
+
+    company= company_details.objects.get(user = request.user)
+
+    name = request.POST.get('name')
+    id = request.POST.get('id')
+    # print(name)
+
+    cust = customer.objects.get(user=company.user_id,id= id)
+    email = cust.customerEmail
+    gstin = 0
+    gsttr = cust.GSTTreatment
+    cstate = cust.placeofsupply.split("] ")[1:]
+    print(email)
+    print(gstin)
+    state = 'Not Specified' if cstate == "" else cstate
+
+    return JsonResponse({'customer_email' :email, 'gst_treatment':gsttr, 'gstin': gstin , 'state' : state},safe=False)
+
+        

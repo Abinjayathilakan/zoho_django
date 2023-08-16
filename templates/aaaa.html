@@ -190,7 +190,7 @@
       <tr style="background-color: black;">
           <th>Product
             <br><br> &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" data-toggle="modal" data-target="#create_item" class="text-capitalize">+ Add Item</a>
+            <a href="#" data-toggle="modal" data-target="#newitem" class="text-capitalize">+ Add Item</a>
 
           </th>
           <th class="text-right">Hsn</th>
@@ -2436,7 +2436,7 @@ $(document).ready(function() {
     $.ajax({
       
       type : 'POST',
-      url:"",
+      url:"{% url 'add_customer_for_vcredit' %}",
   
       data:{
           title : $("#title").val(),
@@ -2740,7 +2740,7 @@ $(document).ready(function() {
     $.ajax({
       
       type : 'POST',
-      url:"",
+      url:"{% url 'additem_bills' %}",
       
       data:{
           type : itemtype,

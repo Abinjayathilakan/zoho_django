@@ -169,6 +169,18 @@ urlpatterns = [
     path('additem_bills',views.additem_bills,name='additem_bills'),
     
     
+    
+   # path('create_recurring_bills',views.create_recurring_bills,name='create_recurring_bills'),
+    path('get_vendordet',views.get_vendordet,name='get_vendordet'),
+    path('recurbills_vendor',views.recurbills_vendor,name='recurbills_vendor'),
+    path('vendor_dropdown',views.vendor_dropdown,name='vendor_dropdown'),
+    path('recurbills_item',views.recurbills_item,name='recurbills_item'),
+    path('item_dropdown',views.item_dropdown,name='item_dropdown'),
+    path('get_cust_state',views.get_cust_state,name='get_cust_state'),
+    path('recurbills_item',views.recurbills_item,name='recurbills_item'),
+    path('get_customerdet',views.get_customerdet,name='get_customerdet'),
+    
+    
 
 
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

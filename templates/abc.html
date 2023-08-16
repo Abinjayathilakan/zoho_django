@@ -29,7 +29,7 @@
       <form method="post" action="{% url 'vendor_credits' %}" enctype="multipart/form-data"  class="">
         {% csrf_token %}
         <div class="row mb-4 border-top pt-5">
-            <div class="col-sm-2"><label for="customer_name" >Customer Name *</label></div>
+            <div class="col-sm-2"><label for="customer_name" >Vendor Name *</label></div>
             <div class="col-sm-10">
                 <select   class="registration-type" id="vendor-select" name="sel" style="width: 38%;height: 55px;" onchange="redirectToVendorPage(this)">
                     <option type="hidden" value="vendor">select one</option>
@@ -1962,7 +1962,7 @@ color: black;
     var place_of_supply = $("#vendor-select option:selected").data("placeofsupply");
     var gstTreatment = $("#vendor-select option:selected").data("gst");
   
-    if (place_of_supply === "[KL]-Kerala" || gstTreatment === "GST") {
+    if (place_of_supply === "[KL]-Kerala" ) {
       $('#tr_igst').hide();
       $('#tr_cgst').show();
       $('#tr_sgst').show();
