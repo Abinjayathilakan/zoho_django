@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <div class="row mt-2 d-none" id="email_row">
+      <div class="row mt-2 " id="email_row">
         <div class="col-md-3">
           <label for="email_inp">Vendor Email</label>
         </div>
@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <div class="row mt-2 d-none" id="gst_trt_row">
+      <div class="row mt-2 " id="gst_trt_row">
         <div class="col-md-3">
           <label for="gst_trt_inp">GST Treatment</label>
         </div>
@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="row mt-2 mb-2 d-none" id="gstin_row">
+      <div class="row mt-2 mb-2 " id="gstin_row">
         <div class="col-md-3">
           <label for="gstin_inp">GST Number</label>
         </div>
@@ -2264,7 +2264,7 @@ $(document).ready(function() {
         var na = name.split(' ')[0];
         $.ajax({
 
-            url: "{% url 'get_customerdet' %}", 
+            url: "", 
 
             data: { 
                     // name : na[1]+ " " + na[2] + " "+ na[3],

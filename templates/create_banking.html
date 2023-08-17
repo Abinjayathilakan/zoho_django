@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
+<script src="{% static 'js\country-states.js'%}"></script>
 <div class="row" style="background-color: #ffc107; text-align: center; color: black">
     <div class="col-sm-12" >
         <h4 class="mt-1">Create Banking</h4>
@@ -58,7 +58,7 @@
     </div>
     <div class="row mt-5">
 
-        <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+        <div class="col-sm-6" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
             <div class="row mt-4">
                 <div class="col-sm-12" style="text-align: center;">
                     <h5>Bank Account Details</h5>
@@ -75,7 +75,7 @@
                     <label for="">A/c Number</label>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <input type="text" name="ac_number" class="form-control bg-light text-dark">
+                    <input type="text" pattern="^[0-9]{9,18}$" name="ac_number" class="form-control bg-light text-dark">
                 </div>
                 <div class="col-sm-6 mt-4">
                     <label for="">IFSC Code</label>
@@ -145,6 +145,13 @@
                 <div class="col-sm-6 mt-4">
                     <input type="text" name="br_name" class="form-control bg-light text-dark">
                 </div>
+
+                <div class="row mt-4">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <h5>Bank Configuration</h5>
+                    </div>
+                </div>
+
                 <div class="col-sm-6 mt-4">
                     <label for="">Set/Alter Range Of Cheque Books</label>
                 </div>
@@ -181,7 +188,7 @@
             
 
         </div>
-        <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+        <div class="col-sm-6" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
             <div class="row mt-4">
                 <div class="col-sm-12" style="text-align: center;">
                     <h5>Mailing Address</h5>
@@ -206,7 +213,7 @@
                 </div>
                 <div class="col-sm-6 mt-4">
                 
-                    <select name="country" class="form-control bg-light text-dark">
+                    <select name="country"  id="country" class="form-control bg-light text-dark">
                         <option value=>Select Country</option>
                         <option value="Nigeria">Nigeria</option>
                         <option value="Afghanistan">Afghanistan</option>
@@ -463,7 +470,10 @@
                     <label for="">State</label>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <input type="text" name="state" class="form-control bg-light text-dark">
+                    <select id="state" name="state" class="form-control bg-light text-dark">
+                        <option>_</option>
+                    </select>
+                 
                     
                 </div>
                 <div class="col-sm-6 mt-4">
@@ -472,67 +482,73 @@
                 <div class="col-sm-6 mt-4">
                     <input type="text" name="pin" class="form-control bg-light text-dark">
                 </div>
+                <div class="row mt-4">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <h5>Banking Details</h5>
+                    </div>
+                </div>
+                <div class="row mr-4" >
+                    <div class="col-sm-6 mt-4" >
+                        <label for="">Provide Bank Details</label>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <textarea id="" cols="30" rows="10" name="bnk_det" class="form-control bg-light text-dark" ></textarea>
+                        
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-sm-12" style="text-align: center;">
+                            <h5>Tax Registration Details</h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <label for="">PAN/IT No.</label>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <input type="text" name="pan" class="form-control bg-light text-dark">
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <label for="">Registration Type</label>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                    
+                        <select name="register_type" id="regtype" class="form-control bg-light text-dark">
+                            <option value="Regular">Regular</option> 
+                            <option value="Composition">Composition</option>
+                            <option value="Consumer">Consumer</option>
+                            <option value="Unregistered">Unregistered</option>
+                            <option value="Unknown">Unknown</option>
+                            
+                        </select>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <label for="">GSTIN/UN No.</label>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <input type="text" name="gstin" class="form-control bg-light text-dark">
+                        
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        <label for="">Set/Alter GST Details</label>
+                    </div>
+                    <div class="col-sm-6 mt-4">
+                        
+
+                        <select name="gst_det" id="gst_det" class="form-control bg-light text-dark">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>  
+                            
+                        </select>
+
+                    </div>
+                    
+    
+                </div>
                 
 
             </div>
             
         </div>
-        <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
-            <div class="row mt-4">
-                <div class="col-sm-12" style="text-align: center;">
-                    <h5>Banking Details</h5>
-                </div>
-            </div>
-            <div class="row mr-4" >
-                <div class="col-sm-6 mt-4" >
-                    <label for="">Provide Bank Details</label>
-                </div>
-                <div class="col-sm-6 mt-4">
-                
-                    <input type="text" name="bnk_det" class="form-control bg-light text-dark">
-                </div>
-                <div class="row mt-4">
-                    <div class="col-sm-12" style="text-align: center;">
-                        <h5>Tax Registration Details</h5>
-                    </div>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <label for="">PAN/IT No.</label>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <input type="text" name="pan" class="form-control bg-light text-dark">
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <label for="">Registration Type</label>
-                </div>
-                <div class="col-sm-6 mt-4">
-                
-                    <select name="register_type" id="regtype" class="form-control bg-light text-dark">
-                        <option value="Regular">Regular</option> 
-                        <option value="Composition">Composition</option>
-                        <option value="Consumer">Consumer</option>
-                        <option value="Unregistered">Unregistered</option>
-                        <option value="Unknown">Unknown</option>
-                        
-                    </select>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <label for="">GSTIN/UN No.</label>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <input type="text" name="gstin" class="form-control bg-light text-dark">
-                    
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <label for="">Set/Alter GST Details</label>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <input type="text" name="gst_det" class="form-control bg-light text-dark">
-                </div>
-                
-
-            </div>
-        </div>
+        
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
@@ -542,8 +558,15 @@
                         <div class="col-sm-4">
                             <label for="">Opening Balance: </label>
                         </div>
-                        <div class="col-sm-8">
-                            <input type="text" name="balance" class="form-control bg-light text-dark">
+                        <div class="col-sm-6">
+                            <input type="number" name="balance" value="0" class="form-control bg-light text-dark">
+                        
+                        </div>
+                        <div class="col-sm-2">
+                            <select name="opening_blnc_type" id="crdr" class="custom-select form-control bg-light text-dark" style="width: 60px;">
+                                <option value="Cr">Cr</option>
+                                <option value="Dr">Dr</option>
+                            </select>
                         
                         </div>
 
@@ -611,4 +634,59 @@
     </div>
   </div>
 </form>
+
+
+<script>
+    // user country code for selected option
+var user_country_code = "IN";
+
+(() => {
+    // script https://www.html-code-generator.com/html/drop-down/state-name
+
+    // Get the country name and state name from the imported script.
+    const country_array = country_and_states.country;
+    const states_array = country_and_states.states;
+
+    const id_state_option = document.getElementById("state");
+    const id_country_option = document.getElementById("country");
+
+    const createCountryNamesDropdown = () => {
+        let option =  '';
+        option += '<option value="">select country</option>';
+
+        for(let country_code in country_array){
+            // set selected option user country
+            let selected = (country_code == user_country_code) ? ' selected' : '';
+            option += '<option value="'+country_code+'"'+selected+'>'+country_array[country_code]+'</option>';
+        }
+        id_country_option.innerHTML = option;
+    };
+
+    const createStatesNamesDropdown = () => {
+        let selected_country_code = id_country_option.value;
+        // get state names
+        let state_names = states_array[selected_country_code];
+
+        // if invalid country code
+        if(!state_names){
+            id_state_option.innerHTML = '<option>select state</option>';
+            return;
+        }
+        let option = '';
+        option += '<select id="state">';
+        option += '<option>select state</option>';
+        for (let i = 0; i < state_names.length; i++) {
+            option += '<option value="'+state_names[i].name+'">'+state_names[i].name+'</option>';
+        }
+        option += '</select>';
+        id_state_option.innerHTML = option;
+    };
+
+    // country select change event
+    id_country_option.addEventListener('change', createStatesNamesDropdown);
+
+    createCountryNamesDropdown();
+    createStatesNamesDropdown();
+})();
+</script>
 {% endblock %}

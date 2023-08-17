@@ -6,7 +6,7 @@
 
 
 <div class="row">
-    <div class="col-sm-2" >
+    <div class="col-sm-3" >
         <div class="row" >
             <div class="col-sm-12 " >
               <h1>
@@ -46,10 +46,11 @@
           </div>
 
     </div>
-    <div class="col-sm-10">
+    <div class="col-sm-9 ">
         <div class="row mb-3 mt-3" style="text-align: right;">
             <div class="col-sm-12">
-                <a href="{% url 'banking_edit' bnk.id%}"><button class="btn btn btn-success" style="width: 200px; "> <i class="fa-solid fa-plus " >Edit</button></a>
+                <a href="{% url 'banking_edit' bnk.id%}"><button class="btn btn btn-success" style="width: 100px; ">Edit</button></a>
+                <a href="{% url 'banking_delete' bnk.id%}" onclick="alert('Do you want to delete?')" ><button class="btn btn btn-danger" style="width: 100px; ">Delete</button></a>
             </div>
         </div>
         <div class="row" style="background-color: #ffc107; text-align: center; color: black">
@@ -116,7 +117,7 @@
             </div>
             <div class="row mt-5">
         
-                <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                <div class="col-sm-6" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
                     <div class="row mt-4">
                         <div class="col-sm-12" style="text-align: center;">
                             <h5>Bank Account Details</h5>
@@ -164,6 +165,11 @@
                         <div class="col-sm-6 mt-4">
                             <input type="text" value="{{bnk.bnk_branch}}" disabled name="br_name" class="form-control bg-light text-dark">
                         </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <h5>Bank Configuration</h5>
+                            </div>
+                        </div>
                         <div class="col-sm-6 mt-4">
                             <label for="">Set/Alter Range Of Cheque Books</label>
                         </div>
@@ -203,7 +209,7 @@
                     
         
                 </div>
-                <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                <div class="col-sm-6" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
                     <div class="row mt-4">
                         <div class="col-sm-12" style="text-align: center;">
                             <h5>Mailing Address</h5>
@@ -495,68 +501,69 @@
                         <div class="col-sm-6 mt-4">
                             <input type="text" value="{{bnk.mail_pin}}" disabled name="pin" class="form-control bg-light text-dark">
                         </div>
+
+                        <div class="row mt-4">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <h5>Banking Details</h5>
+                            </div>
+                        </div>
+                        <div class="row mr-4" >
+                            <div class="col-sm-6 mt-4" >
+                                <label for="">Provide Bank Details</label>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                
+                                <textarea id="" cols="30" rows="10" disabled name="bnk_det" class="form-control bg-light text-dark" >{{bnk.bd_bnk_det}}</textarea>
+                                
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-sm-12" style="text-align: center;">
+                                    <h5>Tax Registration Details</h5>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <label for="">PAN/IT No.</label>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <input type="text" value="{{bnk.bd_pan_no}}" disabled name="pan" class="form-control bg-light text-dark">
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <label for="">Registration Type</label>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                            
+                                <select name="register_type" id="regtype" class="form-control bg-light text-dark" disabled>
+                                    <option value="{{bnk.bd_reg_typ}}" selected>{{bnk.bd_reg_typ}}</option>
+                                    <option value="Regular">Regular</option> 
+                                    <option value="Composition">Composition</option>
+                                    <option value="Consumer">Consumer</option>
+                                    <option value="Unregistered">Unregistered</option>
+                                    <option value="Unknown">Unknown</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <label for="">GSTIN/UN No.</label>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <input type="text" value="{{bnk.bd_gst_no}}" disabled name="gstin" class="form-control bg-light text-dark">
+                                
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <label for="">Set/Alter GST Details</label>
+                            </div>
+                            <div class="col-sm-6 mt-4">
+                                <input type="text" value="{{bnk.bd_gst_det}}" disabled name="gst_det" class="form-control bg-light text-dark">
+                            </div>
+                            
+            
+                        </div>
                         
         
                     </div>
                     
                 </div>
-                <div class="col-sm-4" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
-                    <div class="row mt-4">
-                        <div class="col-sm-12" style="text-align: center;">
-                            <h5>Banking Details</h5>
-                        </div>
-                    </div>
-                    <div class="row mr-4" >
-                        <div class="col-sm-6 mt-4" >
-                            <label for="">Provide Bank Details</label>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <input type="text" value="{{bnk.bd_bnk_det}}" disabled name="bnk_det" class="form-control bg-light text-dark">
-                            
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-sm-12" style="text-align: center;">
-                                <h5>Tax Registration Details</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <label for="">PAN/IT No.</label>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <input type="text" value="{{bnk.bd_pan_no}}" disabled name="pan" class="form-control bg-light text-dark">
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <label for="">Registration Type</label>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                        
-                            <select name="register_type" id="regtype" class="form-control bg-light text-dark" disabled>
-                                <option value="{{bnk.bd_reg_typ}}" selected>{{bnk.bd_reg_typ}}</option>
-                                <option value="Regular">Regular</option> 
-                                <option value="Composition">Composition</option>
-                                <option value="Consumer">Consumer</option>
-                                <option value="Unregistered">Unregistered</option>
-                                <option value="Unknown">Unknown</option>
-                                
-                            </select>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <label for="">GSTIN/UN No.</label>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <input type="text" value="{{bnk.bd_gst_no}}" disabled name="gstin" class="form-control bg-light text-dark">
-                            
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <label for="">Set/Alter GST Details</label>
-                        </div>
-                        <div class="col-sm-6 mt-4">
-                            <input type="text" value="{{bnk.bd_gst_det}}" disabled name="gst_det" class="form-control bg-light text-dark">
-                        </div>
-                        
-        
-                    </div>
-                </div>
+                
             </div>
             <div class="row mt-5">
                 <div class="col-sm-12">
@@ -567,7 +574,7 @@
                                     <label for="">Opening Balance: </label>
                                 </div>
                                 <div class="col-sm-8">
-                                    <input type="text" value="{{bnk.opening_bal}}" disabled name="balance" class="form-control bg-light text-dark">
+                                    <input type="text" value="{{bnk.opening_bal}} {{bnk.opening_blnc_type}}" disabled name="balance" class="form-control bg-light text-dark">
                                 
                                 </div>
         
@@ -585,8 +592,5 @@
  
     </div>
 </div>
-  
 
-  
- 
 {% endblock %}

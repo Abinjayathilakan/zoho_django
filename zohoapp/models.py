@@ -30,7 +30,12 @@ class Sales(models.Model):
 
 
 class Purchase(models.Model):
-    Account_type=models.TextField(max_length=255)
+    ACC_TYPE_CHOICES = (
+        ('1', 'EXPENSE'),
+        ('2', 'Cost of Goods Sold'),
+        ('3', 'Fixed Asset'),
+    )
+    Account_type=models.CharField(max_length=255,choices=ACC_TYPE_CHOICES)
     Account_name=models.TextField(max_length=255)
     Acount_code=models.TextField(max_length=255)
     Account_desc=models.TextField(max_length=255)
@@ -54,7 +59,9 @@ class AddItem(models.Model):
     type=models.TextField(max_length=255)
     Name=models.TextField(max_length=255)
     unit=models.ForeignKey(Unit,on_delete=models.CASCADE)
+    hsn=models.IntegerField(null=True,blank=True)
     sales=models.ForeignKey(Sales,on_delete=models.CASCADE)
+
     purchase=models.ForeignKey(Purchase,on_delete=models.CASCADE)
     date=models.DateTimeField(auto_now_add=True)
     s_desc=models.TextField(max_length=255)
@@ -65,6 +72,9 @@ class AddItem(models.Model):
     satus=models.TextField(default='active')
     interstate=models.CharField(max_length=255,default='')
     intrastate=models.CharField(max_length=255,default='')
+    tax=models.TextField(max_length=255,null=True)
+    invacc=models.TextField(max_length=255,null=True)
+    stock=models.IntegerField(blank=True,null=True,)
 
 class History(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
@@ -133,11 +143,7 @@ class doc_upload_table(models.Model):
     
     
     
- 
-
 class customer(models.Model):
-    GSTTreatment=models.CharField(max_length=100,null=True,blank=True)
-    placeofsupply=models.CharField(max_length=100,null=True,blank=True)
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
     customerName= models.CharField(max_length=100,null=True,blank=True)
     customerType= models.CharField(max_length=100,null=True,blank=True)
@@ -150,6 +156,7 @@ class customer(models.Model):
     department=models.CharField(max_length=100,null=True,blank=True)
     website=models.CharField(max_length=100,null=True,blank=True)
     GSTTreatment=models.CharField(max_length=100,null=True,blank=True)
+    GSTIN=models.CharField(max_length=100,null=True,blank=True)
     placeofsupply=models.CharField(max_length=100,null=True,blank=True)
     Taxpreference=models.CharField(max_length=100,null=True,blank=True)
     currency=models.CharField(max_length=100,null=True,blank=True)
@@ -230,6 +237,7 @@ class payment(models.Model):
     days=models.TextField(max_length=255)
     
 class payment_terms(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     Terms=models.CharField(max_length=100,null=True,blank=True)
     Days=models.IntegerField(null=True,blank=True)    
 
@@ -319,25 +327,23 @@ class banking(models.Model):
     chq_print = models.CharField(max_length=220,default='', null=True, blank=True)
     chq_config = models.CharField(max_length=220,default='', null=True, blank=True)
     mail_name = models.CharField(max_length=220,default='', null=True, blank=True)
-    mail_addr = models.CharField(max_length=220,default='', null=True, blank=True)
+    mail_addr = models.TextField(default='', null=True, blank=True)
     mail_country = models.CharField(max_length=220,default='', null=True, blank=True)
     mail_state = models.CharField(max_length=220,default='', null=True, blank=True)
     mail_pin = models.CharField(max_length=220,default='', null=True, blank=True)
-    bd_bnk_det = models.CharField(max_length=220,default='', null=True, blank=True)
+    bd_bnk_det = models.TextField(default='', null=True, blank=True)
     bd_pan_no = models.CharField(max_length=220,default='', null=True, blank=True)
     bd_reg_typ = models.CharField(max_length=220,default='', null=True, blank=True)
     bd_gst_no = models.CharField(max_length=220,default='', null=True, blank=True)
     bd_gst_det = models.CharField(max_length=220,default='', null=True, blank=True)
     opening_bal =models.IntegerField(null=True, blank=True)
+    opening_blnc_type = models.CharField(max_length=220,default='', null=True, blank=True)
 
 class bank(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     acc_type = models.CharField(max_length=220,default='', null=True, blank=True)
     bank_name = models.CharField(max_length=220,default='', null=True, blank=True)
     
-    from django.db import models
-
-
 class Expense(models.Model):
     profile_name = models.CharField(max_length=255)
     repeat_every = models.CharField(max_length=50)
@@ -359,20 +365,13 @@ class Expense(models.Model):
     def __str__(self):
         return self.profile_name
 
-
-
-class remarks_table(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-    vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
-    remarks=models.CharField(max_length=500)
-    
 class Account(models.Model):
     accountType = models.CharField(max_length=255)
     accountName = models.CharField(max_length=255)
     accountCode = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField() 
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     
-
 class SalesOrder(models.Model):
     customer=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
     sales_no=models.CharField(max_length=255,null=True,blank=True)
@@ -407,71 +406,349 @@ class sales_item(models.Model):
     rate=models.TextField(max_length=255,null=True,blank=True)
     sale=models.ForeignKey(SalesOrder,on_delete=models.CASCADE,null=True,blank=True)
     
-# abin  
+class DeliveryChellan(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    customer_name = models.CharField(max_length=100,null=True,blank=True)
+    customer_mailid = models.CharField(max_length=100,null=True,blank=True)
+    chellan_no = models.CharField(max_length=100,null=True,blank=True)
+    reference = models.CharField(max_length=100,null=True,blank=True)
+    chellan_date = models.DateField(null=True)
+    chellan_type = models.CharField(max_length=100,null=True,blank=True)    
+    sub_total = models.FloatField(null=True,blank=True)
+    igst = models.FloatField(null=True,blank=True)
+    sgst = models.FloatField(null=True,blank=True)
+    cgst = models.FloatField(null=True,blank=True)
+    tax_amount = models.FloatField(null=True,blank=True)
+    shipping_charge = models.FloatField(null=True,blank=True)
+    adjustment = models.FloatField(null=True,blank=True)
+    total = models.FloatField(null=True,blank=True)
+    status = models.CharField(max_length=100,null=True,blank=True)
+    customer_notes = models.CharField(max_length=250,null=True,blank=True)
+    terms_conditions = models.CharField(max_length=250,null=True,blank=True)
+    attachment = models.ImageField(upload_to="image/", null=True)  
+
+class ChallanItems(models.Model):
+    chellan = models.ForeignKey(DeliveryChellan,on_delete=models.CASCADE,null=True,blank=True)
+    item_name = models.CharField(max_length=100,null=True,blank=True)
+    quantity = models.IntegerField(null=True,blank=True)
+    rate = models.FloatField(null=True,blank=True)
+    discount = models.FloatField(null=True,blank=True)
+    tax_percentage = models.IntegerField(null=True,blank=True)
+    amount = models.FloatField(null=True,blank=True)
+    
+    
+class recurring_invoice(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    cust_name=models.ForeignKey(customer,on_delete=models.CASCADE,null=True)
+    items=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True)
+    cname=models.CharField(max_length=255)
+    p_supply=models.CharField(max_length=255)
+    entry_type=models.CharField(max_length=255)
+    name=models.CharField(max_length=255)
+    order_num=models.CharField(max_length=255)
+    every=models.CharField(max_length=255)
+    start=models.DateField()
+    end=models.DateField()
+    terms=models.CharField(max_length=255)
+    cust_note=models.TextField()
+    conditions=models.TextField()
+    sub_total = models.FloatField(null=True,blank=True)
+    igst = models.FloatField(null=True,blank=True)
+    sgst = models.FloatField(null=True,blank=True)
+    cgst = models.FloatField(null=True,blank=True)
+    tax_amount = models.FloatField(null=True,blank=True)
+    shipping_charge = models.FloatField(null=True,blank=True)
+    adjustment = models.FloatField(null=True,blank=True)
+    total = models.FloatField(null=True,blank=True)
+
+class recur_itemtable(models.Model):
+    
+    ri=models.ForeignKey(recurring_invoice,on_delete=models.CASCADE,null=True)
+    iname=models.CharField(max_length=255)
+    quantity=models.FloatField(null=True,blank=True)
+    rate=models.FloatField(null=True,blank=True)
+    discount=models.FloatField(null=True,blank=True)
+    tax=models.FloatField(null=True,blank=True)
+    amt=models.FloatField(null=True,blank=True)
+
+class payments_recur(models.Model):
+    Terms=models.CharField(max_length=100,null=True,blank=True)
+    Days=models.IntegerField(null=True,blank=True)
+
+class recurring_bills(models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(company_details,on_delete=models.CASCADE,null=True,blank=True)
+    profile_name = models.CharField(max_length=100,null=True,blank=True)
+    source_supply = models.CharField(max_length=100,null=True,blank=True)
+    vendor_name = models.CharField(max_length=100,null=True,blank=True)
+    customer_name = models.CharField(max_length=100,null=True,blank=True)
+    repeat_every = models.CharField(max_length=100,null=True,blank=True)
+    start_date=models.DateField(null=True,blank=True)
+    end_date=models.DateField(null=True,blank=True)
+    payment_terms = models.CharField(max_length=100,null=True,blank=True)
+    sub_total = models.FloatField(null=True,blank=True)
+    igst = models.FloatField(null=True,blank=True)
+    cgst = models.FloatField(null=True,blank=True)
+    sgst = models.FloatField(null=True,blank=True)
+    tax_amount =  models.FloatField(null=True,blank=True)
+    shipping_charge = models.FloatField(null=True,blank=True)
+    adjustment = models.FloatField(null=True,blank=True)
+    grand_total = models.FloatField(null=True,blank=True)
+    note = models.CharField(max_length=255,null=True,blank=True)
+    document=models.FileField(upload_to='doc/recurring_bills',null=True,blank=True)
+    comments = models.CharField(max_length=255,null=True,blank=True)
+    
+
+class recurring_bills_items (models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(company_details,on_delete=models.CASCADE,null=True,blank=True)
+    recur_bills = models.ForeignKey(recurring_bills,on_delete=models.CASCADE,null=True,blank=True)
+    item = models.CharField(max_length=100,null=True,blank=True)
+    account = models.CharField(max_length=100,null=True,blank=True)
+    quantity = models.IntegerField(null=True,blank=True)
+    rate=models.FloatField(null=True,blank=True)
+    tax = models.FloatField(null=True,blank=True)
+    discount = models.FloatField(null=True,blank=True)
+    amount = models.FloatField(null=True,blank=True)
+    
+    
+class Comment(models.Model):
+    profile_name = models.CharField(max_length=255)
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=255)
+
+    def _str_(self):
+        return self.comment
+        
+
+class repeat_every(models.Model):
+    Terms=models.CharField(max_length=100,null=True,blank=True)
+    
+    
+class payment_item(models.Model):
+    vendor = models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    reference = models.TextField(max_length=255,null=True,blank=True)
+    payment = models.TextField(max_length=255,null=True,blank=True) 
+    date = models.DateField(max_length=255,null=True,blank=True)
+    cash = models.TextField(max_length=255,null=True,blank=True)
+    amount = models.IntegerField(null=True,blank=True)
+    email = models.EmailField(max_length=255,null=True)
+    balance = models.IntegerField(null=True,blank=True)
+    current_balance = models.IntegerField(null=True,blank=True)
+    
+    
+class Purchase_Order(models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(company_details,on_delete=models.CASCADE,null=True,blank=True)
+    
+    vendor_name = models.CharField(max_length=100,null=True,blank=True)
+    vendor_mail = models.CharField(max_length=100,null=True,blank=True)
+    vendor_gst_traet = models.CharField(max_length=100,null=True,blank=True)
+    vendor_gst_no = models.CharField(max_length=100,null=True,blank=True)
+    
+
+    Org_name = models.CharField(max_length=100,null=True,blank=True)
+    Org_address = models.CharField(max_length=100,null=True,blank=True)
+    Org_gst = models.CharField(max_length=100,null=True,blank=True)
+    Org_street = models.CharField(max_length=100,null=True,blank=True)
+    Org_state = models.CharField(max_length=100,null=True,blank=True)
+    Org_city = models.CharField(max_length=100,null=True,blank=True)
+    typ=   models.CharField(max_length=100,null=True,blank=True)
+    Org_mail=models.CharField(max_length=100,null=True,blank=True)    ###### #add the fields to medel
 
 
+    customer_name = models.CharField(max_length=100,null=True,blank=True)
+    customer_mail = models.CharField(max_length=100,null=True,blank=True)
+    customer_address = models.CharField(max_length=100,null=True,blank=True)
+    customer_street = models.CharField(max_length=100,null=True,blank=True)
+    customer_state = models.CharField(max_length=100,null=True,blank=True)
+    customer_city = models.CharField(max_length=100,null=True,blank=True)
 
-class Vendor_Credits(models.Model):
+
+    Pur_no = models.CharField(max_length=100,null=True,blank=True)
+
+    source_supply = models.CharField(max_length=100,null=True,blank=True)
+
+    ref = models.CharField(max_length=100,null=True,blank=True)
+    Ord_date=models.DateField(null=True,blank=True)
+    exp_date=models.DateField(null=True,blank=True)
+    payment_terms = models.CharField(max_length=100,null=True,blank=True)
+    sub_total = models.FloatField(null=True,blank=True)
+    igst = models.FloatField(null=True,blank=True)
+    cgst = models.FloatField(null=True,blank=True)
+    sgst = models.FloatField(null=True,blank=True)
+    tax_amount =  models.FloatField(null=True,blank=True)
+    shipping_charge = models.FloatField(null=True,blank=True)
+    grand_total = models.FloatField(null=True,blank=True)
+    note = models.CharField(max_length=255,null=True,blank=True)
+    document=models.FileField(upload_to='doc/purchase_order',null=True,blank=True)
+    comments = models.CharField(max_length=255,null=True,blank=True)
+    term=models.CharField(max_length=255,null=True,blank=True)
+    status=models.CharField(max_length=255,default='Draft')
+
+class Purchase_Order_items (models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(company_details,on_delete=models.CASCADE,null=True,blank=True)
+    PO = models.ForeignKey(Purchase_Order,on_delete=models.CASCADE,null=True,blank=True)
+    item = models.CharField(max_length=100,null=True,blank=True)
+    account = models.CharField(max_length=100,null=True,blank=True)
+    quantity = models.IntegerField(null=True,blank=True)
+    rate=models.FloatField(null=True,blank=True)
+    tax = models.CharField(max_length=100,blank=True,null=True)    ########## #replace the model 
+    discount = models.FloatField(null=True,blank=True)
+    amount = models.FloatField(null=True,blank=True)
+    
+    
+class payment_made_items(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    vendor = models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    reference = models.TextField(max_length=255,null=True,blank=True)
+    payment = models.TextField(max_length=255,null=True,blank=True) 
+    date = models.DateField(max_length=255,null=True,blank=True)
+    cash = models.TextField(max_length=255,null=True,blank=True)
+    amount = models.IntegerField(null=True,blank=True)
+    email = models.EmailField(max_length=255,null=True)
+    balance = models.IntegerField(null=True,blank=True)
+    current_balance = models.IntegerField(null=True,blank=True)
+    gst = models.TextField(max_length=255,null=True,blank=True)     
+    
+    
+class Chart_of_Account(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    account_type = models.CharField(max_length=255,null=True,blank=True)
+    account_name = models.CharField(max_length=255,null=True,blank=True)
+    credit_no = models.CharField(max_length=255,null=True,blank=True)
+    sub_account = models.CharField(max_length=255,null=True,blank=True)
+    parent_account = models.CharField(max_length=255,null=True,blank=True)
+    bank_account_no = models.CharField(max_length=255,null=True,blank=True)
+    currency = models.CharField(max_length=255,null=True,blank=True)
+    account_code = models.CharField(max_length=255,null=True,blank=True)
+    description = models.TextField(null=True,blank=True)
+    watchlist = models.CharField(max_length=255,null=True,blank=True)
+    attachment=models.ImageField(upload_to="image/", null=True) 
+    create_status=models.CharField(max_length=255,null=True,blank=True) 
+    status = models.CharField(max_length=255,null=True,blank=True)
+
+class Chart_of_Account_Upload(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    account=models.ForeignKey(Chart_of_Account,on_delete=models.CASCADE,null=True,blank=True)
+    account_type=models.CharField(max_length=255,null=True,blank=True)
+    account_name=models.CharField(max_length=255,null=True,blank=True)
+    title=models.CharField(max_length=255,null=True,blank=True)
+    description=models.TextField(null=True,blank=True)
+    document=models.FileField(upload_to='docs/')
+    
+    
+class project1(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    
+    name=models.CharField(max_length=255,null=True,blank=True)
+    desc=models.CharField(max_length=255,null=True,blank=True)
+    c_name=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
+    billing=models.CharField(max_length=255,null=True,blank=True)
+    rateperhour=models.CharField(max_length=255,null=True,blank=True)
+    budget=models.CharField(max_length=255,null=True,blank=True)
+    active = models.BooleanField(default = False)
+    comment=models.CharField(max_length=255,null=True,blank=True)
+    
+    
+class task(models.Model):
+    proj=models.ForeignKey(project1,on_delete=models.CASCADE,null=True,blank=True)
+    c_name=models.ForeignKey(customer,on_delete=models.CASCADE,null=True,blank=True)
+    taskname=models.CharField(max_length=255,null=True,blank=True) 
+    taskdes=models.CharField(max_length=255,null=True,blank=True)
+    taskrph= models.CharField(max_length=255, null=True,blank=True) 
+    billable = models.CharField(max_length=255, default='Not Billed',null=True,blank=True)
+    
+
+class usernamez(models.Model):
+    projn=models.ForeignKey(project1,on_delete=models.CASCADE,null=True,blank=True)
+    users=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    usernamez=models.CharField(max_length=255, null=True,blank=True)
+    emailz=models.CharField(max_length=255, null=True,blank=True)
+    
+    
+class usercreate(models.Model):
+    projnn=models.ForeignKey(project1,on_delete=models.CASCADE,null=True,blank=True)
+    userss=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    usernamezz=models.CharField(max_length=255, null=True,blank=True)
+    emailzz=models.CharField(max_length=255, null=True,blank=True)
+    
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    active = models.CharField(max_length=255,default='Inactive')
+
+    def __str__(self):
+        return self.name
+        
+        
+class Comments_item(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
-    company_name=models.CharField(max_length=150)
-    vendor_email=models.CharField(max_length=250)
-    gst_treatment=models.CharField(max_length=100)
-    source_supply=models.CharField(max_length=100)
-    baddress=models.CharField(max_length=300,default='')
-    credit_note = models.CharField(max_length=100, null=True, blank=True)
-    order_no = models.CharField(max_length=100, null=True, blank=True)
-    adjustment = models.CharField(max_length=100, null=True, blank=True)
-    vendor_date = models.DateField()
-    
-    igst=models.TextField(max_length=255)
-    cgst=models.TextField(max_length=255)
-    sgst=models.TextField(max_length=255)
-    t_tax=models.FloatField()
-    subtotal=models.FloatField()
-    grandtotal=models.FloatField()
-    cxnote=models.TextField(max_length=255)
-    file=models.ImageField(upload_to='documents')
-    # terms_condition=models.TextField(max_length=255)
-    status=models.TextField(max_length=255)
-    
-class Vendor_invoice_item(models.Model):
-    product=models.TextField(max_length=255)
-    quantity=models.IntegerField()
-    hsn=models.TextField(max_length=255)
-    tax=models.IntegerField()
-    total=models.FloatField()
-    discount=models.TextField(max_length=255)
-    rate=models.TextField(max_length=255)
-    inv = models.ForeignKey(Vendor_Credits, on_delete=models.CASCADE)
-    
-    
-
-class Credits_comments_table(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
-    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
-    comment=models.TextField(max_length=500)
-
-class Credits_mail_table(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
-    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
-    mail_from=models.TextField(max_length=300)
-    mail_to=models.TextField(max_length=300)
-    subject=models.TextField(max_length=250)
-    content=models.TextField(max_length=900)
-    mail_date=models.DateTimeField(auto_now_add=True)
-
-class Credits_doc_upload_table(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
-    vendor=models.ForeignKey(Vendor_Credits,on_delete=models.CASCADE,null=True)
-    title=models.TextField(max_length=200)
-    document=models.FileField(upload_to='doc/')
-    
-    
+    item=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True,blank=True)
+    content = models.TextField(max_length=255,null=True,blank=True)
 
 
+# class vendor_table(models.Model):
+#     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+#     salutation=models.CharField(max_length=25)
+#     first_name=models.CharField(max_length=50)
+#     last_name=models.CharField(max_length=50)
+#     company_name=models.CharField(max_length=150)
+#     vendor_display_name=models.CharField(max_length=150)
+#     vendor_email=models.CharField(max_length=250)
+#     vendor_wphone=models.CharField(max_length=50)
+#     vendor_mphone=models.CharField(max_length=50)
+#     skype_number=models.CharField(max_length=50)
+#     designation=models.CharField(max_length=50)
+#     department=models.CharField(max_length=50)
+#     website=models.CharField(max_length=250)
+#     gst_treatment=models.CharField(max_length=100)
+#     gst_number=models.CharField(max_length=50,null=True)
+#     pan_number=models.CharField(max_length=50,null=True)
+#     source_supply=models.CharField(max_length=100)
+#     currency=models.CharField(max_length=50)
+#     opening_bal=models.CharField(max_length=100)
+#     payment_terms=models.CharField(max_length=100)
+#     battention=models.CharField(max_length=100,default='')
+#     bcountry=models.CharField(max_length=100,default='')
+#     baddress=models.CharField(max_length=300,default='')
+#     bcity=models.CharField(max_length=100,default='')
+#     bstate=models.CharField(max_length=100,default='')
+#     bzip=models.CharField(max_length=100,default='')
+#     bphone=models.CharField(max_length=100,default='')
+#     bfax=models.CharField(max_length=100,default='')
+#     sattention=models.CharField(max_length=100,default='')
+#     scountry=models.CharField(max_length=100,default='')
+#     saddress=models.CharField(max_length=300,default='')
+#     scity=models.CharField(max_length=100,default='')
+#     sstate=models.CharField(max_length=100,default='')
+#     szip=models.CharField(max_length=100,default='')
+#     sphone=models.CharField(max_length=100,default='')
+#     sfax=models.CharField(max_length=100,default='')
+
+# class comments_table(models.Model):
+#     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+#     vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+#     comment=models.TextField(max_length=500)
+
+# class mail_table(models.Model):
+#     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+#     vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+#     mail_from=models.TextField(max_length=300)
+#     mail_to=models.TextField(max_length=300)
+#     subject=models.TextField(max_length=250)
+#     content=models.TextField(max_length=900)
+#     mail_date=models.DateTimeField(auto_now_add=True)
+
+# class doc_upload_table(models.Model):
+#     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,default='')
+#     vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+#     title=models.TextField(max_length=200)
+#     document=models.FileField(upload_to='doc/')
     
-   
     
-
-
-

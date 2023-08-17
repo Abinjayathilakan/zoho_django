@@ -30,11 +30,11 @@
                         
                         <div class="col-sm-8">
                           
-                          <select class="form-control form-select" id="my-select"  name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';" required>
+                          <select class="form-control form-select" id="my-select"  name="select"  required>
                             
                             
                             <option hidden disabled selected value="">Select  Customer</option>
-                            {% for i in customer %}
+                            {% for i in customer1 %}
                             <option value="{{i.id}}">{{i.customer_name}}</option>
                             {% endfor %}         
                             <option value="new" style="color: blue;">+ New Customer</option>
@@ -106,7 +106,7 @@
                       <div class="mb-3">
                         <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
                         <div class="form-floating">
-                          <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea" required></textarea>
+                          <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea" ></textarea>
                           
                         </div>
                       </div><br><br>
@@ -115,7 +115,7 @@
                       <div class="mb-3">
                         <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
                         <div class="form-floating">
-                          <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea" required></textarea>
+                          <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
                             
                         </div>
                       </div><br><br>

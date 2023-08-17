@@ -8,12 +8,14 @@
 <!-- style=" position: fixed;" -->
 
 <!-- <section > -->
-    <div class="fixed-top" style="top: 7rem; margin-left: 18rem;" >
+    <!-- <div class="fixed-top" style="top: 7rem; margin-left: 18rem;" > -->
+        <div  style="top: 7rem; " >
+
      
-          <div style="height: 600px;overflow-y: scroll;">
+          <!-- <div  style="height: 600px;overflow-y: scroll;"> -->
              <h3  class="mb-3  text-white " style="font-size: 2rem;">New Vendor</h3><br>     
       
-            <form  method="post" action="{% url 'add_vendor' %}"  enctype="multipart/form-data" class="">
+             <form  method="post" action="{% url 'add_vendor' %}"  enctype="multipart/form-data" class="">
               {% csrf_token %}
               
               
@@ -22,10 +24,10 @@
                     <label >Primary Contact</label>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3">
-                    <select id="select1"  name="salutation" class="form-control" style="width:27%;>
+                    <select id="select1"  name="salutation" class="form-control bg-light text-dark  " >
                       
                      
-                        <option  value="Mr">Mr</option>
+                        <option value="Mr">Mr</option>
                         <option value="Mrs">Mrs</option>
                         <option value="Ms">Ms</option>
                         <option value="Dr">Dr</option>
@@ -35,12 +37,12 @@
                         
                        </select> 
                 </div>
-                <div class="col-sm-12 col-md-3 col-lg-3" style="margin-left:-220px;">
-                    <input  type="text" class="form-control" id="fname" name="first_name" placeholder="first name" required style="width:85%;">
+                <div class="col-sm-12 col-md-3 col-lg-3" >
+                    <input  type="text" class="form-control bg-light text-dark  " id="fname" name="first_name" placeholder="first name" required >
 
                 </div>
-                <div class="col-sm-12 col-md-3 col-lg-3" style="margin-left: -50px;">
-                    <input type="text" class="form-control" id="lname" name="last_name" placeholder="last name" required style="width:85%;">
+                <div class="col-sm-12 col-md-3 col-lg-3" >
+                    <input type="text" class="form-control bg-light text-dark " id="lname" name="last_name" placeholder="last name" required >
 
                 </div>
             </div>
@@ -48,7 +50,7 @@
                <div class="form-group row mt-4">
                    <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Company Name</label></div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                        <input  type="text" class="form-control" name="company_name" required>     
+                        <input  type="text" class="form-control bg-light text-dark " name="company_name" required>     
                         <div class="invalid-feedback">Please fill out this field.</div>   
  
                     </div>
@@ -59,7 +61,7 @@
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Vendor Display Name</label></div>
                      <div class="col-sm-12 col-md-6 col-lg-6">
                         
-                            <select  name="v_display_name" class="form-control" onclick="vendor_display()">
+                            <select  name="v_display_name" class="form-control bg-light text-dark " onclick="vendor_display()">
                             <option id="select2"></option>
                                 
                             </select> 
@@ -86,7 +88,7 @@
                  <div class="form-group row mt-4">
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Vendor Email</label></div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                         <input  type="email" class="form-control" name="vendor_email" required> 
+                         <input  type="email" class="form-control bg-light text-dark" name="vendor_email" required> 
                          <div class="invalid-feedback">Please fill out this field.</div>   
      
                      </div>
@@ -94,21 +96,41 @@
  
                  </div>
 
-                 <div class="form-group row mt-4">
+                 <!-- <div class="form-group row mt-4">
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label">Vendor phone</label>
                      <div class="col-sm-12 col-md-3 col-lg-3">
-                         <input  type="number" class="form-control" name="w_phone" placeholder="work phone" required>
+                         <input  type="number" class="form-control bg-light text-dark" name="w_phone" placeholder="work phone" required>
                          <div class="invalid-feedback">Please fill out this field.</div>   
       
                      </div>
                      <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <input  type="number" class="form-control" name="m_phone" placeholder="mobile number" required>
+                        <input  type="number" class="form-control bg-light text-dark" name="m_phone" placeholder="mobile number" required>
                         <div class="invalid-feedback">Please fill out this field.</div>   
       
                     </div>
                     <div class="toggle1" style="color: rgb(230, 171, 45);font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
                         <a href="">More Details</a>
-                        <!-- <button onclick="fieldset1_function()" style="background-color: transparent; border: none;color: rgb(230, 171, 45);font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">More Details</button> -->
+
+                     </div>
+ 
+ 
+                 </div> -->
+                 <div class="form-group row mt-4">
+                    <label class="col-sm-12 col-md-3 col-lg-3 col-form-label">Vendor phone</label>
+                     <div class="col-sm-12 col-md-3 col-lg-3">
+                         <input id="workphone"  type="tel" class="form-control bg-light text-dark" pattern="[0-9]{7}"   name="w_phone" placeholder="work phone" required>
+                         <label for="" id="workphone_label"></label>
+                         <div class="invalid-feedback">Please fill out this field.</div>   
+      
+                     </div>
+                     <div class=" col-sm-12 col-md-3 col-lg-3">
+                        <input id="mphone"  type="tel" pattern="[0-9]{10}" class="form-control bg-light text-dark" onclick="work_phone()"                        name="m_phone" placeholder="mobile number" required>
+                        <label for="" id="mphone_label"></label>
+                        <div class="invalid-feedback">Please fill out this field.</div>   
+      
+                    </div>
+                    <div class="toggle1" style="color: rgb(230, 171, 45);font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
+                        <a href="">More Details</a>
 
                      </div>
  
@@ -123,7 +145,7 @@
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Skype name/Number</label></div>
                        
                          <div class="col-sm-12 col-md-6 col-lg-6">
-                           <input  type="text" class="form-control" name="skype_number">      
+                           <input  type="text" class="form-control bg-light text-dark" name="skype_number">      
                          </div>
                          
      
@@ -134,7 +156,7 @@
                     <div class="form-group row mt-4">
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Designation</label></div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                             <input  type="text" class="form-control" name="designation">      
+                             <input  type="text" class="form-control bg-light text-dark" name="designation">      
                          </div>
      
      
@@ -142,7 +164,7 @@
                     <div class="form-group row mt-4">
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Department</label></div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                             <input  type="text" class="form-control" name="department">      
+                             <input  type="text" class="form-control bg-light text-dark" name="department">      
                          </div>
      
      
@@ -150,10 +172,16 @@
 
                  </fieldset1>
 
+                <!-- <div class="form-group row mt-4">
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Website</label></div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                         <input type="text" class="form-control bg-light text-dark" name="website" required>      
+                    </div>
+                </div> -->
                 <div class="form-group row mt-4">
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Website</label></div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                         <input type="text" class="form-control" name="website" required>      
+                         <input id="web" type="text" class="form-control bg-light text-dark" onclick="mobile_phone()"    name="website" required>      
                     </div>
                 </div>
 
@@ -197,11 +225,12 @@
                         <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" style="color:rgb(214, 75, 75) ;"> GST Treatment*</label>
                          
                         <div class=" col-sm-12 col-md-3 col-lg-3">
-                            <select name="gst" id="GSTT" class="form-control" onclick="gstPan_function()">
+                            <select name="gst" id="GSTT" class="form-control bg-light text-dark" onclick="gstPan_function()">
                                 <option value="Select a Gst Treatment" selected>Select a Gst Treatment</option>
                                 <option value="Registered Business-Regular Business that is registered under GST">Registered Business-Regular Business that is registered under GST</option>
-                                <option value="Registered Business-Composition Business that is registered under the Composition scheme in GST">Registered Business-Composition Business that is registered under the Composition scheme
-                                  in GST</option>
+                                <option value="Registered Business-Composition Business that is registered under the Composition scheme in GST">
+                                    Registered Business-Composition Business that is registered under the Composition schemen in GST
+                                </option>
                                 <option value="Unregistered Business-not Registered under GST">Unregistered Business-not Registered under GST</option>
                                 <option value="Overseas- Persons with who you do import or exports of supplies outside india">Overseas- Persons with who you do import or exports of supplies outside india</option>
                                 <option value="Special Economic Zone">Special Economic Zone</option>
@@ -215,7 +244,7 @@
                             <label class="col-sm-12 col-md-3 col-lg-3 col-form-label"  style="color:rgb(214, 75, 75) ;"> GSTIN/UIN*</label>
                              
                             <div class=" col-sm-12 col-md-3 col-lg-3">
-                                <input type="text" class="form-control" name="gst_number" id="gst_input" onmouseout="gst_check()"> 
+                                <input type="text" class="form-control bg-light text-dark" name="gst_number" id="gst_input" onmouseout="gst_check()"> 
                                 <label id="gst_label"></label>     
         
                             </div>
@@ -230,7 +259,7 @@
                             <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > PAN</label>
                              
                             <div class=" col-sm-12 col-md-3 col-lg-3">
-                                <input type="text" class="form-control" id="pan_input" onmouseout="pan_check()" name="pan_number">  
+                                <input type="text" class="form-control bg-light text-dark" id="pan_input" onmouseout="pan_check()" name="pan_number">  
                                 <label id="pan_label"></label>     
     
         
@@ -249,7 +278,7 @@
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" style="color:rgb(214, 75, 75) ;"> Source Of Supply*</label>
                      
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <select name="source_supply" id="PLACE" class="form-control">
+                        <select name="source_supply" id="PLACE" class="form-control bg-light text-dark">
                         <option value="value" selected></option>
                       <option value="[AN]-Andaman And Nicobar Islands">[AN]-Andaman And Nicobar Islands</option> <option value="[AD]-Andhra Pradesh">[AD]-Andhra Pradesh</option>
                       <option value="[AR]-Arunachal Pradesh">[AR]-Arunachal Pradesh	</option> <option value="volvo">[AS]-Assam</option>
@@ -281,7 +310,7 @@
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" style="color:rgb(214, 75, 75) ;"> Currency*</label>
                      
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <select name="currency" id="PLACE" class="form-control">
+                        <select name="currency" id="PLACE" class="form-control bg-light text-dark">
                             <option value="Indian Rupee" selected>Indian Rupee</option>
                             <option value="Indian Rupee">Indian Rupee</option>
                   
@@ -295,7 +324,7 @@
                 <div class="form-group row mt-4">
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Opening Balance</label>                    
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <input  type="number" class="form-control" name="opening_bal">      
+                        <input  type="number" class="form-control bg-light text-dark" name="opening_bal">      
                     </div>
                 </div>
 
@@ -304,7 +333,7 @@
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Payment Terms</label>
                      
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <select name="payment_terms" id="PLACE" class="form-control">
+                        <select name="payment_terms" id="PLACE" class="form-control bg-light text-dark">
                             <option value="NET 60" >NET 60</option>
                             <option value="NET 45" >NET 45</option>                          
                             <option value="NET 30">NET 30</option>
@@ -336,13 +365,13 @@
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Attention</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="text" class="form-control" name="battention" id="batten">      
+                                    <input  type="text" class="form-control bg-light text-dark" name="battention" id="batten">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Country</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <select name="bcountry" id="btry" class="form-control">
+                                    <select name="bcountry" id="btry" class="form-control bg-light text-dark">
                                         <option value="India" selected>India</option>
                                     </select>      
                                 </div>
@@ -350,37 +379,52 @@
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Address</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <textarea cols="26" rows="4" name="baddress" id="badd1"></textarea>
+                                    <textarea class="bg-light " style="border: none;color: rgb(7, 7, 7);" cols="26" rows="4" name="baddress" id="badd1"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > City</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="text" class="form-control" name="bcity" id="bcty">      
+                                    <input  type="text" class="form-control bg-light text-dark" name="bcity" id="bcty">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > State</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input type="text" class="form-control" name="bstate" id="bste">      
+                                    <input type="text" class="form-control bg-light text-dark" name="bstate" id="bste">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Zip Code </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="bzip" id="bzp">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="bzip" id="bzp">      
                                 </div>
                             </div>
-                            <div class="form-group row mt-4">
+                            <!-- <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Phone </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="bphone" id="bphn">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="bphone" id="bphn">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Fax </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="bfax" id="bfx">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="bfax" id="bfx">      
+                                </div>
+                            </div> -->
+                            <div class="form-group row mt-4">
+                                <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Phone </label>                    
+                                <div class=" col-sm-12 col-md-6 col-lg-6">
+                                    <input id="bphone_num"  type="tel" pattern="[0-9]{10}" class="form-control bg-light text-dark" name="bphone" >
+                                    <label for="" id="bphone_label"></label>      
+                                </div>
+                            </div>
+                            <div class="form-group row mt-4">
+                                <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Fax </label>                    
+                                <div class=" col-sm-12 col-md-6 col-lg-6">
+                                    <input  type="tel" class="form-control bg-light text-dark" pattern="[0-9]{7}" onmouseout="fax_number()"  onclick="bphone_number()"                                       name="bfax" id="bfx">  
+                                   
+                                    <label for="" id="fax_label"></label> 
                                 </div>
                             </div>
 
@@ -391,20 +435,20 @@
                                     <label for="">SHIPPING ADDRESS</label>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
-                                    <input type="checkbox" id="myCheckT" onclick="myCopyAddressFunction()">&nbsp;
+                                    <input  type="checkbox" id="myCheckT" onclick="myCopyAddressFunction()">&nbsp;
                                     <label for="myCheck">Same as Billing Address:</label>
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Attention</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="text" class="form-control" name="sattention" id="satten">      
+                                    <input  type="text" class="form-control bg-light text-dark " style="color: white;" name="sattention" id="satten">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Country</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <select name="scountry" id="sctry" class="form-control">
+                                    <select name="scountry" id="sctry" class="form-control bg-light text-dark">
                                         <option value="India" selected>India</option>
                                     </select>      
                                 </div>
@@ -412,39 +456,55 @@
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Address</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <textarea  id="sadd1" cols="26" rows="4" name="saddress"></textarea>
+                                    <textarea class="bg-light" style="border: none;color: rgb(10, 10, 10);" id="sadd1" cols="26" rows="4" name="saddress"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > City</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="text" class="form-control" name="scity" id="scty">      
+                                    <input  type="text" class="form-control bg-light text-dark" name="scity" id="scty">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > State</label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input type="text" class="form-control" name="sstate" id="sste">      
+                                    <input type="text" class="form-control bg-light text-dark" name="sstate" id="sste">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Zip Code </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="szip" id="szp">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="szip" id="szp">      
                                 </div>
                             </div>
-                            <div class="form-group row mt-4">
+                            <!-- <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Phone </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="sphone" id="sphn">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="sphone" id="sphn">      
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Fax </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input  type="number" class="form-control" name="sfax" id="sfx">      
+                                    <input  type="number" class="form-control bg-light text-dark" name="sfax" id="sfx">      
+                                </div>
+                            </div> -->
+
+                            <div class="form-group row mt-4">
+                                <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Phone </label>                    
+                                <div class=" col-sm-12 col-md-6 col-lg-6">
+                                    <input  type="tel" class="form-control bg-light text-dark" pattern="[0-9]{10}" style="color: white;" name="sphone" id="sphone_num">  
+                                    <label for="" id="sphone_label"></label>    
                                 </div>
                             </div>
+                            <div class="form-group row mt-4">
+                                <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Fax </label>                    
+                                <div class=" col-sm-12 col-md-6 col-lg-6">
+                                    <input  type="tel" class="form-control bg-light text-dark" pattern="[0-9]{7}" style="color: white;" name="sfax" onclick="sphone_number()" onmouseout="sfax_number()" id="sfx"> 
+                                    <label for="" id="sfax_label"></label>     
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -460,34 +520,38 @@
                                   <th>First Name</th>
                                   <th>Last Name</th>
                                   <th>Email Address</th>
-                                  <th >Work Phone</th>
-                                  <th >Mobile</th>
+                                  <th >Work Phone <br><label for="" id="twph_label"></label></th>
+                                  <th >Mobile <br><label for="" id="tlabel"></label>    </th>
                                   <th >Skype Name/No</th>
                                   <th >Designation</th>
                                   <th >Department</th>
                                 </tr>
                                 <tr>
-                                  <td><select name="salutation[]" id="PLACE" style="width:8rem;height: 2.4rem;">
+                                  <td><select name="salutation[]" class="bg-light" style="width:8rem;height: 2.4rem;border: none;color: black;" id="PLACE" style="width:8rem;height: 2.4rem;">
                                       <option value="Mr" selected>Mr.</option>
                                       <option value="Mrs">Mrs.</option>
                                       <option value="Ms">Ms.</option>
                                       <option value="Miss">Miss.</option>
                                       <option value="Dr">Dr.</option>
                                     </select></td>
-                                  <td><input type="text" style="width:8rem;"  name="first_name[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="last_name[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="email[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="wphone[]" /></td>
+                                  <td><input type="text" class="bg-light" style="width:8rem;border: none;color: black;"  name="first_name[]" /></td>
+                                  <td><input type="text"class="bg-light" style="width:8rem;border: none;color: black;" name="last_name[]" /></td>
+                                  <td><input type="text" class="bg-light" style="width:8rem;border: none;color: black;" name="email[]" /></td>
+                                  <!-- <td><input type="text" style="width:8rem;" name="wphone[]" /></td>
                                   <td><input type="text" style="width:8rem;" name="mobile[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="skype[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="designation[]" /></td>
-                                  <td><input type="text" style="width:8rem;" name="department[]" /></td>
+                                  <td><input type="text" style="width:8rem;" name="skype[]" /></td> -->
+                                  <td><input type="tel" pattern="[0-9]{7}" class="bg-light" style="width:8rem;border: none;color: black;" id="twphone" name="wphone[]"/></td>
+                                  <td><input type="tel" pattern="[0-9]{10}"  class="bg-light" style="width:8rem;border: none;color: black;" id="tmobile" onclick="sample1()"   name="mobile[]" /></td>
+                                  <td><input type="number" class="bg-light" style="width:8rem;border: none;color: black;" onclick="sample()" name="skype[]" /></td>
+                                  <td><input type="text" class="bg-light" style="width:8rem;border: none;color: black;" name="designation[]" /></td>
+                                  <td><input type="text" class="bg-light" style="width:8rem;border: none;color: black;" name="department[]" /></td>
                                 </tr>
                               </table>
-                              <div class="button add_another"
-                            style="color: rgb(230, 171, 45);;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
-                            + Add Contact Person</div>
+                             
                         </div>
+                        <div class="button add_another mt-3"
+                        style="color: rgb(230, 171, 45);;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
+                        + Add Contact Person</div>
                           
                     </div>
                     
@@ -505,9 +569,8 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-8 col-lg-8">
                         <div class="form-group row mt-4">
-                            <!-- <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Address</label>                     -->
                             <div class=" col-sm-12 col-md-6 col-lg-6">
-                                <textarea cols="70" rows="4" name="remark"></textarea>
+                                <textarea class="bg-light" style="border: none;color: rgb(5, 5, 5);" cols="70" rows="4" name="remark"></textarea>
                             </div>
                         </div>
                     </div>
@@ -521,15 +584,15 @@
             
             <div class="row mt-4">
                 <div class="col-sm-12 col-md-2 col-lg-2">
-                    <input type="submit" class="form-control btn-outline-warning" value="save">
-                    <!-- <a href="{% url 'add_vendor' %}" role="button" class="form-control"></a> -->
+                    <input type="submit" class="form-control bg-warning text-dark" style="font-weight: bold;" value="save">
+                    <!-- <a href="{% url 'add_vendor' %}" role="button" class="form-control bg-light text-dark"></a> -->
                     <!-- <button type="submit">save</button> -->
                 </div>
                  
-                {% comment %} <div class=" col-sm-12 col-md-2 col-lg-2">
-                    <a href="{% url 'cancel_vendor' %}" role="button" class="form-control btn btn-light" >Cancel</a>
+                <div class=" col-sm-12 col-md-2 col-lg-2">
+                    <a href="{% url 'cancel_vendor' %}" role="button" class="form-control  bg-warning text-dark" style="font-weight: bold;"><center>Cancel</center></a>
 
-                </div> {% endcomment %}
+                </div> 
 
 
             </div>
@@ -543,7 +606,7 @@
 
               </form>
 
-          </div>
+          <!-- </div> -->
     </div>
      
 
@@ -604,7 +667,8 @@
 
         }
     }
- 
+
+
 
     $(document).ready(function () {
         $(".toggle1").click(function (e) {
@@ -615,17 +679,24 @@
       $(document).ready(function () {
         $(".toggle2").click(function (e) {
           e.preventDefault();
-          $("fieldset2").toggle();
-        //   $("fieldset5").toggle();
-        //   $("fieldset6").toggle();
+         
+          $("fieldset2").toggle(); 
+          $("fieldset5").hide();
+          $("fieldset6").hide();
+          $("fieldset7").hide();
 
 
+      
         })
       })
+
       $(document).ready(function () {
         $(".toggle3").click(function (e) {
           e.preventDefault();
           $("fieldset5").toggle();
+          $("fieldset2").hide();
+          $("fieldset6").hide();
+          $("fieldset7").hide();
 
         })
       })
@@ -633,24 +704,40 @@
         $(".toggle4").click(function (e) {
           e.preventDefault();
           $("fieldset6").toggle();
-         
-
-         
+          $("fieldset2").hide();
+          $("fieldset5").hide();
+          $("fieldset7").hide();
+                
         })
       })
       $(document).ready(function () {
         $(".toggle7").click(function (e) {
           e.preventDefault();
           $("fieldset7").toggle();
+          $("fieldset2").hide();
+          $("fieldset6").hide();
+          $("fieldset5").hide();
          
 
          
         })
       })
 
-      $('document').ready(function () {
+ 
+
+  
+
+   
+
+    //   $('document').ready(function () {
+    //     $('.add_another').click(function () {
+    //       $("#tbl").append('<tr><td><select name="salutation[]" id="PLACE" style="width:8rem;height: 2.4rem;"><option value="Mr" selected>Mr.</option><option value=""Mrs">Mrs.</option><option value="Ms">Ms.</option><option value="Miss">Miss.</option><option value="Dr">Dr.</option></select>  </td><td><input type="text" name="first_name[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="last_name[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="email[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="wphone[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="mobile[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="skype[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="designation[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="department[]" style="width:8rem;" class="txtbox" value="" /></td></tr>');
+    //     });
+    //   })
+
+    $('document').ready(function () {
         $('.add_another').click(function () {
-          $("#tbl").append('<tr><td><select name="salutation[]" id="PLACE" style="width:8rem;height: 2.4rem;"><option value="Mr" selected>Mr.</option><option value=""Mrs">Mrs.</option><option value="Ms">Ms.</option><option value="Miss">Miss.</option><option value="Dr">Dr.</option></select>  </td><td><input type="text" name="first_name[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="last_name[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="email[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="wphone[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="mobile[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="skype[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="designation[]" style="width:8rem;" class="txtbox" value="" /></td><td><input type="text" name="department[]" style="width:8rem;" class="txtbox" value="" /></td></tr>');
+          $("#tbl").append('<tr><td><select name="salutation[]" id="PLACE" class="bg-light" style="width:8rem;height:2.4rem;border: none;color: black;"><option value="Mr" selected>Mr.</option><option value=""Mrs">Mrs.</option><option value="Ms">Ms.</option><option value="Miss">Miss.</option><option value="Dr">Dr.</option></select>  </td><td><input type="text" name="first_name[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="text" name="last_name[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="email" name="email[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="tel" pattern="[0-9]{7}" id="twphone" name="wphone[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="tel" pattern="[0-9]{10}" id="tmobile" onclick="sample1()" name="mobile[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="number" onclick="sample()" name="skype[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="text" name="designation[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td><td><input type="text" name="department[]" class="bg-light" style="width:8rem;border: none;color: black;" class="txtbox" value="" /></td></tr>');
         });
       })
 
@@ -659,7 +746,9 @@
         document.getElementById("address").style.display="block";
       }
 
-      function myCopyAddressFunction() {
+    
+
+    function myCopyAddressFunction() {
         var checkBox = document.getElementById("myCheckT");
         var textatn = document.getElementById("batten");
         var txtcry = document.getElementById("bctry");
@@ -667,7 +756,7 @@
         var txtcty = document.getElementById("bcty");
         var txtstat = document.getElementById("bste");
         var txtzip = document.getElementById("bzp");
-        var txtphone = document.getElementById("bphn");
+        var txtphone = document.getElementById("bphone_num");
         var txtfx = document.getElementById("bfx");
   
         var textatn1 = document.getElementById("satten");
@@ -676,17 +765,20 @@
         var txtcty1 = document.getElementById("scty");
         var txtstat1 = document.getElementById("sste");
         var txtzip1 = document.getElementById("szp");
-        var txtphone1 = document.getElementById("sphn");
+        var txtphone1 = document.getElementById("sphone_num");
         var txtfx1 = document.getElementById("sfx");
         if (checkBox.checked == true) {
+          textatn1.value = textatn.value;
           txtadrs21.value = txtadrs11.value;
           txtcty1.value = txtcty.value;
           txtstat1.value = txtstat.value;
-          txtzip1.value = txtzip.value;
+          txtzip1.value = txtzip.value; 
           txtphone1.value = txtphone.value;
           txtfx1.value = txtfx.value;
+          
 
-          textatn1.value = textatn.value;
+
+
           
   
         } else {
@@ -703,11 +795,176 @@
         }
       }
 
+
       function open_table()
       {
         document.getElementById("hid").style.display="block";
         
       }
+
+
+
+      function work_phone()
+      {
+        var x=document.getElementById("workphone").value;
+        var y=document.getElementById("workphone_label")
+        var expr=/^[0-9]{7}$/;
+        if (!expr.test(x)) {
+            y.style.color="red";
+            y.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            y.style.color="green";
+
+            y.innerHTML = "valid Phone Number.";
+
+        }
+
+
+      }
+
+      function mobile_phone()
+      {
+        
+        var a=document.getElementById("mphone").value;
+        var b=document.getElementById("mphone_label");
+        var expr=/^[0-9]{10}$/;
+        if (!expr.test(a)) {
+            b.style.color="red";
+            b.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            b.style.color="green";
+
+            b.innerHTML = "valid Phone Number.";
+
+        }
+      }
+
+      function bphone_number()
+      {
+        var a1=document.getElementById("bphone_num").value;
+        var b1=document.getElementById("bphone_label");
+        var expr=/^[0-9]{10}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            b1.style.color="green";
+
+            b1.innerHTML = "valid Phone Number.";
+
+        }
+      }
+
+      function sphone_number()
+      {
+        var a1=document.getElementById("sphone_num").value;
+        var b1=document.getElementById("sphone_label");
+        var expr=/^[0-9]{10}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            b1.style.color="green";
+
+            b1.innerHTML = "valid Phone Number.";
+
+        }
+      }
+
+      function fax_number()
+      {
+        var a1=document.getElementById("bfx").value;
+        var b1=document.getElementById("fax_label");
+        var expr=/^[0-9]{7}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            b1.style.color="green";
+
+            b1.innerHTML = "valid Phone Number.";
+
+        }
+      }
+
+      function sfax_number()
+      {
+        var a1=document.getElementById("sfx").value;
+        var b1=document.getElementById("sfax_label");
+        var expr=/^[0-9]{7}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid Phone Number.";
+        }
+        else{
+            b1.style.color="green";
+
+            b1.innerHTML = "valid Phone Number.";
+
+        }
+      }
+
+    
+      function sample()
+      {
+
+        var tbldata = document.getElementById("tbl");
+        var total_rows = tbldata.rows.length;
+        x=document.getElementById("tbl");
+        var a1=x.rows[total_rows-1].cells[5].getElementsByTagName('input')[0].value;
+
+        var b1=document.getElementById("tlabel");
+
+        b1.innerHTML = "";
+
+        var expr=/^[0-9]{10}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid";
+        }
+        else{
+            b1.style.color="green";
+            b1.innerHTML = "valid";
+
+        }
+
+       
+
+      }
+
+      function sample1()
+      {
+
+        var tbldata = document.getElementById("tbl");
+        var total_rows = tbldata.rows.length;
+        x=document.getElementById("tbl");
+        var a1=x.rows[total_rows-1].cells[4].getElementsByTagName('input')[0].value;
+
+        var b1=document.getElementById("twph_label");
+
+        b1.innerHTML = "";
+
+        var expr=/^[0-9]{7}$/;
+        if (!expr.test(a1)) {
+            b1.style.color="red";
+            b1.innerHTML = "Invalid";
+        }
+        else{
+            b1.style.color="green";
+            b1.innerHTML = "valid";
+
+        }
+
+       
+
+      }
+
+
       
 
      

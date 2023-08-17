@@ -29,11 +29,11 @@
                     
                 <div class="col-sm-8">
                       
-                  <select class="form-control form-select" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
+                  <select class="form-control form-select" name="select" >
                         
                         
                     <option hidden   value="{{invoice.customer_name.id}}">{{invoice.customer_name.customer_name}}</option>
-                    {% for i in customer %}
+                    {% for i in customer1 %}
                     <option value="{{i.id}}">{{i.customer_name}}</option>
                     {% endfor %}         
                     <option value="new" style="color: blue;">+ New Customer</option>

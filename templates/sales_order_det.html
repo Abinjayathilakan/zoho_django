@@ -3,7 +3,7 @@
 {% block content %}
     
 <section >
-  <div class="row fixed-top  " style="top: 7rem; margin-left: 16rem;;position: fixed;">
+  <div class="row fixed-top  " style="top: 7rem; margin-left: 12rem;;position: fixed;">
    
   <div style="overflow-y: scroll; height: 600px;">
     <div class="col-md-12"  style="width: 100%;">
@@ -23,8 +23,10 @@
      
               <tr>
      
-                <td ><a class="text-white " href="{% url 'sales_order_det' i.id %}">{{i.sales_no}}</a></td>
-             
+                <td ><a class="text-white " href="{% url 'sales_order_det' i.id %}">{{i.sales_no}}</a><br><br>
+                      <label>{{i.customer.customerName}} </label><label class="mx-5">₹{{i.grandtotal}}</label>
+                    
+                </td>
               </tr>
              
               {% endfor %}
@@ -34,43 +36,56 @@
        
         </div> 
         
-        <div class="col-md-8 ml-1  mb-5 " style="">
+        <div class="col-md-9 ml-1  mb-5 ">
           <div class="row" >
             <div class="col-md-12" ><a class="text-white" style="font-size: 1.5rem;"><h2>{{sale.sales_no}}</h2></a></div>
             
-            <div class="col-md-12 p-2  bg-light form-inline justify-content-start" style="width: 100%;">
-             <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark mr-3 p-1"><i class="fa fa-pencil"></i>Edit</a>
+            <div class="p-2  bg-light  justify-content-right" style="width: 100%;">
+             <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark " style="margin-left: 70%;"><button class="btn btn-outline-dark" style="width: 5%;" title="Edit"><i class="fas fa-edit"></i></button>
+              </a>
              
              
  
-                <a href=""  class="  text-dark mr-3 p-1" ><i class="fa fa-share-alt"></i>
- 
-                 Share</a>
-                <a href="{% url 'delet_sales' sale.id %}" class="  text-dark mr-3" ><i class='fas fa-record-vinyl'></i>
-                 Delete </a>
+                 <a class="text-dark"   href=""  data-toggle="dropdown"  >
+                  <button class="btn btn-outline-dark " style="width:5%" title="Share"><i class="fas fa-share"></i></button>
+               </a>
+               <div class="dropdown-menu " >
+                 <a class="dropdown-item" href="">GMAIL</a>
+                 <a class="dropdown-item" href="#">WhatsApp</a>
+                 
                 
-                 <div class="dropdown" >
+
+                 
+               </div> 
+                <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" ><button class="btn btn-outline-dark" style="width: 5%;" title="Delete"><i class="fas fa-trash-alt"></i></button>
+               </a>
+                
+               <div class="dropdown" style="display: inline;">
                
-                   <a class="dropdown-toggle text-dark "   href=""  data-toggle="dropdown"  >
-                     <i class="fa fa-envelope p-1"></i> Mail/SMS
-                   </a>
-                   <div class="dropdown-menu " >
-                     <a class="dropdown-item" href="">Send as MAIl</a>
-                     <a class="dropdown-item" href="#">Send as SMS</a>
-                     
-                    
-   
-                     
-                   </div>
-                
-               </div>
-               <div class="dropdown ml-2" >
+                <a class="text-dark"   href=""  data-toggle="dropdown"  >
+                   <button class="btn btn-outline-dark " style="width:5%" title="Mail/SMS"><i class="fa fa-envelope"></i></button>
+                </a>
+                <div class="dropdown-menu " >
+                  <a class="dropdown-item" href="{% url 'emailattachment' %}">Send as MAIL</a>
+                  <a class="dropdown-item" href="#">Send as SMS</a>
+                  
+                 
+
+                  
+                </div>
+             
+            </div>
+          
+             
+            <div class="dropdown" style="display: inline;">
                
-                 <a class=" text-dark p-1" href="" onclick="printSelectedArea()"  >
-                   <i class="fa fa-file-pdf-o"></i>PDF/Print
-                 </a>
-                
-             </div>
+              <a class=" text-dark" href="" onclick="printSelectedArea()"  >
+               <button class="btn btn-outline-dark" style="width: 5%;" title="Print/Pdf"><i class="fas fa-print"></i>
+               </button> 
+              </a>
+             
+          </div>
+          
  <div style="position: fixed;">
  
  </div>
@@ -210,7 +225,7 @@
                            </thead>
                            <tbody>
                              {% for i in saleitem %}
-                             <tr>
+                             <tr style="color: black;">
                                <td>{{i.product}}</td>
                                <td>{{i.quantity}}</td>
                                <td>{{i.rate}}</td>

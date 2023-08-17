@@ -25,10 +25,10 @@
                       <tr>
                         <th>DATE</th>
                         <th>SALES ORDER</th>
-                        <th>REFERENCE</th>
                         <th>CUSTOMER NAME</th>
+                        <th>CUSTOMER MAIL</th>
                         <th>STATUS</th>
-                        <th>INVOICED</th>
+                        <th>REFERENCE</th>
                         <th>PAYMENT</th>
                       </tr>
                     </thead>
@@ -41,10 +41,12 @@
              
                        <!-- <td onclick="location.href ='' " > {{v.Name}}</td> -->
                         <td><a href="{% url 'sales_order_det' i.id %}" style="color: rgb(230, 171, 45);">{{i.sales_no}}</a></td>
-                        <td>{{i.reference}}</td>
+                        
                         <td>{{i.customer.customerName}}</td>
+                        <td>{{i.customer.customerEmail}}</td>
                         <td>{{i.status}}</td>
-                        <td></td>
+                        <td>{{i.reference}}</td>
+                        <td>{{i.grandtotal}}</td>
                         <td></td>
         
                        

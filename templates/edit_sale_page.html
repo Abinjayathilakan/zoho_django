@@ -89,13 +89,13 @@
           <label class="" for="input-1">shipment Date</label>
               <input class=""  style="width: 18%;height: 35px;margin-left: 4rem;"  type="date" name="sh_date" id="input-1" value="{{sale.sales_date|date:'Y-m-d'}}">
               <label for="input-2"class="mx-3 ">Payment Terms</label>
-              <select class="my-select" style="width: 18%;height: 35px;"  name="term" id="">
+              <select class="my-select" style="width: 18%;height: 35px;"  name="term" id="pay_term">
 
-                <option value="{{sale.terms.id}}" data-pos="{{sale.terms.id}}"  selected>{{sale.terms.Terms}} {{sale.terms.Days}}</option>
+                <option value="{{sale.terms.id}}" data-pos="{{sale.terms.id}}"  selected>{{sale.terms.Terms}}</option>
     
               {% for p in pay %}
     
-                <option value="{{p.id}}">{{p.Terms}} {{p.Days}}</option>
+                <option value="{{p.id}}">{{p.Terms}}</option>
                 {% endfor %}
                
                 <option value="modal-1">Configure</option>
@@ -103,25 +103,19 @@
               </select>
               
             </div>
-            <div class="row mb-4">
-              <div class="col-sm-2"><label for="">Delivery Method</label></div>
-              <div class="col-sm-10"><input type="text" id="cx_mail" name="d_meth" class=""
-                      style="width: 38%;height: 35px;" value="{{sale.d_method}}">
+            <div class="row mb-4 mt-3">
+              <div class="col-sm-2"><label for="estimate_number">Customer Mail</label></div>
+              <div class="col-sm-10"><input type="email" id="cx_mail" name="cx_mail" class=""
+                      style="width: 38%;height: 35px;" value="{{sale.customer.customerEmail}}">
                  
               </div>
-        </div>
-        <div class="row mb-4">
-          <div class="col-sm-2"><label for="">salesPerson</label></div>
-          <div class="col-sm-10"><input type="text" id="cx_mail" name="s_pers" class=""
-                  style="width: 38%;height: 35px;" value="{{sale.s_person}}">
           </div>
-    </div>
       
         <table class="table  text-white" style="width: 100%;" id="item_table" style="background-color: rgba(12, 12, 11, 0.8);" onchange="calc()">
             <thead >
               
                 <tr style="background-color: black;">
-                    <th style="width: 20%;" class="text-right">Item</th>
+                    <th style="width: 20%;" class="text-right">Item<a href="{% url "additem" %}"><span style="background-color: #e0a70a;color: white;background-size:300%;padding:5px;margin-left: 100px;">+</span></a></th>
                     <th class="text-right">Quantity</th>
                     <th class="text-right">Rate</th>
                     <th class="text-right">Discount</th>
@@ -210,31 +204,31 @@
                         <td>Sub Total</td>
                         <td></td>
                         <td><input type="number" id="subtotal" name="subtotal" value="{{sale.subtotal}}"
-                                class="form-control border-0 text-right" readonly></td>
+                                class="form-control border-0 text-right text-dark" readonly></td>
                     </tr>
                     <tr id="tr_igst" >
                         <td>IGST</td>
                         <td></td>
                         <td><input type="number" id='igst' name="igst" value="{{sale.igst}}"
-                                class="form-control border-0 text-right" readonly></td>
+                                class="form-control border-0 text-right text-dark" readonly></td>
                     </tr>
                     <tr   id="tr_cgst">
                         <td>CGST</td>
                         <td></td>
                         <td><input type="number" id='cgst' name="cgst" value="{{sale.cgst}}"
-                                class="form-control border-0 text-right cgst" readonly></td>
+                                class="form-control border-0 text-right cgst text-dark" readonly></td>
                     </tr>
                     <tr  id="tr_sgst">
                         <td>SGST</td>
                         <td></td>
                         <td><input type="number" id='sgst' name="sgst" value="{{sale.sgst}}"
-                                class="form-control border-0 text-right" readonly></td>
+                                class="form-control border-0 text-right text-dark" readonly></td>
                     </tr>
                     <tr>
                         <td>Tax Amount</td>
                         <td></td>
                         <td><input type="number" id="total_taxamount" name="totaltax" value="{{sale.t_tax}}"
-                                class="form-control border-0 text-right"readonly></td>
+                                class="form-control border-0 text-right text-dark"readonly></td>
                     </tr>
                    
                    
@@ -242,7 +236,7 @@
                         <th>Total (&#x20B9;)</th>
                         <th></th>
                         <th><input type="number" id="total_with_tax" name="t_total" value="{{sale.grandtotal}}"
-                                class=" form-control border-0 text-right"readonly></b></th>
+                                class=" form-control border-0 text-right text-dark"readonly></b></th>
                     </tr>
                 </table>
             </div>
@@ -258,7 +252,7 @@
                 <label class="text-white" for="">Attach File(s) to Estimate</label><br>
                 
                 <label for="">Upload File</label>
-                <input class="form-control" type="file" name="file">
+                <input class="form-control text-black" type="file" name="file">
                 
       
             </div>
@@ -272,7 +266,7 @@
             <button type="submit" name="sd" class="btn btn-warning text-white" 
                 value="Save and Send">Save and Send</button>
             <input class="btn btn-danger text-white"
-                type="reset" >Cancel</a>
+                type="reset" ></a>
         </div>
       </form>
 </div>
@@ -961,24 +955,24 @@ color: black;
 <div class="modal modal-1">
     <div class="modal-content">
       <h6 class="label">Payment Terms</h6>
-      <form id="terms-form" action="" method="post">
-        {% csrf_token %}
+      <form id="modalForm"  action="" onsubmit="return false">
+        
         <div id="terms-container">
           <div class="form-row">
             {% for p in pay %}
             <div class="col-6">
-                <input type="text" value="{{p.Terms}}" class="form-control" placeholder="Terms">
+                <input type="text" value="{{p.Terms}}" class="form-control text-black" placeholder="Terms">
               </div>
               <div class="col-5">
-                <input type="text" value="{{p.Days}}" class="form-control" placeholder="No of Days">
+                <input type="text" value="{{p.Days}}" class="form-control text-black" placeholder="No of Days">
               </div>
             {% endfor %}
 
             <div class="col-6">
-              <input type="text" name="terms[]" class="form-control" placeholder="Terms">
+              <input type="text" name="terms" class="form-control" placeholder="Terms">
             </div>
             <div class="col-5">
-              <input type="text" name="days[]" class="form-control" placeholder="No of Days">
+              <input type="text" name="days" class="form-control" placeholder="No of Days">
             </div>
             <div class="col-1">
               <button type="button" class="btn btn-success add-term-row">+</button>
@@ -987,7 +981,7 @@ color: black;
         </div>
         <div class="form-row mt-3">
           <div class="col-12 text-right">
-            <input type="submit" class="btn btn-success" value="submit">
+            <input type="submit" class="btn btn-success" value="submit" id="payment">
           </div>
         </div>
       </form>
@@ -1041,7 +1035,7 @@ addTermRowBtn.addEventListener('click', () => {
   termsInput.classList.add('col-6');
   const termsField = document.createElement('input');
   termsField.type = 'text';
-  termsField.name = 'terms[]';
+  termsField.name = 'terms';
   termsField.placeholder = 'Terms';
   termsField.classList.add('form-control');
   termsInput.appendChild(termsField);
@@ -1052,7 +1046,7 @@ addTermRowBtn.addEventListener('click', () => {
   daysInput.classList.add('col-5');
   const daysField = document.createElement('input');
   daysField.type = 'text';
-  daysField.name = 'days[]';
+  daysField.name = 'days';
   daysField.placeholder = 'No of Days';
   daysField.classList.add('form-control');
   daysInput.appendChild(daysField);
@@ -1073,7 +1067,7 @@ addTermRowBtn.addEventListener('click', () => {
 });
 
 // Add event listener to the form to delete rows
-form.addEventListener('click', (event) => {
+termsContainer.addEventListener('click', (event) => {
   // If the target element is a delete button
   if (event.target.classList.contains('delete-term-row')) {
     // Find the row to delete
@@ -1187,7 +1181,7 @@ function calc() {
         // get the values of the input fields for this row
         var qty = $(this).find('.qty').val();
         var rate = $(this).find('.rate').val();
-        var desc = $(this).find('.desc').val();
+      
         var tax = $(this).find('.tax').val();
         var dis = $(this).find('.dis').val();
         
@@ -1327,7 +1321,7 @@ function test(taxamount) {
     console.log(customer);
     $.ajax({
         type: "GET",
-        url: "",
+        url: "{% url 'customerdata' %}",
         data: {
             id: customer
         },
@@ -1377,7 +1371,7 @@ function test(taxamount) {
               
              
                    document.getElementById('rate1').value = data
-                    document.getElementById('desc1').value = data4
+                
                     document.getElementById('state').value = data5
                     document.getElementById('cx_mail').value = data6
                     console.log(data2,data1)
@@ -1438,7 +1432,7 @@ function test(taxamount) {
                     // place_of_supply=data3;
                     // console.log('pos:'+place_of_supply);
                     document.getElementById('rate2').value = data
-                    document.getElementById('desc2').value = data4
+                   
                     document.getElementById('state').value = data5
                     document.getElementById('cx_mail').value = data6
                     if (data3 == '{{ company.state }}') {
@@ -1823,7 +1817,48 @@ height
 
      </script>
 
+<script>
+      
+  $(document).on("click", "#payment", function() {
+var array1 = [];
+var array2 = [];
+$("input:text[name=terms]").each(function() {
+array1.push($(this).val());
 
+});
+$("input:text[name=days]").each(function() {
+array2.push($(this).val());
+});
+
+
+$.ajax({
+url: "{% url 'payment_term_for_sales' %}",
+type: 'POST',
+headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+data: {
+  terms: JSON.stringify(array1),
+  days: JSON.stringify(array2)
+},
+success: function(response) {
+  
+  
+  $('#modalForm')[0].reset();
+  $('.modal').fadeOut();
+  data = response.pay_term;
+  const pay = document.getElementById("pay_term");
+
+  const termsField = document.createElement('option');
+  termsField.innerHTML = data;
+  pay.appendChild(termsField);
+
+  
+// Iterate through the data and create options
+},
+});
+});
+
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
